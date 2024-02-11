@@ -76,6 +76,7 @@
 \newcommand{\card}[1]{\vert #1 \vert}
 \newcommand{\RestrictTo}[1]{\restriction_{#1}}
 \newcommand{\norm}[1]{\left\lVert{#1}\right\rVert}
+\newcommand{\type}{\mathrm{type}}
 
 
 \title{Álgebra Superior: Una perspectiva típica}
@@ -2377,11 +2378,165 @@ En el razonamiento anterior, es importante hacer énfasis en que su potencial va
 \section{Parte 2: Formalización de matemáticas en Agda}
 
 \subsection{Introducción}
+\todo{Meterle más paja a esto}
+La teoría homotópica de tipos es un área de estudio de las matemáticas relativamente nueva. 
+Esta área de estudio contempla herramientas de la teoría de los lenguajes de programación, el álgebra, la teoría de categorías, la lógica matemática y la topología.
+El poder expresivo del lenguaje formal empleado por la teoría de tipos homotópica así como su fundamento teórico es tan expresivo y general que permite
+ofrecer una teoría alternativa a la teoría de conjuntos para fundamentar las matemáticas. Dentro de las ventajas que brinda emplear este lenguaje
+está la posibilidad de emplear computadoras para verificar la correctud de demostraciones matemáticas.
+
+Es importante notar que al ser ésta una teoría constructiva desde su concepción, técnicas propias que dependen de axiomas o teoremas no constructivos como lo son
+la ley del tercer excluido, o el teorema de elección generalizado, no se encuentran disponibles en todos los contextos a diferencia de las "matemáticas clásicas".
+
+En esta segunda parte del trabajo se explorarán de forma breve y concisa temas de la teoría homotópica de tipos con el objetivo
+de proponer y dar una base teórica para una formalización del temario de álgebra superior.
 
 \subsection{Teoría de tipos dependientes}
+    \subsubsection{Juicios, contextos y derivaciones}
+        En la teoría de tipos se emplea un lenguaje formal que está basado en la deducción natural pues es un sistema en el que se cuenta
+        con reglas de inferencia que se pueden combinar para formar derivaciones. Las derivaciones nos importan porque son el principal
+        mecanismo para producir \textit{términos} de un tipo determinado.
+        
+        Como es de esperarse del título que carga la teoría de tipos, un \textbf{tipo} es un objeto primitivo de la teoría de tipos de la misma fórma que un conjunto
+        es un objeto primitivo de la teoría de conjuntos. Como podrá usted, lector o lectora, darse una idea desde el párrafo anterior, los tipos pueden tener (o no)
+        términos. Como se mencionó antes, un término es el resultado de la aplicación de reglas de inferencia y, como el autor no desea arruinar el placentero proceso
+        de entender a un nuevo objeto matemático, conforme avancemos en este trabajo floreceran distintas formas útiles de pensar a los tipos y sus términos.
+
+        Entenderemos por una \textbf{derivación} a una sucesión de aplicaciones de \textbf{reglas de inferencia}.
+
+        Comenzamos por definir precisamente qué es un juicio en este lenguaje.
+
+        \begin{definition}[Juicios]
+            Un \textbf{juicio} es alguna expresión de la forma:
+            \begin{enumerate}
+                \item $\Gamma \vdash A\ \type$ (Desde $\Gamma$ se deduce que $A$ es un tipo)
+                \item $\Gamma \vdash a : A\ \type$ (Desde $\Gamma$ se deduce que $a$ es un término de tipo $A$)
+                \item $\Gamma \vdash A \equiv B\ \type$ (Desde $\Gamma$ se deduce que $A$ es un tipo juiciosamente equivalente al tipo $B$)
+                \item $\Gamma \vdash a \equiv b\ : A$ (Desde $\Gamma$ se deduce que los términos $a$ y $b$ de tipo $A$ son juiciosamente equivalentes)
+            \end{enumerate}
+
+            donde $\Gamma$ es una lista finita de declaraciones de variables tales que para cada $1 \leq k \leq n$
+            se puede derivar el juicio
+            $$
+                x_1 : A_1, x_2 : A_2(x_1), \dots, x_k : A_k(x_1, x_2, \dots, x_{k-1}) \vdash A_{k+1}(x_1, x_2, \dots, x_{k-1}, x_k)\ \type
+            $$
+            y recibe el nombre de \textbf{contexto}; y lo que se encuentra a la derecha del símbolo $\vdash$ 
+            (léase "desde \_ se deduce \_") recibe el nombre de \textbf{tésis de juicio}.
+        \end{definition}
+
+        Los contextos, de forma análoga a su rol en el cálculo de secuentes, denotan los supuestos que se están considerando para obtener la tésis de juicio.
+        En tanto que los elementos potencialmente pueden ser suposiciones que carecen de fundamento previamente derivado se les suelen llamar \textit{variables}.
+        Los juicios los pensamos como hechos, a diferencia de las proposiciones; las cuales potencialmente son verdaderas o falsas.
+        Alternativamente llamaremos \textbf{elementos} a los términos de un tipo dado, de modo que un juicio $a : A$ se puede leer como $a$ es un elemento de tipo $A$.
+        \begin{remark}
+            Observe que nuestra definición de contexto permite la existencia de un contexto vacío pues por un argumento de vacuidad se verifica la
+            satisfacibilidad de la propiedad de un contexto.
+        \end{remark}
+        \begin{remark}
+            Obsérvese que la condición impuesta sobre un contexto se puede verificar de forma recursiva o inductiva:
+            \begin{itemize}
+                \item El caso base es mostrar que $x_1 : A_1$ se deduce desde el contexto vacío. Para afirmar que $x_1 : A_1$ es un juicio válido se debe haber deducido (o supuesto)
+                que $A_1$ es un tipo en el contexto vacío.
+                \item La clausula inductiva es codificada por la propiedad que define a un contexto.
+            \end{itemize}
+
+            Para verificar de forma recursiva que una lista de declaraciones de la forma 
+            $$
+                x_1 : A_1, x_2 : A_2(x_1), \dots, x_k : A_k(x_1, x_2, \dots, x_{k-1}) \vdash x_{k+1} : A_{k+1}(x_1, \dots, x_{k-1}, x_k)\ \type
+            $$
+            es un contexto basta probar que una lista de declaraciones de la forma
+            $$
+            x_1 : A_1, x_2 : A_2(x_1), \dots, x_k : A_{k-2}(x_1, x_2, \dots, x_{k-2}) \vdash x_{k} : A_{k}(x_1, \dots, x_{k-1})\ \type
+            $$
+            y así de forma sucesiva hasta dar con el caso base.
+        \end{remark}
+    
+    \subsubsection{Familias de tipos}
+        Una idea universal bastante útil es la de un "agrupamiento de agrupamientos"; ejemplos clásicos de este patrón de pensamiento son
+        las familias de conjuntos; en teoría de conjuntos; y los enunciados; en lógica de primer órden. En la teoría de tipos dependientes
+        de Per Martin-Löf contamos con un marco de trabajo que engloba esta idea, la cual es la de una \textit{familia de tipos}.
+
+        \begin{definition}[Familia de tipos]
+            Si $A$ es un tipo en un contexto $\Gamma$, una \textbf{familia de tipos} $B(x)$ es un tipo en el contexto $\Gamma, x : A$ (o también diremos
+            que $B(x)$ es un \textbf{tipo indizado sobre} $A$ en el contexto $\Gamma$) y
+            escribimos formalmente este hecho como
+            $$
+                \Gamma, x : A \vdash B(x)\ \type
+            $$
+
+            y en su forma de regla de inferencia podemos \textbf{introducirla} como
+            \begin{prooftree}
+                \AxiomC{$\Gamma \vdash x : A$}
+                \AxiomC{$\varnothing \vdash A\ \type$}
+                \BinaryInfC{$B(x)\ \type$}
+            \end{prooftree}
+
+            Por comodidad se suele omitir el contexto vacío y solamente se escribe la tésis de juicio, de modo que escribimos:
+
+            \begin{prooftree}
+                \AxiomC{$\Gamma \vdash x : A$}
+                \AxiomC{$A\ \type$}
+                \BinaryInfC{$B(x)\ \type$}
+            \end{prooftree}
+
+            o si damos por obvio que $A$ tiene que ser un tipo para que el juicio $\Gamma \vdash x : A$ sea válido podemos solamente convenir escribir
+            \begin{prooftree}
+                \AxiomC{$\Gamma \vdash x : A$}
+                \UnaryInfC{$B(x)\ \type$}
+            \end{prooftree}
+        
+            Por conveniencia y claridad, a partir de este punto emplearemos las convenciones de escritura que nos permiten obviar cosas a menos de que sea
+            necesario para esclarecer.
+        \end{definition}
+
+        \begin{remark}
+            Resulta bastante útil pensar a una familia de tipos como un tipo que varía según los términos de otro tipo. 
+            Es decir, si abusamos de notación, podemos pensar a una familia de tipos como una función 
+            \begin{align*}
+                \mathrm{Term(A)} &\rightarrow \mathrm{Types}\\
+                x : A &\mapsto B(x)\ \type
+            \end{align*}
+            Un un futuro no muy lejano se exhibirá cómo expresar este hecho de manera formal dentro del lenguaje de la teoría de tipos dependiente.
+        \end{remark}
+
+        Como es de esperarse que de una colecciones de colecciones podamos tomar \textit{una parte}, análogamente de una familia de tipos
+        podemos considerar lo que llamaremos una \textbf{sección}.
+
+        \begin{definition}[Sección de una familia de tipos]
+            Si $B$ es una familia de tipos sobre $A$ en el contexto $\Gamma$, diremos que una \textbf{sección} de $B$ es un término $b(x) : B(x)$ en un contexto
+            $\Gamma, x : A$. En símbolos:
+            $$
+                \Gamma, x : A \vdash b(x) : B(x)
+            $$
+            La \textbf{regla de introducción} asociada entonces es:
+
+            \begin{prooftree}
+                \AxiomC{$\Gamma \vdash x : A$}
+                \AxiomC{$\Gamma, x : A \vdash B(x)\ \type$}
+                \BinaryInfC{$\Gamma \vdash b(x) : B(x)$}
+            \end{prooftree}
+            Y podemos entenderla como:
+            \textit{Si podemos deducir del contexto $\Gamma$ que $x$ es un término de tipo $A$ y que $B$ es una familia de tipos sobre $A$, 
+            entonces podemos deducir desde $\Gamma$ que $b(x) : B(x)$ es una sección de $B$}.
+        \end{definition}
+
+        \begin{remark}
+            Nótese que tanto el término como el tipo dependen del término $x : A$, de modo que abusando de la notación podemos pensar a este proceso como
+            una función
+            \begin{align*}
+                \mathrm{Term(A)} \times (\mathrm{Term(A)} \rightarrow \mathrm{Types}) &\rightarrow \mathrm{Term}(B(x))\\
+                \picopar{x : A\ ,\ x : A \mapsto B(x)\ \type}\mapsto b(x) : B(x)
+            \end{align*}
+        \end{remark}
+        
+    \subsubsection{Clases de reglas de inferencia}
+        
     \subsubsection{Universos de tipos}
+        
+        
+        
+        
     \subsubsection{Tipos primitivos}
-    \subsubsection{}
 
 \subsection{Tipos inductivos}
 
@@ -2400,91 +2555,6 @@ En el razonamiento anterior, es importante hacer énfasis en que su potencial va
 \subsection{Tipos finitos}
 \subsection{El axioma de univalencia}
 \subsection{Cocientes de conjuntos}
-
-
-\begin{itemize}
-    \item Parte I: Un poco de lógica
-    \begin{enumerate}
-        \item Introducción
-        \begin{enumerate}
-            \item Lógica como herramienta de razonamiento.
-        \end{enumerate}
-        \item Lenguajes
-        \begin{enumerate}
-            \item Lenguaje y metalenguaje.
-            \item Un lenguaje común para hablar de colecciones.
-        \end{enumerate}
-        \item Lógica proposicional.
-        \begin{enumerate}
-            \item Lógica proposicional.
-            \item El lenguaje de la lógica proposicional.
-            \item Una introducción a la semántica de la lógica proposicional.
-            \item Cálculo de proposiciones.
-            \item Derivaciones como árboles.
-        \end{enumerate}
-        \item Lógica de predicados.
-        \begin{enumerate}
-            \item Motivación.
-            \item El lenguaje de la lógica de predicados.
-            \item Variables libres y variables ligadas.
-            \item Sintaxis de la lógica de predicados.
-            \item Verdad, falsedad y derivaciones en la lógica de predicados.
-        \end{enumerate}
-        \item Deducción natural.
-        \begin{enumerate}
-            \item Introducción.
-            \item Reglas y deducciones.
-            \item Deducción natural en acción.
-            \item Deducción natural para la lógica clásica.
-        \end{enumerate}
-    \end{enumerate}
-    \item Parte II Funciones, recursión e inducción.
-    \begin{enumerate}
-        \item La esencia de las funciones.
-        \item Funciones y cómputo.
-        \item Recursión.
-        \item Un primer acercamiento a los tipos.
-        \item Funciones y tipos.
-    \end{enumerate}
-    \begin{enumerate}
-        \item Introducción a la teoría de tipos de Per Martin-Löf
-        \begin{enumerate}
-            \item Teoría de tipos dependiente.
-            \item El tipo de las funciones dependientes.
-            \item Algunos tipos inductivos
-            \item Tipos identidad
-            \item Universos
-            \item El tipo de los números naturales
-            \begin{enumerate}
-                \item Construcción
-                \item Operaciones
-                \item La decidibilidad e igualdad decidible
-                \item Principio del buen orden.
-                \item La infinitud de los números primos.
-            \end{enumerate}
-            \item El tipo de los números enteros
-            \begin{enumerate}
-                \item Resultados básicos de divisibilidad.
-                \item Congruencias.
-                \item Grupos cíclicos.
-            \end{enumerate}
-        \end{enumerate}
-        \item Introducción a las matemáticas univalentes
-        \begin{enumerate}
-            \item Equivalencias.
-            \item Tipos contráctiles y funciones contráctiles.
-            \item El teorema fundamental de los tipos identidad.
-            \item Proposiciones, conjuntos y niveles superiores de truncamiento.
-            \item Extensionalidad de funciones.
-            \item Truncamiento proposicional.
-            \item Factorizaciones de imágen.
-            \item Tipos finitos.
-            \item El axioma de univalencia.
-            \item Cocientes de conjuntos.
-        \end{enumerate}
-    \end{enumerate}
-    
-\end{itemize}
 
 \bibliography{biblio}
 \bibliographystyle{plain}
