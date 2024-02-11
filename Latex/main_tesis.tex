@@ -2406,7 +2406,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
 
         Comenzamos por definir precisamente qué es un juicio en este lenguaje.
 
-        \begin{definition}[Juicios]
+        \begin{definition}[Juicios, contextos]
             Un \textbf{juicio} es alguna expresión de la forma:
             \begin{enumerate}
                 \item $\Gamma \vdash A\ \type$ (Desde $\Gamma$ se deduce que $A$ es un tipo)
@@ -2450,13 +2450,20 @@ de proponer y dar una base teórica para una formalización del temario de álge
             $$
             y así de forma sucesiva hasta dar con el caso base.
         \end{remark}
+
+        \begin{definition}[Derivación]
+            Una \textbf{derivación} es un árbol finito con raíz en el que cada vértice es una regla de inferencia válida.
+            A la raíz del árbol se le llama \textbf{conclusión} y a las hojas \textbf{hipótesis}.
+        \end{definition}
+
+        Nos reservamos el derecho de poder definir nuevas reglas de inferencia a partir de otras, y diremos que estas nuevas reglas son \textbf{derivables}.
     
     \subsubsection{Familias de tipos}
         Una idea universal bastante útil es la de un "agrupamiento de agrupamientos"; ejemplos clásicos de este patrón de pensamiento son
         las familias de conjuntos; en teoría de conjuntos; y los enunciados; en lógica de primer órden. En la teoría de tipos dependientes
         de Per Martin-Löf contamos con un marco de trabajo que engloba esta idea, la cual es la de una \textit{familia de tipos}.
 
-        \begin{definition}[Familia de tipos]
+        \begin{definition}[Familia de tipos]\label{def:familia_tipos}
             Si $A$ es un tipo en un contexto $\Gamma$, una \textbf{familia de tipos} $B(x)$ es un tipo en el contexto $\Gamma, x : A$ (o también diremos
             que $B(x)$ es un \textbf{tipo indizado sobre} $A$ en el contexto $\Gamma$) y
             escribimos formalmente este hecho como
@@ -2530,6 +2537,94 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \end{remark}
         
     \subsubsection{Clases de reglas de inferencia}
+        Las siguientes reglas de inferencia describen de forma explicita las suposicón de que hicimos en la definición \ref{def:familia_tipos}.
+        Es de esperarse que, si tenemos en un contexto las variables $A\ \type, x : A$, entonces desde ese mismo contexto podamos deducir
+        $A\ \type$ y $x : A$ por separado.
+        \begin{center}
+            \AxiomC{$\Gamma, x : A \vdash B(x)\ \type$}
+            \UnaryInfC{$\Gamma \vdash A\ \type$}
+            \DisplayProof
+            \hskip 1.5em
+            \AxiomC{$\Gamma \vdash A \equiv B\ \type$}
+            \UnaryInfC{$\Gamma \vdash A\ \type$}
+            \DisplayProof
+            \hskip 1.5em
+            \AxiomC{$\Gamma \vdash A \equiv B\ \type$}
+            \UnaryInfC{$\Gamma \vdash B\ \type$}
+            \DisplayProof
+        \end{center}
+        
+        \begin{center}
+            \AxiomC{$\Gamma \vdash a \equiv b : A$}
+            \UnaryInfC{$\Gamma \vdash a : A$}
+            \DisplayProof
+            \hskip 1.5em
+            \AxiomC{$\Gamma \vdash a \equiv b : A$}
+            \UnaryInfC{$\Gamma \vdash b : A$}
+            \DisplayProof
+            \hskip 1.5em
+            \AxiomC{$\Gamma \vdash a : A$}
+            \UnaryInfC{$\Gamma \vdash A\ \type$}
+            \DisplayProof
+        \end{center}
+
+        En tanto que es de interés que la noción de \textit{ser juiciosamente iguales} sea una buena noción de equivalencia, es
+        de esperarse que se postulen reglas que testifican que esta noción satisface los axiomas de una relación de equivalencia.
+
+        \begin{center}
+            \AxiomC{$\Gamma \vdash A\ \type$}
+            \UnaryInfC{$\Gamma \vdash A\equiv A\ \type$}
+            \DisplayProof
+            \hskip 1.5em
+            \AxiomC{$\Gamma \vdash A \equiv B\ \type$}
+            \UnaryInfC{$\Gamma \vdash B \equiv A\ \type$}
+            \DisplayProof
+            %\hskip 1.5em
+            %\AxiomC{$\Gamma \vdash A \equiv B\ \type$}
+            %\AxiomC{$\Gamma \vdash B \equiv C\ \type$}
+            %\BinaryInfC{$\Gamma \vdash A \equiv C\ \type$}
+            %\DisplayProof
+        \end{center}
+
+        \begin{prooftree}
+            \AxiomC{$\Gamma \vdash A \equiv B\ \type$}
+            \AxiomC{$\Gamma \vdash B \equiv C\ \type$}
+            \BinaryInfC{$\Gamma \vdash A \equiv C\ \type$}
+        \end{prooftree}
+
+        \begin{center}
+            \AxiomC{$\Gamma \vdash a : A$}
+            \UnaryInfC{$\Gamma \vdash a \equiv a : A$}
+            \DisplayProof
+            \hskip 1.5em
+            \AxiomC{$\Gamma \vdash a \equiv b: A$}
+            \UnaryInfC{$\Gamma \vdash b \equiv a : A$}
+            \DisplayProof
+            \hskip 1.5em
+            \AxiomC{$\Gamma \vdash a \equiv b : A$}
+            \AxiomC{$\Gamma \vdash b \equiv c : A$}
+            \BinaryInfC{$\Gamma \vdash a \equiv c : A$}
+            \DisplayProof
+        \end{center}
+
+        También es de esperarse que, si se tienen que dos tipos son juiciosamente equivalentes, y puedes deducir una tésis de juicio $\mathfrak{T}$
+        a partir de una variable, entonces al intercambiar el tipo sobre el que tomas la variable por su equivalente la misma tésis de juicio
+        debería poder deducirse.
+
+        \begin{center}
+            \AxiomC{$\Gamma \vdash A \equiv B \ \type$}
+            \AxiomC{$\Gamma, x : A, \Theta \vdash \mathfrak{T}$}
+            \BinaryInfC{$\Gamma, x : B, \Theta \vdash \mathfrak{T}$}
+            \DisplayProof
+        \end{center}
+        Donde $\Theta$ es una extensión cualquiera del contexto $\Gamma, x : A$.
+        Por ejemplo en el caso en que $\mathfrak{T}$ es $C(x)\ \type$ tenemos
+        \begin{center}
+            \AxiomC{$\Gamma \vdash A \equiv B \ \type$}
+            \AxiomC{$\Gamma, x : A, \Theta \vdash C(x)\ \type$}
+            \BinaryInfC{$\Gamma, x : B, \Theta \vdash C(x)\ \type$}
+            \DisplayProof
+        \end{center}
         
     \subsubsection{Universos de tipos}
         
