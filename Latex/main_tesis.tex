@@ -163,7 +163,7 @@ Además de que el sistema de deducción natural nos brindará herramientas y est
 
 \subsection{Reglas y deducciones}
 
-Primero, acordemos de forma precisa lo que entendemos por una deducción en este nuevo sistema.
+Primero, acordemos de forma precisa lo que entendemos por una deducción en este sistema.
 \begin{definition}
     Una deducción de una fórmula $A$ es un árbol de fórmulas tal que en toda fórmula que no es un supuesto es la conclusión de una aplicación de una de las reglas de inferencia.
     Los supuestos en la deducción que no son descargados por cualquier regla en ella son \emph{supuestos abiertos} de la deducción.
@@ -181,7 +181,7 @@ Cada paso en una deducción entonces debe ser justificada por una regla de infer
 
 \subsubsection{Reglas de $\supset$}
 
-Como ya hemos observado antes, por ejemplo cuando demostramos la proposición \ref{prop:primer_prueba}, un patrón común en la demostración de un enunciado de la forma $A \supset B$ es suponer $A$ y derivar $B$. En el sistema de deducción natural, este patrón se codifica mediante la siguiente regla:
+Un patrón común en la demostración de un enunciado de la forma $A \supset B$ es suponer $A$ y derivar $B$. En el sistema de deducción natural, este patrón se codifica mediante la siguiente regla:
 
 \begin{definition}[Regla de introducción del operador condicional $\supset$]
     \begin{prooftree}
@@ -381,12 +381,6 @@ de la proposición. Esto se verá mejor en el siguiente ejemplo:
     \end{center}
 \end{remark}
 
-\begin{exercise}
-    Suponga que no tenemos la regla de introducción $\wedge_I$ y en su lugar sólo 
-    contamos con la regla mencionada en la observación \ref{remark:prop_univ_prod1}.
-    ¿Puede deducir $\wedge_I$? ¿Por qué?
-\end{exercise}
-
 \subsubsection{Reglas de $\vee$}
 
 Recordemos que, de nuestro análisis semántico, para que una expresión de la forma $A \vee B$ sea verdadera, basta que $A$ o $B$ sean verdaderas. Una forma de pensar esta observación es que debe bastar que $A$ o $B$ sean verdaderas para poder formar una expresión de la forma $A \vee B$. 
@@ -507,12 +501,6 @@ el camino $f : A \supset C$ o $g : B \supset C$ para generar dicha prueba.
     
 \end{remark}
 
-\begin{exercise}
-    ¿Qué diferencias nota entre el diagrama de $\wedge$ estudiado en la observación 
-    \ref{remark:prop_univ_prod1} y el diagrama de $\vee$ estudiado en la observación
-    \ref{remark:prop_univ_coprod1}? ¿Qué puede concluir de las diferencias
-    observadas?
-\end{exercise}
 
 \subsubsection{Falsedad, negación, y verdad}
 
@@ -715,28 +703,11 @@ leer y trabajar dicha sección, si vuelve a leer esta demostración le entender�
 %dos elementos adicionales a nuestra colección abstracta de elementos que representarán
 %cualquier proposición: un máximo y un mínimo.
 
-\begin{exercise}
-    Considere la regla de eliminación $\lor_E$. De una interpretación para la regla antes mencionada si $C = A$ y $B = \bot$ y si $C = B$ y $A = \bot$.
-\end{exercise}
 
 
 \subsubsection{Reglas de $\forall$ y $\exists$}
 
-Cuando estudiamos los cuantificadores en la sección \ref{subsec:predicados} hicimos notar que el axioma
-
-\begin{itemize}
-    \item[QL1.] $\forall x A(x) \supset A(x)^{[x\to t]}$ \cite{PaoloMancosu56}
-\end{itemize}
-
-y la regla de inferencia
-
-\begin{itemize}
-    \item[QR1.] Si $A \supset B(x)$ es derivable, $x$ no forma parte de $A$ como expresión, y $z$ es una variable que no forma parte de $B(x)$ como expresión, entonces $A \supset \forall z B(z)$ es derivable. \cite{PaoloMancosu56}
-
-\end{itemize}
-
-codificaban una forma natural e intuitiva de cómo razonamos ante el cuantificador $\forall$.
-En virtud de esto, resulta entonces natural que las reglas para el cuantificador universal ($\forall$) sean las siguientes:
+Las reglas para el cuantificador universal ($\forall$) sean las siguientes:
 
 \begin{definition}[Regla de introducción de $\forall$]
     \hfill \newline
@@ -809,16 +780,7 @@ En muchos contextos dentro de matemáticas queremos conservar el sentido de las 
 de símbolos o notaciones; uno muy particular, que es el que nos encontramos estudiando,
 es el de la lógica matemática.
 
-Recordando que no sólo teníamos el axioma $QL1$ y la regla de inferencia $QR1$ sino que también contamos con el axioma
-\begin{itemize}
-    \item[QL2.] $A(x)^{[x \to t]} \supset \exists x A(x)$ \cite{PaoloMancosu56}
-\end{itemize}
-y la regla de inferencia
-\begin{itemize}
-    \item[QR2.] Si $B(x) \supset A$ es derivable, $x$ no no forma parte de $A$ como expresión, y $z$ es una variable que no forma parte de $B(x)$, entonces $\exists x B(x) \supset A$ es derivable. \cite{PaoloMancosu56}
-\end{itemize}
-
-entonces resulta natural que las reglas para el cuantificador existencial ($\exists$) sean las siguientes:
+Las reglas para el cuantificador existencial ($\exists$) sean las siguientes:
 
 \begin{definition}[Regla de introducción de $\exists$]
     \hfill
@@ -877,8 +839,6 @@ Como último comentario, la consideración que hay que tener con la sustitución
 \todo{Hacer mención de que se pueden consultar ejemplos en la literatura shalala}
 \subsection{Deducción natural en acción}
 \label{subsection:deduccion-nat-accion}
-
-En la sección anterior no mostramos muchos ejemplos. Esta decisión fue tomada con el propósito de que, una vez introducidas todas las reglas, tengamos muchos "juguetes" en los que probar esta nueva forma de pensar.
 
 \subsubsection{Ejemplos con $\wedge$}
 
@@ -971,9 +931,6 @@ manera:
 
 Donde las flechas con ambas cabezas representan $\iff$. 
 
-\begin{exercise}
-    Argumente por qué podemos asegurar que $A \land B \iff B \land A$ en el diagrama anterior.
-\end{exercise}
 
 \begin{example}
     \label{ex:and-assoc-twist-dn}
@@ -1061,173 +1018,6 @@ Donde las flechas con ambas cabezas representan $\iff$.
             \BinaryInfC{$\picopar{\ \pi_1 (\pi_1\ h) ,\ \picopar{\pi_2\ h , \pi_2 (\pi_1\ h )}\ } : A \land (C \land B)$}
         \end{prooftree}
 \end{example}
-
-\begin{exercise}
-    Repita el ejemplo anterior, pero ahora empleando la estrategia de "abajo hacia arriba".
-\end{exercise}
-    
-\begin{exercise}
-    Muestre que de suponer $A$ uno puede deducir $A \land A$.
-\end{exercise}
-
-\begin{exercise}
-    Suponga que se tiene un testigo $p : A \wedge (B \wedge C)$. Deduzca una testigo de
-    $B$.
-\end{exercise}
-
-\begin{exercise}
-    Verifique que $A \wedge B \supset A$ y $A \wedge B \supset B$ son tautologías.
-\end{exercise}
-
-\begin{exercise}
-    \label{exercise: and-assoc-izq}
-    Muestre que de $A \land (B \land C)$ uno puede inferir $(A \land B) \land C$.
-    Si usted lo desea, puede utilizar la regla $\land$-conm y el ejemplo \ref{ex:and-assoc-twist-dn}.
-
-    En virtud de la utilidad de esta derivación, resumiremos el árbol en la siguiente regla.
-
-    \begin{definition}
-        \label{def:and-assoc-izq-dn}
-        \hfill
-        \begin{prooftree}
-            \AxiomC{$h : A \land (B \land C)$}
-            \RightLabel{$\land$-asoc-izq}
-            \UnaryInfC{$\land\text{-assoc-izq}\ h : (A \land B) \land C$}
-        \end{prooftree}
-    \end{definition}
-\end{exercise}
-
-\begin{exercise}
-    \label{exercise: and-assoc-der}
-    Muestre que de $(A \land B) \land C$ uno puede inferir $A \land (B \land C)$.
-    Si usted lo desea, puede utilizar la regla $\land$-conm y el ejemplo \ref{ex:and-assoc-twist-dn}.
-
-    En virtud de la utilidad de esta derivación, resumiremos el árbol en la siguiente regla.
-
-    \begin{definition}
-        \label{def:and-assoc-der-dn}
-        \hfill
-        \begin{prooftree}
-            \AxiomC{$h : (A \land B) \land C$}
-            \RightLabel{$\land$-asoc-der}
-            \UnaryInfC{$\land\text{-asoc-der}\ h : A \land (B \land C)$}
-        \end{prooftree}
-    \end{definition}
-\end{exercise}
-
-\begin{remark}
-    En general, cuando tenemos una operación $\star$ (en este caso $\star \equiv \land$)
-    tal que dados 3 elementos que puede operar se tiene que
-    $$
-        a \star(b \star c) \equiv (a \star b) \star c
-    $$
-
-    con $\equiv$ una noción de equivalencia (por ejemplo el igual $=$ en álgebra)
-    decimos que la operación $\star$ es asociativa. Así, en particular por los juegos
-    $\ref{exercise: and-assoc-der}$ y $\ref{exercise: and-assoc-izq}$ tenemos que $\land$ es
-    una operación asociativa. Como veremos en su momento, la suma de números naturales
-    y el producto son también ejemplos de operaciones asociativas.
-\end{remark}
-
-\begin{exercise}
-    Suponga que se tiene una prueba 
-    $$p : (A \wedge (B \wedge C)) \wedge (P \wedge Q)$$ 
-    y la derivación
-    $$
-        \pi_1\ (\pi_2\ (\pi_1\ p)) :\ ?
-    $$
-    Determine $?$, la proposición a la cual corresponde $\pi_1\ \pi_2\ \pi_1\ p$,
-    y reconstruya la derivación que sintetiza la expresión.
-
-\end{exercise}
-
-\begin{exercise}
-    Suponga que se tiene una prueba 
-    $$p_1 : A \wedge (B \wedge (C \wedge D))$$
-    y una prueba 
-    $$p_2 : (A \wedge B) \wedge (C \wedge D).$$ 
-    Deduzca una prueba de $D$ desde $p_1$ y $p_2$. ¿Se parecen las pruebas? 
-    ¿Por qué crees que se parecen?
-    ¿Puedes dar una implicación 
-    $$f : A \wedge (B \wedge (C \wedge D)) \supset (A \wedge B) \wedge (C \wedge D)$$ 
-    y otra
-    implicación 
-    $$g : (A \wedge B) \wedge (C \wedge D) \supset A \wedge (B \wedge (C \wedge D))?$$
-\end{exercise}
-
-\begin{exercise}
-    Sean
-    $$ \alpha : A\quad\quad \beta : B\quad\quad \gamma : C\quad\quad \delta : D $$
-    y considere las pruebas
-    $$
-    \picopar{\alpha, \picopar{\beta, \picopar{\gamma, \delta}}} : A \wedge (B \wedge (C \wedge D))
-    $$
-    $$
-        \picopar{\picopar{\alpha, \beta}, \picopar{\gamma, \delta}} : (A \wedge B) \wedge (C \wedge D)
-    $$
-
-    Con las respuestas dadas en el juego anterior acomplete las
-    siguientes derivaciones.
-    \begin{prooftree}
-        \AxiomC{$f : A \wedge (B \wedge (C \wedge D)) \supset (A \wedge B) \wedge (C \wedge D)$}
-        \AxiomC{$\picopar{\alpha, \picopar{\beta, \picopar{\gamma, \delta}}}:A \wedge (B \wedge (C \wedge D))$}
-        \BinaryInfC{$f\ \picopar{\alpha, \picopar{\beta, \picopar{\gamma, \delta}}}:\ ?$}
-    \end{prooftree}
-
-    \begin{prooftree}
-        \AxiomC{$g : (A \wedge B) \wedge (C \wedge D) \supset A \wedge (B \wedge (C \wedge D))$}
-        \AxiomC{$f\ \picopar{\alpha, \picopar{\beta, \picopar{\gamma, \delta}}}:\ ?$}
-        \BinaryInfC{$g\ (f\ \picopar{\alpha, \picopar{\beta, \picopar{\gamma, \delta}}}) :\ ??$}
-    \end{prooftree}
-
-    \begin{prooftree}
-        \AxiomC{$g : (A \wedge B) \wedge (C \wedge D) \supset A \wedge (B \wedge (C \wedge D))$}
-        \AxiomC{$\picopar{\picopar{\alpha, \beta}, \picopar{\gamma, \delta}} : (A \wedge B) \wedge (C \wedge D)$}
-        \BinaryInfC{$g\ \picopar{\picopar{\alpha, \beta}, \picopar{\gamma, \delta}}:\ ?$}
-    \end{prooftree}
-
-    \begin{prooftree}
-        \AxiomC{$f : A \wedge (B \wedge (C \wedge D)) \supset (A \wedge B) \wedge (C \wedge D)$}
-        \AxiomC{$g\ \picopar{\picopar{\alpha, \beta}, \picopar{\gamma, \delta}}:\ ?$}
-        \BinaryInfC{$f\ (g\ \picopar{\picopar{\alpha, \beta}, \picopar{\gamma, \delta}}) :\ ??$}
-    \end{prooftree}
-
-    \noindent ¿Qué puede concluir de las derivaciones anteriores? ¿Qué conclusiones puede obtener con respecto a $A \wedge (B \wedge (C \wedge D))$ y
-    $(A \wedge B) \wedge (C \wedge D)$?
-\end{exercise}
-
-\subsubsection{Ejemplos con $\supset$} \label{subsubsec: examples_impl}
-
-\begin{example}
-    Deduzca la fórmula $(A \land B) \supset (B \land A)$. \hfill \newline
-
-    Nuestro objetivo es llegar a una fórmula de la forma $P \supset Q$, donde $P := A \land B$ y $Q := B \land A$, y la única forma de hacer esto es mediante la regla de introducción $\supset_I$.
-
-    \begin{prooftree}
-        \AxiomC{$h_1 : A$}
-        \shortDeduce
-        \DeduceC{$h_k : B$}
-        \RightLabel{$\supset_I$}
-        \UnaryInfC{$f : A \supset B$}
-    \end{prooftree}
-
-    Por lo tanto, podemos partir de suponer $A \land B$ y mostrar que mediante una serie de pasos llegamos a $B \land A$. Para lograr esto último, sabemos que de $A \land B$ podemos obtener $B \land A$; más aún, ¡ya derivamos antes este resultado! pues esto último es un caso particular de la proposición \ref{def:and-conm-dn}. De esta forma, tenemos el siguiente árbol de derivación.
-
-    \begin{prooftree}
-        \AxiomC{$h : A \land B$}
-        \RightLabel{$\land$-conm}
-        \UnaryInfC{$\land\text{-conm}\ h : B \land A$}
-        \RightLabel{$\supset_I$}
-        \UnaryInfC{$(\lambda x\ .\ \land\text{-conm}(x) ): (A \land B) \supset (B \land A)$}
-    \end{prooftree}
-
-    Observe que la suposición $h : A \land B$ fue descargada al momento de aplicar la regla de introducción. \todo{incluir este comentario?}
-\end{example}
-
-\begin{exercise}
-    Deduzca la fórmula $(A \land B) \supset (A \lor B)$, pero sin utilizar $\land$-conm y verifique que el árbol resultante es el mismo que resulta de haber sustituido la derivación completa que resume $\land$-conm con $S := A$ y $Q := B$.
-\end{exercise}
-
 
 \begin{example}
     Demuestre que $(A \supset B) \supset [(A \land C) \supset (B \land C)]$.
@@ -1519,41 +1309,6 @@ Donde las flechas con ambas cabezas representan $\iff$.
     \end{tikzcd}\]
 \end{remark}
 
-Ahora le toca a usted divertirse con los siguientes juegos.
-
-\begin{exercise}
-    Demuestre que $A \supset (A \land A)$.
-\end{exercise}
-
-\begin{exercise}
-    Demuestre que $(A \land (A \supset B)) \supset B$
-\end{exercise}
-
-\begin{exercise}
-    Demuestre que $[A \supset (B \supset C)] \supset [(A \supset B) \supset (A \supset C)]$.
-\end{exercise}
-
-\begin{exercise}\label{exercise:product_leftadjoint_logic1}
-    Demuestre que $((A \land B) \supset C) \supset (A \supset (B \supset C))$.
-\end{exercise}
-
-\begin{exercise}\label{exercise:product_leftadjoint_logic2}
-    Demuestre que $(A \supset (B \supset C)) \supset ((A \land B) \supset C)$.
-\end{exercise}
-
-\begin{exercise}
-    ¿Qué puede concluir de los ejercicios \ref{exercise:product_leftadjoint_logic1} y \ref{exercise:product_leftadjoint_logic2}?
-\end{exercise}
-
-\begin{exercise}\label{exercise:ejercicio_prop_univ}
-    Demuestre que $((A \supset B) \land (A \supset C)) \supset (A \supset (B \land C))$.
-    \newline\textbf{Nos referiremos a este juego posteriormente. Se recomienda por lo menos intentarlo.}
-    
-    \textit{Sugerencia:} Utilizar los juegos \ref{exercise:product_leftadjoint_logic1} y 
-    \ref{exercise:product_leftadjoint_logic2}
-    y el ejemplo \ref{example:prop_univ_prod_logica}.
-\end{exercise}
-
 \subsubsection{Ejemplos con $\vee$}
 
 \begin{example}
@@ -1820,51 +1575,6 @@ Ahora le toca a usted divertirse con los siguientes juegos.
 
     \end{proof}
 \end{example}
-
-Ahora le toca divertirse a usted.
-
-\begin{exercise}
-    Demuestre que 
-    $$
-        P \supset (P \wedge P)\text{ y que }(P \wedge P) \supset P.
-    $$
-\end{exercise}
-
-\begin{exercise}
-    Demuestre que 
-    $$
-        ((P \lor Q) \lor R) \supset (P \lor (Q \lor R)).
-    $$
-\end{exercise}
-
-\begin{exercise}
-    Demuestre que 
-    $$
-        (P \lor (P \land Q)) \supset P \text{ y } P \supset (P \lor (P \land Q)).
-    $$
-\end{exercise}
-
-\begin{exercise}
-    Demuestre que
-    $$
-        ((A \lor B) \supset C) \supset ((A \supset C) \land (B \supset C))
-    $$
-\end{exercise}
-
-\begin{remark}
-    Observe que la prueba anterior y el primer ejemplo de esta sección testifican que el diagrama de 
-    la observación 
-    \ref{remark:prop_univ_coprod1} está bien hecho, en el sentido de que en efecto
-    muestra una propiedad de $\lor$.
-\end{remark}
-
-\begin{exercise}
-    Demuestre que
-
-    $$
-        ((A \lor B) \land (A \lor Q)) \supset (A \lor (B \land Q))
-    $$
-\end{exercise}
 
 \subsubsection{Ejemplos con $\neg$}
 
@@ -2199,13 +1909,6 @@ lea las pruebas hasta que sienta que puede avanzar en la demostración por cuent
 
 \end{example}
 
-\begin{exercise}\label{exercise:and-y-neg-implicacion}
-    Demuestre que
-    $$
-        \neg (A \land \neg B) \supset (A \supset B)
-    $$
-\end{exercise}
-
 \begin{example}
     Demuestre que
     $$
@@ -2377,40 +2080,6 @@ lea las pruebas hasta que sienta que puede avanzar en la demostración por cuent
 A continuación podrá encontrar algunos juegos que le ayudarán a entender mejor
 cómo trabajar con la negación.
 
-\begin{exercise}
-    Demuestre que 
-    $$((\neg A) \lor B) \supset (A \supset B)$$
-\end{exercise}
-
-\begin{exercise}
-    Demuestre que 
-    $$
-        \neg A \supset (B \lor \neg A)
-    $$
-\end{exercise}
-
-\begin{exercise}
-    Demuestre que
-    $$
-        \neg ((A \supset \neg A) \land (\neg A \supset A))
-    $$
-\end{exercise}
-
-\begin{exercise}
-    Demuestre que
-    $$
-        \neg (\neg A \land \neg \neg A)
-    $$
-
-    A esta proposición se le conoce como la \textit{ley del tercer excluido para la negación}.
-\end{exercise}
-
-\begin{exercise}
-    $$
-        \neg(A \lor B) \supset \neg A
-    $$
-\end{exercise}
-
 \subsubsection{Ejemplos con $\bot$ y $\top$}
 
 Después de haber trabajado con la negación, trabajar con $\bot$ es más familiar.
@@ -2499,63 +2168,6 @@ escribir una prueba en prosa dada un árbol de derivación.
         \neg \top \supset \bot
     $$
 \end{example}
-
-\begin{exercise}
-    Demuestre que
-
-    $$
-        \neg \neg \bot \supset \bot    
-    $$
-\end{exercise}
-
-\begin{exercise}\label{example:negneg-top}
-    Demuestre que
-
-    $$
-        \neg \neg \top \supset \top
-    $$
-\end{exercise}
-
-\begin{exercise}
-    Si usted intenta demostrar
-    $$
-        \neg \neg A \supset A
-    $$
-
-    encontrará que no es posible. Observe que esta proposición es un caso 
-    más general del ejemplo \ref{example:negneg-top}. 
-    ¿Por qué cree que no es posible demostrar esta proposición a diferencia del
-    ejemplo antes mencionado?
-
-\end{exercise}
-
-\begin{exercise}
-    Si usted intenta demostrar
-    $$
-        \neg A \lor A
-    $$
-
-    encontrará que no es posible. ¿Por qué cree que no es posible?
-    Si suponemos válida la proposición $\neg \neg A \supset A$, y
-    disponemos de todas las proposiciones que hemos probado en esta
-    sección, ¿puede demostrar la proposición?
-\end{exercise}
-
-\begin{example}
-    Demuestre que
-    $$
-        \neg (A \supset \bot) \supset A
-    $$
-\end{example}
-
-\begin{exercise}
-    Demuestre que
-
-    $$
-        \bot \supset \neg(A \lor \neg A)
-    $$
-
-\end{exercise}
 
 \subsubsection{Ejemplos con $\forall$}
 
@@ -2720,14 +2332,6 @@ escribir una prueba en prosa dada un árbol de derivación.
 
 \todo{Ver cual de las 3 anteriores no se pueden probar}
 
-\begin{exercise}
-    Demuestre que
-
-    $$
-        ((\forall x A (x)) \land (\forall x B (x))) \supset (\forall x A(x) \land B(x))
-    $$
-\end{exercise}
-
 \subsubsection{Ejemplos con $\exists$}
 
 \begin{example}
@@ -2770,24 +2374,33 @@ Esta regla adicional codifica un principio de prueba por contradicción: Si de s
 
 En el razonamiento anterior, es importante hacer énfasis en que su potencial validez depende fuertemente de suponer que un enunciado es o no es; como habíamos comentado antes, esta suposición es lo que distingue a la lógica intuicionista de la lógica clásica.
 
-\section{Parte 2: Funciones, recursión e inducción}
-\todo{TODO Para prox martes tener al menos la mitad de la primera subseccion}
-\todo{TODO y tener las subsecciones mejor definidas}
-\subsection{La esencia de las funciones}
+\section{Parte 2: Formalización de matemáticas en Agda}
 
-\subsection{Funciones y cómputo}
+\subsection{Introducción}
 
-%\subsection{Recursión}
+\subsection{Teoría de tipos dependientes}
+    \subsubsection{Universos de tipos}
+    \subsubsection{Tipos primitivos}
+    \subsubsection{}
 
-%Para las siguientes dos secciones, juntarlas (calculo lambda simplemente tipado)
+\subsection{Tipos inductivos}
 
-\subsection{Un primer acercamiento a los Tipos}
+\subsection{Tipos de identidad}
 
+\subsubsection{Aritmética modular}
 
-\subsection{Funciones y Tipos}
+\subsubsection{Equivalencia}
+    \subsubsection{Equivalencias entre tipos}
+\subsection{El teorema fundamental de los tipos de identidad}
+\subsection{Proposiciones, conjuntos y niveles superiores de truncamiento}
+\subsection{Extensionalidad de funciones}
+\subsection{Truncamientos proposicionales}
+\subsubsection{Lógica en teoría de tipos}
+\subsection{Factorización de imágenes}
+\subsection{Tipos finitos}
+\subsection{El axioma de univalencia}
+\subsection{Cocientes de conjuntos}
 
-\section{Parte 3: Introducción a la teoría de tipos dependientes de Per-Martin Löf}
-% Dar una embarrada de tipos inductivos
 
 \begin{itemize}
     \item Parte I: Un poco de lógica
