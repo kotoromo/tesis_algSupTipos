@@ -1,0 +1,18 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (1, 2) {$\Delta_2$};
+		\node [style=none] (2) at (0.75, 1.25) {$\vdots$};
+		\node [style=none] (3) at (0.75, 0.25) {$\vdots$};
+		\node [style=none] (5) at (0.75, -0.75) {$A\supset B$};
+		\node [style=none] (6) at (-2, 2) {$\Delta_1$};
+		\node [style=none] (7) at (-2.25, 1.25) {$\vdots$};
+		\node [style=none] (8) at (-2.25, 0.25) {$\vdots$};
+		\node [style=none] (9) at (-2.25, -0.75) {$A$};
+		\node [style=none] (10) at (-2.75, -1.25) {};
+		\node [style=none] (11) at (2, -1.25) {};
+		\node [style=none] (12) at (-0.5, -1.75) {$B$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (10.center) to (11.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

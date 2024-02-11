@@ -1,0 +1,2880 @@
+\documentclass{article}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage[spanish,es-noshorthands, es-lcroman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{calrsfs}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tikz-cd}
+\usepackage{todonotes}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage{pict2e}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{cite}
+\usepackage[skins]{tcolorbox}
+\usepackage{bussproofs}
+\usepackage{bussproofs-extra}
+\usepackage{quiver}
+\graphicspath{ {./img/} }
+
+\newtcolorbox{sfwt}[2][]{%
+  enhanced,colback=white,colframe=black,coltitle=black,
+  sharp corners,boxrule=0.4pt,
+  fonttitle=\itshape,
+  attach boxed title to top left={yshift=-0.3\baselineskip-0.4pt,xshift=2mm},
+  boxed title style={tile,size=minimal,left=0.5mm,right=0.5mm,
+    colback=white,before upper=\strut},
+  title=#2,#1
+}
+
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\cod}{cod}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\im}{ran}
+\DeclareMathOperator{\cam}{cam}
+\DeclareMathOperator{\sop}{Sop}
+\DeclareMathOperator{\inr }{inr }
+\DeclareMathOperator{\inl}{inl}
+\DeclareMathOperator{\ind}{ind}
+
+\graphicspath{ {./img/} }
+
+
+\begin{document}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definición}[section]
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{proposition}{Proposición}[section]
+\newtheorem{corollary}{Corolario}[theorem]
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{remark}{Observación}
+\newtheorem*{notation}{Notación}
+\newtheorem{example}{Ejemplo}[section]
+\newtheorem{exercise}{Juego}[section]
+\newtheorem{axiom}{Axioma}
+
+%%%%%%% DEFINITIONS %%%%%%%%%
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\seq}[1]{\{#1\}_{n\in\bb{N}}}
+\newcommand{\picopar}[1]{\langle #1 \rangle}
+\newcommand{\card}[1]{\vert #1 \vert}
+\newcommand{\RestrictTo}[1]{\restriction_{#1}}
+\newcommand{\norm}[1]{\left\lVert{#1}\right\rVert}
+
+
+\title{Álgebra Superior: Una perspectiva típica}
+\author{Nicky García Fierros}
+
+\maketitle
+\tableofcontents
+
+\section{Introducción}
+\subsection{¿Teoría de tipos? ¿Y la teoría de conjuntos?}
+\section{Parte I: Un poco de lógica}
+\section{Introducción}
+\subsection{Lógica como herramienta de razonamiento}
+
+Seguramente el o la lectora ya habrá escuchado sobre cómo las matemáticas son "correctas" o inclusive se ha usado
+un adjetivo más fuerte como "verdaderas" y quizás también el o la lectora habrá escuchado que todo problema en matemáticas tiene 
+solución. Estas últimas afirmaciones son opiniones muy controversiales en tanto que existen resultados que ponen en duda su 
+veracidad. 
+
+En teoría de conjuntos existen resultados y problemas que rompen lo que llamaríamos sentido común: uno de ellos 
+es el famoso teorema de Banach-Tarski que, dicho en términos coloquiales, te permite duplicar una esfera a partir de otra; \todo{Incluir un dibujo de la paradoja de Banach-Tarski}
+otro problema, que es un directo contraejemplo a las afirmaciones hechas al principio del párrafo, es la hipótesis del continuo.
+
+La hipótesis del continuo afirma que no existe un conjunto cuya cardinalidad está estrictamente entre los números enteros y 
+los números reales (para fines del ejemplo basta pensar en cardinalidad como otra palabra para referirse a tamaño o cantidad 
+de elementos). Está demostrado que esta última afirmación es independiente de los axiomas estándar de la teoría de conjuntos, y 
+resulta que por motivos históricos muy razonables toda la matemática está fundamentada sobre esta axiomática estándar, 
+por lo que en resumen, ¡existe un problema en matemáticas que no es resoluble!. 
+
+Más que asustar al lector o a la lectora sobre su camino en matemáticas, el autor espera que estos ejemplos sirvan de motivación para 
+seguir estudiando matemáticas y también como motivación para que el o la lectora se anime a explorar a las teorías donde surgen 
+tan interesantes resultados.
+
+Una vez dicho lo anterior, es claro también que debe de existir cierto grado de verdad en las matemáticas. Después de todo,
+existen las computadoras, las cuales son máquinas que hacen operaciones matemáticas con el propósito de resolver problemas
+muy reales (o ver videos de gatos en internet); existen los cohetes espaciales los cuales pueden viajar al espacio gracias
+a los procesos matemáticos detrás de su diseño e implementación, y muchas otras cosas cuyo funcionamiento depende fuertemente
+de las matemáticas.
+
+La forma en que razonamos en matemáticas está muy cercana a la forma en que se razonan en otras disciplinas como la medicina,
+el derecho, la ingeniería, la física, la economía, la sociología, la filosofía y demás; pues hay una presuposición de una 
+aceptación de los principios básicos de la lógica, es decir, hay un cierto estándar de lo que es \textit{racional}. 
+En las disciplinas mencionadas anteriormente se espera que aquellos quienes la practican puedan diferenciar entre un argumento 
+racional con base en principios básicos o evidencia, y especulación y afirmaciones que de ninguna forma se siguen de la evidencia 
+o los principios básicos.
+
+Toda forma de investigación y razonamiento adecuado depende de la lógica tanto para descubrir cosas nuevas como para percatarse
+de que se ha cometido un error y es necesario corregir algo. 
+
+Por ejemplo, supóngase que se tiene un amigo en quien se confía mucho y suponemos que de contarle algún secreto éste no se 
+lo revelaría a nadie. En virtud de lo anterior, decidimos confiarle un secreto muy vergonzoso: el día de ayer mojamos la cama 
+soñando que estábamos jugando en la orilla del mar. Sin embargo, a lo largo del día descubrimos que ¡dicho amigo ha contado el 
+secreto a varios de nuestros conocidos y conocidas!. Obviamente estamos que morimos de vergüenza y, aprendiendo nuestra lección 
+notamos que hemos cometido un error en nuestra creencia: es falso que podemos confiar secretos en nuestro (ex)amigo. 
+
+El autor cree
+que con el ejemplo anterior se hace evidente que la lógica no solo tiene aplicaciones centrales en las ciencias, sociales o no,
+sino que también en la vida diaria.
+
+Surge de forma muy natural el cuestionarse ¿cómo es que exactamente una afirmación se sigue correctamente de otra?, o su 
+contrapuesta: ¿exactamente cuándo ocurre que una proposición no se sigue de otra?; otra muy natural es ¿cuáles y por qué son 
+las leyes de la lógica?. Estas preguntas son las que uno se hace cuando estudia lógica.
+
+Curiosamente, al estudiar lógica uno hace uso de la misma lógica para estudiarla, pues se requiere tener una forma de razonar
+que nos permita llegar a cosas que consideramos verdaderas. Regresando a matemáticas, la lógica ha tenido un papel tan
+importante que se estudia a la lógica mediante técnicas propias de la matemática haciendo de la misma lógica una rama más de las
+matemáticas coloquialmente denominada como \textit{lógica matemática}, la cual es una sub-rama de otra área de las matemáticas
+denominada \textit{fundamentos de las matemáticas}, de la cual forman parte la teoría de conjuntos y la teoría homotópica de tipos. 
+
+En las matemáticas estándar, aquella que se suele enseñar en las facultades, se hace uso de un "sabor" muy particular de la 
+lógica, denominada lógica de primer orden y de la cual hablaremos a lo largo de esta sección, desarrollándola poco a poco, 
+pero no necesariamente de forma minuciosa como se haría en un curso de lógica matemática. El motivo detrás de desarrollarla paso por 
+paso es que el entendimiento de la lógica es primordial para estudiar matemáticas y para hacer matemáticas.
+
+\section{Deducción natural}\label{sec:deduccion_natural}
+\todo{La idea es introducir a partir de esta parte un poco de Agda}
+\todo{Ver la forma de usar Agda para demostrar cosas usando lógica de predicados}
+\todo{Considerar mover la parte de calculo lambda no tipado antes de esta sección}
+\todo{Para motivar mejor las abstracciones sobre hipótesis y como las pensamos como funciones.}
+\subsection{Introducción}
+
+Como se mencionó en secciones anteriores, trabajar directamente con un sistema axiomático tipo Hilbert es complicado y poco intuitivo. Como alternativa al sistema axiomático presentado en las secciones anteriores está el sistema de deducción natural planteado originalmente por Gentzen, matemático alemán que trabajó en la Universidad de Göttingen en el siglo XIX y quien contribuyó significativamente a la lógica matemática. A diferencia del sistema axiomático de Hilbert, en deducción natural se asumen más reglas de inferencia, que capturan de forma más cercana la manera en que uno razona como matemático para obtener conclusiones. Como quizás el nombre lo indica, el sistema de deducción natural se basa fuertemente en el teorema de la deducción: para probar algo de la forma $A \supset B$ basta suponer $A$ verdadera y derivar $B$. 
+
+Además de que el sistema de deducción natural nos brindará herramientas y estategias más intuitivas para demostrar enunciados, este constituye un lenguaje para hablar sobre tipos, los cuales tomarán protagonismo en las siguientes partes de este libro.
+
+\subsection{Reglas y deducciones}
+
+Primero, acordemos de forma precisa lo que entendemos por una deducción en este nuevo sistema.
+\begin{definition}
+    Una deducción de una fórmula $A$ es un árbol de fórmulas tal que en toda fórmula que no es un supuesto es la conclusión de una aplicación de una de las reglas de inferencia.
+    Los supuestos en la deducción que no son descargados por cualquier regla en ella son \emph{supuestos abiertos} de la deducción.
+    Si cada deducción es descargada, esto es que no haya deducciones abiertas del todo, entonces diremos que la deducción es una \emph{demostración} de $A$, y que $A$ es un \emph{teorema}. \cite{PaoloMancosu56}.
+\end{definition}
+
+Para aclarar un poco sobre a qué nos referimos por descarga,
+recuerde que cuando \textit{suponemos cierto} algún supuesto,
+nuestras conclusiones \textbf{siempre deben ser ciertas sujetas a que se
+satisfacen dichos supuestos}. Al \textit{descargar} los supuestos estamos
+haciendo nota de que hemos utilizado un supuesto y nuestra conclusión
+depende de dicho supuesto. Esto se verá claro en los ejemplos de la sección 
+\ref{subsubsec: examples_impl}.
+Cada paso en una deducción entonces debe ser justificada por una regla de inferencia.
+
+\subsubsection{Reglas de $\supset$}
+
+Como ya hemos observado antes, por ejemplo cuando demostramos la proposición \ref{prop:primer_prueba}, un patrón común en la demostración de un enunciado de la forma $A \supset B$ es suponer $A$ y derivar $B$. En el sistema de deducción natural, este patrón se codifica mediante la siguiente regla:
+
+\begin{definition}[Regla de introducción del operador condicional $\supset$]
+    \begin{prooftree}
+        \AxiomC{$h_1 : A$}
+        \shortDeduce
+        \DeduceC{$h_k : B$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$f : A \supset B$}
+    \end{prooftree}
+\end{definition}
+
+Esta regla se llama \textit{regla de introducción} porque nos dice cómo podemos \textit{introducir} o formar una expresión que involucra el símbolo en cuestión, en este caso el símbolo $\supset$. Observe que esta regla codifica el teorema de deducción natural.
+
+El hecho de que las letras mayúsculas estén acompañadas de
+letras minúsculas a su izquierda y estas están separadas por dos puntos ($":"$) significa que son hipótesis o derivaciones; por ejemplo, $f : A \supset B$
+se puede pensar como un testigo de la veracidad de $A \supset B$, y de forma análoga
+$h_1 : A, \dots, h_k : B$ se pueden pensar como evidencia de $A, \dots, B$.
+
+Veremos más adelante que esta notación es muy útil
+para referirnos a nuestras hipótesis en el árbol de derivación y descargarlas cuando
+sea necesario. 
+
+Como último comentario sobre la regla de introducción de $\supset$, note usted que dado $P$
+podemos concluir $P$ de la siguiente manera:
+
+\begin{prooftree}
+    \AxiomC{$h_1 : P$}
+    \RightLabel{$\supset_I$}
+    \UnaryInfC{$\lambda h_1\ .\ h_1 : P \supset P$}
+\end{prooftree}
+
+\todo{Hacer mención de que se pueden repetir hipótesis sin problema}
+En otras palabras, cualquier proposición $P$ se implica a si misma.
+
+Por otro lado, es frecuente que si tenemos una expresión de la forma $A \supset B$, querramos obtener $B$ por separado. Para esto, tenemos la siguiente regla \textit{de eliminación} para el conectivo $\supset$:
+
+
+\todo{Hacer la nota sobre la notación $\equiv$}
+\begin{definition}[Regla de eliminación del operador condicional $\supset$]
+    \hfill\newline
+    \begin{prooftree}
+        \AxiomC{$f : A \supset B$}
+                                \AxiomC{$h : A$}
+        \RightLabel{$\supset_E$}
+        \BinaryInfC{$f\ h : B$}
+    \end{prooftree}
+\end{definition}
+
+En general, una regla de eliminación nos ayuda a \textit{eliminar} o descomponer una expresión complicada en sus partes. Observe que la regla de eliminación es la misma que modus ponens (\ref{modus_ponens}).
+
+La notación $f\ h$ en principio es pura notación: bien uno puede escribir $b : B$ o $pedro : B$, sin embargo resulta muy útil escribirla
+$$
+    f\ h : B
+$$
+
+para leerse como
+
+\begin{center}
+    \fbox{\parbox{0.80\linewidth}{
+        \begin{center}
+            \textit{Aplicamos la hipótesis $h$ a $f$.}
+            
+        \end{center}
+    }}
+\end{center}
+
+\subsubsection{Reglas de $\wedge$}
+
+Así como tenemos una regla de introducción y eliminación para el operador condicional, también tenemos una regla de introducción y eliminación para el operador $\wedge$:
+
+\begin{definition}[Regla de introducción para el operador $\wedge$]
+    \hfill\newline
+    \begin{prooftree}
+        \AxiomC{$a : A$}
+        \AxiomC{$b : B$}
+        \RightLabel{$\wedge_I$}
+        \BinaryInfC{$p : A \wedge B$}
+    \end{prooftree}
+\end{definition}
+
+Cuando realizamos nuestro análisis semántico sobre $\wedge$, hicimos notar que si $A \wedge B$ es verdadero esto es porque $A$ y $B$ son ambos verdaderos. De esta forma, tiene sentido que de $A \wedge B$ se puedan derivar $A$ y $B$ por separado.
+
+\begin{definition}[Reglas de eliminación para el operador $\wedge$]
+    \hfill\newline
+    \begin{center}
+        \AxiomC{$p : A \wedge B$}
+        \RightLabel{$\wedge_E$}
+        \UnaryInfC{$\pi_1\ p: A$}
+        \DisplayProof
+        \hskip 1.5cm
+        \AxiomC{$p : A \wedge B$}
+        \RightLabel{$\wedge_E$}
+        \UnaryInfC{$\pi_2\ p : B$}
+        \DisplayProof
+    \end{center}
+\end{definition}
+
+A diferencia de el operador $\supset$, en el caso de $\wedge$ tenemos dos reglas de eliminación. Observe que una regla nos permite derivar la proposición a la izquierda
+de la conjunción (o la primera proposición), mientras que la otra regla de
+eliminación nos permite obtener la segunda proposición.
+
+Usualmente, $\pi_1$ y $\pi_2$ se entienden como la primera y segunda
+proyección de una evidencia de una conjunción, de modo que se pueden leer los símbolos
+$$
+    \pi_1\ p : A \wedge B \quad \quad \pi_2\ p : A \wedge B
+$$
+como la primera y segunda proyección de $p : A \wedge B$. De nuevo, no es
+estrictamente necesario escribir los símbolos $\pi_1\ p$ o $\pi_2\ p$. La
+ventaja de escribir estos símbolos es que son relativamente estándar en
+la literatura matemática, y que además recuerdan cómo fue la deducción
+de la proposición. Esto se verá mejor en el siguiente ejemplo:
+
+\begin{remark}
+    Nótese que la regla de introducción de $\wedge$ nos permite deducir
+    \begin{prooftree}
+        \AxiomC{$p : A \wedge B$}
+        \AxiomC{$c : C$}
+        \RightLabel{$\wedge_I$}
+        \BinaryInfC{$p_2 : (A \wedge B) \wedge C$}
+    \end{prooftree}
+
+    Podemos derivar $B$ de $p_2 : (A \wedge B) \wedge C$
+    como a continuación:
+
+    \begin{prooftree}
+        \AxiomC{$p_2 : (A \wedge B) \wedge C$}
+        \RightLabel{$\wedge_E$}
+        \UnaryInfC{$\pi_1\ p_2 : A \wedge B$}
+        \RightLabel{$\wedge_E$}
+        \UnaryInfC{$\pi_2\ (\pi_1\ p_2) : B$}
+    \end{prooftree}
+
+    y leer la notación
+    $$\pi_2\ (\pi_1\ p_2) : B$$
+    como 
+    \begin{center}
+        \fbox{\parbox{0.80\linewidth}{
+            \begin{center}
+                \textit{"la segunda proyección de la primera proyección de $p_2$"}.
+
+            \end{center}
+        }}
+    \end{center}
+    Observe que $\pi_2\ (\pi_1\ p_2)$ sintetiza el árbol de derivación si lo 
+    leemos de derecha a izquierda.
+\end{remark}
+
+\begin{remark} \label{remark:prop_univ_prod1}
+    Observe que de las reglas de introducción y eliminación se puede deducir lo siguiente:
+
+    \begin{prooftree}
+        \AxiomC{$c : C$}
+        \AxiomC{$f : C \supset A$}
+        \AxiomC{$g : C \supset B$}
+        %\RightLabel{$\wedge_{I_2}$}
+        \TrinaryInfC{$h : A \wedge B$}
+    \end{prooftree}
+    En efecto,
+
+    \begin{prooftree}
+        \AxiomC{$c : C$}
+        \AxiomC{$f : C \supset A$}
+        \BinaryInfC{$f\ c : A$}
+
+        \AxiomC{$c : C$}
+        \AxiomC{$g : C \supset B$}
+        \BinaryInfC{$g\ c : B$}
+        
+        \RightLabel{$\wedge_I$}
+        \BinaryInfC{$\picopar{f\ c, g\ c} : A \wedge B$}
+    \end{prooftree}
+
+    En virtud de lo anterior se tiene una forma alternativa
+    de enunciar la regla de introducción de $\wedge$. De esta manera,
+    podemos representar las reglas de introducción y eliminación
+    de $\wedge$ de forma gráfica mediante el siguiente diagrama:
+
+    % https://q.uiver.app/#q=WzAsNCxbMiwyLCJDIl0sWzAsMCwiQSJdLFs0LDAsIkIiXSxbMiwwLCJBIFxcbG9yIEIiXSxbMiwwLCJcXHN1YnNldCIsMV0sWzEsMCwiXFxzdXBzZXQiLDFdLFsxLDMsImlubCIsMV0sWzIsMywiaW5yIiwxXSxbMywwLCJcXHN1cHNldCIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+    \[\begin{tikzcd}
+    	A && {A \land B} && B \\
+    	\\
+    	&& C
+    	\arrow["\supset"{description}, from=3-3, to=1-5]
+    	\arrow["\subset"{description}, from=3-3, to=1-1]
+    	\arrow["\pi_1"{description}, from=1-3, to=1-1]
+    	\arrow["\pi_2"{description}, from=1-3, to=1-5]
+    	\arrow["\supset"{description}, dashed, from=3-3, to=1-3]
+    \end{tikzcd}\]
+
+    La lectura del diagrama anterior es muy directa: 
+    \begin{center}
+        \fbox{\parbox{0.80\linewidth}{
+            \begin{center}
+                \textit{"Si $C$ implica $A$, $C$ implica $B$ y sabemos que $C$ ocurre, entonces \textbf{existe} una forma de implicar $A \wedge B$ desde $C$"}.
+            \end{center}
+        }}
+    \end{center}
+\end{remark}
+
+\begin{exercise}
+    Suponga que no tenemos la regla de introducción $\wedge_I$ y en su lugar sólo 
+    contamos con la regla mencionada en la observación \ref{remark:prop_univ_prod1}.
+    ¿Puede deducir $\wedge_I$? ¿Por qué?
+\end{exercise}
+
+\subsubsection{Reglas de $\vee$}
+
+Recordemos que, de nuestro análisis semántico, para que una expresión de la forma $A \vee B$ sea verdadera, basta que $A$ o $B$ sean verdaderas. Una forma de pensar esta observación es que debe bastar que $A$ o $B$ sean verdaderas para poder formar una expresión de la forma $A \vee B$. 
+\begin{definition}[Regla de introducción para el operador $\vee$]
+    \hfill\newline
+    \begin{center}
+        \AxiomC{$\alpha : A$}
+        \RightLabel{$\vee_I$}
+        \UnaryInfC{$\inl : A \vee B$}
+        \DisplayProof
+        \hskip 1.5cm
+        \AxiomC{$\beta : B$}
+        \RightLabel{$\vee_I$}
+        \UnaryInfC{$\inr  : A \vee B$}
+        \DisplayProof
+    \end{center}    
+\end{definition}
+
+De nuevo, las etiquetas $\inl$ e $\inr$ son opcionales, aunque
+serán estándar en el resto de este texto, además de que son estándar en mucha 
+literatura. Como quizás se haya dado cuenta, la $l$ en $\inl$ hace referencia a \textit{left} (izquierda en Inglés), y la $r$ en $\inr $ hace referencia a \textit{right} (derecha en Inglés).
+
+Supongamos que de $A$ se sigue $C$ o de $B$ se sigue $C$. Es lógico entonces esperar que independientemente de que ocurra $A$ o $B$ (énfasis en el "o") se seguirá $C$, pues cualquiera de las dos ocurrencias permiten concluir $C$. De esta forma, es sensato esperar que de $A \vee B$ se pueda concluir $C$, pues $A \vee B$ nos dice que alguno de los dos enunciados que conforman a $A \vee B$ ocurre. Este razonamiento por casos es el que codifica la regla de eliminación de $\vee$.
+
+\begin{definition}[Regla de eliminación de $\vee$]
+    \todo{Preguntarle a la profesora Lourdes si tiene alguna sugerencia
+    para el nombre de este término.}
+    \hfill\newline
+    \begin{prooftree}
+        \AxiomC{$h : A \vee B$}
+        \AxiomC{$f : A \supset C$}
+        \AxiomC{$g : B \supset C$}
+        %\AxiomC{$\alpha  : A$}
+        %\noLine
+        %\shortDeduce
+        %\DeduceC{$s : C$}
+        %\AxiomC{$\beta : B$}
+        %\noLine
+        %\shortDeduce
+        %\DeduceC{$t : C$}
+        \RightLabel{$\vee_E$}
+        \TrinaryInfC{$ind(f, g)\ h : C$}
+        \end{prooftree} 
+\end{definition}
+
+\begin{remark}
+    Observe que lo anterior es equivalente al siguiente árbol de derivación:
+    
+    \begin{prooftree}
+        \AxiomC{$h : A \vee B$}
+        \AxiomC{$\alpha  : A$}
+        \noLine
+        \shortDeduce
+        \DeduceC{$caso_\alpha : C$}
+        \AxiomC{$\beta : B$}
+        \noLine
+        \shortDeduce
+        \DeduceC{$caso_\beta : C$}
+        \RightLabel{$\vee_E$}
+        \TrinaryInfC{$caso_{\alpha \vee \beta}: C$}
+    \end{prooftree}
+    
+    En efecto, recuerde que por la regla de introducción de $\supset$ se tiene que
+    \begin{center}
+        \bottomAlignProof
+        \AxiomC{$\alpha : A$}
+        \shortDeduce
+        \DeduceC{$caso_\alpha : C$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$f : A \supset C$}
+        \DisplayProof
+        \hskip 1.5cm
+        \bottomAlignProof
+        \AxiomC{$\beta : B$}
+        \shortDeduce
+        \DeduceC{$caso_\beta : C$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$g : B \supset C$}
+        \DisplayProof
+    \end{center}
+    
+\end{remark}
+
+La regla de eliminación de $\vee$ codfica un proceso de análisis de casos:
+si tenemos prueba de que de $A$ se sigue $C$, y de que $B$ implica $C$, entonces
+indepenientemente de si ocurre que $h : A \vee B$ ha sido formado a
+partir de una prueba $\alpha : A$ o una prueba $\beta : B$, sabemos que
+\textbf{en cualquier caso} podemos concluir una prueba de $C$. 
+Esto último significa que tenemos
+en cualquier caso una prueba de $C$ a partir de $h$ sin importar si tomamos
+el camino $f : A \supset C$ o $g : B \supset C$ para generar dicha prueba.
+
+\begin{remark}\label{remark:prop_univ_coprod1}
+    Otra forma de entender a $\wedge$ es mediante el siguiente diagrama:
+
+    % https://q.uiver.app/#q=WzAsNCxbMiwyLCJDIl0sWzAsMCwiQSJdLFs0LDAsIkIiXSxbMiwwLCJBIFxcbG9yIEIiXSxbMiwwLCJcXHN1YnNldCIsMV0sWzEsMCwiXFxzdXBzZXQiLDFdLFsxLDMsImlubCIsMV0sWzIsMywiaW5yIiwxXSxbMywwLCJcXHN1cHNldCIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+    \[\begin{tikzcd}
+        A && {A \lor B} && B \\
+        \\
+        && C
+        \arrow["\subset"{description}, from=1-5, to=3-3]
+        \arrow["\supset"{description}, from=1-1, to=3-3]
+        \arrow["\inl"{description}, from=1-1, to=1-3]
+        \arrow["\inr "{description}, from=1-5, to=1-3]
+        \arrow["\supset"{description}, dashed, from=1-3, to=3-3]
+    \end{tikzcd}\]
+
+    El cual se puede leer de la siguiente forma:
+
+    \begin{center}
+        \fbox{\parbox{0.80\linewidth}{
+            \begin{center}
+                \textit{"Si $A$ implica $C$, y $B$ implica $C$, entonces \textbf{existe} una forma de implicar $C$ desde 
+                $A \vee B$."}.
+            \end{center}
+        }}
+    \end{center}
+    
+\end{remark}
+
+\begin{exercise}
+    ¿Qué diferencias nota entre el diagrama de $\wedge$ estudiado en la observación 
+    \ref{remark:prop_univ_prod1} y el diagrama de $\vee$ estudiado en la observación
+    \ref{remark:prop_univ_coprod1}? ¿Qué puede concluir de las diferencias
+    observadas?
+\end{exercise}
+
+\subsubsection{Falsedad, negación, y verdad}
+
+Así como un sistema axiomático tipo Hilbert nos permite hablar sobre negación y falsedad, también podemos hablar sobre negación y falsedad en deducción natural.
+En nuestro análisis semántico de la implicación observamos que $\bot \supset A$ siempre es vedadero para cualquier $A$. Adoptamos este mismo principio, llamado \textbf{principio de explosión} (tradicionalmente conocido como \textit{ex falso quodlibet}) en nuestras reglas de inferencia en deducción natural, de modo que
+
+\begin{prooftree}
+    \AxiomC{$\bot$}
+    \RightLabel{$\bot$}
+    \UnaryInfC{$x : A$}
+\end{prooftree}
+
+¿Cómo podemos introducir una fórmula de la forma $\neg A$? Si de suponer $A$ cierta llegamos a una contradicción ($\bot$), entonces es porque cometimos un error al suponer $A$ cierta, es decir, no ocurre $A$ ($\neg A$). En virtud de lo anterior, suena sensato definir $\neg A$ como $A \supset \bot$. Obsérvese que de $\supset_I$ y $\supset_E$ se tienen las siguientes deducciones:
+\begin{center}
+    \bottomAlignProof
+    \AxiomC{$\alpha : A$}
+    \shortDeduce
+    \DeduceC{$\bot$}
+    \RightLabel{$\supset_I$}
+    \UnaryInfC{$s : A \supset \bot$}
+    \DisplayProof
+    \hskip 1.5cm
+    \bottomAlignProof
+    \AxiomC{$f: A \supset \bot$}
+    \AxiomC{$x : A$}
+    \RightLabel{$\supset_E$}
+    \BinaryInfC{$\bot$}
+    \DisplayProof
+\end{center}
+
+pero por definición $\neg A$ es $A \supset \bot$, por lo que tenemos de forma "gratuita" las reglas de introducción y eliminación de $\neg$.
+
+\begin{center}
+    \bottomAlignProof
+    \AxiomC{$\alpha : A$}
+    \shortDeduce
+    \DeduceC{$\bot$}
+    \RightLabel{$\neg_I$}
+    \UnaryInfC{$s: \neg A$}
+    \DisplayProof
+    \hskip 1.5cm
+    \bottomAlignProof
+    \AxiomC{$f :\neg A$}
+    \AxiomC{$x : A$}
+    \RightLabel{$\neg_E$}
+    \BinaryInfC{$\bot$}
+    \DisplayProof
+\end{center}
+
+\todo{Hacer una nota de que esta forma de definir a la negación no implica la forma 'clásica' de tratarla}
+\todo{Presentar un ejemplo que demuestre esto y dirigir al lector a la literatura que profundiza}
+
+\begin{remark}
+    Observe que $\bot$ no viene acompañado de alguna letra a la izquierda. Esto es porque
+    no tiene sentido que exista evidencia de algo falso en nuestro sistema.
+\end{remark}
+
+\begin{remark}
+    Así como $\supset_I$ descarga supuestos, también $\neg_I$.
+\end{remark}
+
+Ya que hemos hablado sobre negación y falsedad, consideremos ahora lo que entenderemos por 
+"verdad". De nuestro análisis semántico de la lógica, notamos que 
+$$
+    1 \lor x
+$$
+
+siempre es verdadero para cualquier valor de verdad de $x$. En virtud de que nos gustaría conservar
+esta idea, introducimos un nuevo objeto que la codifique:
+
+\begin{prooftree}
+    \AxiomC{}
+    \RightLabel{$\top_I$}
+    \UnaryInfC{$\star : \top$}
+\end{prooftree}
+
+Si uno ve fijamente la regla anterior y deja pasar el tiempo suficiente, se dará cuenta
+que la regla anterior nos dice que, sin importar tus hipótesis siempre puedes concluir
+que hay evidencia para la verdad.
+
+¿Cuál podría ser entonces su regla de eliminación? Para esto, en virtud de que
+nuestro sistema está hecho de tal modo que sólo podemos deducir cosas verdaderas, entonces
+debe ser que de la verdad se deduce algo verdadero.
+
+\todo{Agregar los simbolos a la izq de \:}
+\begin{prooftree}
+    \AxiomC{$\top \supset A$}
+    \RightLabel{$\top_E$}
+    \UnaryInfC{$A$}
+\end{prooftree}
+
+Otra cosa que podemos rescatar de nuestra regla de introducción para $\top$, es que en virtud
+de que bajo cualquier contexto se sigue, en particular para cualquier proposición
+$P$ se tendrá una implicación $\top$.
+
+\begin{prooftree}
+    \AxiomC{$h_1 : P$}
+    \RightLabel{$\top_I$}
+    \UnaryInfC{$\star : \top$}
+    \RightLabel{$\supset_I$}
+    \UnaryInfC{$\lambda h_1\ .\ \star : P \supset \top$}
+\end{prooftree}
+
+De momento no hablaremos mucho sobre $\top$, pero es importante tenerlo en cuenta pues
+subsecuentemente jugará un papel más relevante en nuestro estudio. Por lo mientras, 
+veamos que en efecto
+$$
+        (\top \lor A) \supset \top
+$$
+
+\begin{proof}
+    Supongamos $\top \lor A$ y veamos que podemos obtener $\top$ a partir de este supuesto.
+    Por análisis de casos, si $\top$ entonces como $\top$ se obtiene desde cualquier
+    contexto, tendremos $\top$.
+
+    \begin{prooftree}
+        \AxiomC{$h_2 : \top$}
+        \RightLabel{$\top_I$}
+        \UnaryInfC{$\star : \top$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda h_2\ .\ \star : \top \supset \top$}
+    \end{prooftree}
+
+    Ahora, si suponemos $A$, entonces como de cualquier contexto podemos concluir $\top$
+    tendremos que al haber supuesto $A$ concluimos $\top$ como queríamos.
+
+    \begin{prooftree}
+        \AxiomC{$h_3 : A$}
+        \RightLabel{$\top_I$}
+        \UnaryInfC{$\star : \top$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda h_3\ .\ \star : A \supset \top$}
+    \end{prooftree}
+
+    Así, como en cualquier caso tenemos $\top$, por la regla de eliminación de $\lor$ tendremos
+    que de $\top \lor A$ se sigue $\top$. 
+    
+    \begin{prooftree}
+        \AxiomC{$h_1 : \top \lor A$}
+
+        \AxiomC{$h_2 : \top$}
+        \RightLabel{$\top_I$}
+        \UnaryInfC{$\star : \top$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda h_2\ .\ \star : \top \supset \top$}
+
+        \AxiomC{$h_3 : A$}
+        \RightLabel{$\top_I$}
+        \UnaryInfC{$\star : \top$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda h_3\ .\ \star : A \supset \top$}
+
+        \TrinaryInfC{$\star : \top$}
+    \end{prooftree}
+    
+    De nuevo, aplicando la regla de introducción de la implicación, podemos obtener lo que queríamos
+    demostrar:
+
+    $$
+        (\top \lor A) \supset \top
+    $$
+
+    Finalmente, el árbol de derivación resultante es el siguiente:
+
+    \begin{prooftree}
+        \AxiomC{$h_1 : \top \lor A$}
+
+        \AxiomC{$h_2 : \top$}
+        \RightLabel{$\top_I$}
+        \UnaryInfC{$\star : \top$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda h_2\ .\ \star : \top \supset \top$}
+
+        \AxiomC{$h_3 : A$}
+        \RightLabel{$\top_I$}
+        \UnaryInfC{$\star : \top$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda h_3\ .\ \star : A \supset \top$}
+
+        \TrinaryInfC{$\star : \top$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda h_1\ .\ \ind_\lor (\lambda h_2\ .\ \star\ ,\ \lambda h_3\ .\ \star )\ h_1 : (\top \lor A) \supset \top$}
+    \end{prooftree}
+\end{proof}
+
+No se preocupe si no entendió la prueba tras la primera lectura. Nos encargaremos de hacer muchos
+ejemplos en toda la sección \ref{subsection:deduccion-nat-accion}. Seguramente que, tras
+leer y trabajar dicha sección, si vuelve a leer esta demostración le entenderá mucho mejor. \todo{Borrar esto}
+
+%El sistema lógico que estamos estudiando no tiene una sola forma de ser entendido, como 
+%quizás ya tenga una idea usted lector o lectora. Una de estas formas de entender y estudiar a la
+%lógica es desde una perspectiva algebraica que se interlaza intimamente con teorías matemáticas
+%que estudian el problema de "ordenar" en un sentido general (puede usted buscar en Wikipedia
+%\textit{teoría del orden} para darse una mejor idea). Dentro de esta perspectiva se 
+%dota a ciertos operadores $(\land, \lor)$ cierto significado dentro de un orden.
+%El significado es el de ínfimo y supremo respectivamente (estos conceptos se estudian en un curso de 
+%cálculo 1 tradicional en la Facultad de Ciencias).
+%
+%Además, en virtud de la necesidad de codificar el concepto de verdad y falsedad, se agregan
+%dos elementos adicionales a nuestra colección abstracta de elementos que representarán
+%cualquier proposición: un máximo y un mínimo.
+
+\begin{exercise}
+    Considere la regla de eliminación $\lor_E$. De una interpretación para la regla antes mencionada si $C = A$ y $B = \bot$ y si $C = B$ y $A = \bot$.
+\end{exercise}
+
+
+\subsubsection{Reglas de $\forall$ y $\exists$}
+
+Cuando estudiamos los cuantificadores en la sección \ref{subsec:predicados} hicimos notar que el axioma
+
+\begin{itemize}
+    \item[QL1.] $\forall x A(x) \supset A(x)^{[x\to t]}$ \cite{PaoloMancosu56}
+\end{itemize}
+
+y la regla de inferencia
+
+\begin{itemize}
+    \item[QR1.] Si $A \supset B(x)$ es derivable, $x$ no forma parte de $A$ como expresión, y $z$ es una variable que no forma parte de $B(x)$ como expresión, entonces $A \supset \forall z B(z)$ es derivable. \cite{PaoloMancosu56}
+
+\end{itemize}
+
+codificaban una forma natural e intuitiva de cómo razonamos ante el cuantificador $\forall$.
+En virtud de esto, resulta entonces natural que las reglas para el cuantificador universal ($\forall$) sean las siguientes:
+
+\begin{definition}[Regla de introducción de $\forall$]
+    \hfill \newline
+    Daremos por entendido que $x$ es una variable arbitraria. La regla de introducción
+    del cuantificador $\forall$ es:
+    \todo{Pensar si dejar la definición como la tenía originalmente.}
+    \hfill
+    \begin{prooftree}
+        %\AxiomC{$A(x)^{[x \rightarrow y]}$}
+        \AxiomC{$a(x) : A(x)$}
+        \RightLabel{$\forall_I$}
+        \UnaryInfC{$\lambda x.a(x) : \forall x A(x)$}    
+    \end{prooftree}
+\end{definition}
+
+Recuerde que los símbolos a la izquierda de las fórmulas simplemente son
+notación, aunque ciertamente la elección de los símbolos no es arbitraria.
+Se recomienda seguirla pues esta notación será recurrente a lo largo de todo este
+texto.
+
+\begin{definition}[Regla de eliminación de $\forall$]
+    \hfill
+    \begin{prooftree}
+        \AxiomC{$f : \forall x A(x)$}
+        \AxiomC{$f(x)^{[x \rightarrow t]} : A(x)^{[x \rightarrow t]}$}
+        \shortDeduce
+        \DeduceC{$c : C$}
+        \RightLabel{$\forall_E$}
+        \BinaryInfC{$c : C$}
+    \end{prooftree}
+\end{definition}
+
+El supuesto en la regla de introducción de $\forall_I$ lo podemos leer como 
+\begin{sfwt}{(una propuesta de) Interpretación para $\forall_I$}
+    \textit{Si $a(x)$ es una prueba de $A(x)$ con $x$ arbitraria, entonces en general $a$ será una prueba de que $A(x)$ es verdad para toda $x$.}    
+\end{sfwt}
+mientras que una posible interpretación para la regla de eliminación de $\forall$ es 
+
+\begin{sfwt}{(una propuesta de) Interpretación para $\forall_E$}
+    "si $f : \forall x A(x)$ es una prueba de $A(x)$ para $x$ arbitraria, y si al
+    sustituir cualquier instancia de $x$ por un valor concreto $t$ en nuestra prueba
+    de $A(x)$ y en $A(x)$ misma entonces podemos producir una prueba $c : C$ de $C$, entonces para cualquier valor arbitrario que tome $x$ podemos deducir una prueba 
+    $c : C$ de $C$ desde $f(x) : A(x)$".
+\end{sfwt}
+
+Observe que en el caso particular de $C = A(x)^{[x \rightarrow t]}$ la regla de eliminación de $\forall$ se reduce a la regla de inferencia $QR1$.
+
+\begin{prooftree}
+    \AxiomC{$f : \forall x A(x)$}
+    \UnaryInfC{$f(x)^{[x \rightarrow t]} : A(x)^{[x \rightarrow t]}$}
+\end{prooftree}
+
+Para abreviar la notación escribiremos simplemente $f(t)$ para $f(x)^{[x \rightarrow t]}$ y análogamente $A(t)$ para
+$A(x)^{[x \rightarrow t]}$ a menos que exista posibilidad de ambigüedades.
+
+La regla de introducción $\forall_I$ tiene la siguiente restricción:
+\begin{sfwt}{Restricción sobre $\forall_I$}
+    La sustitución de $x$ por $y$ en $A(x)$ debe ser correcta, esto es, al sustituir $x$ por $y$ en $A(x)$ se tiene que $y$ no es libre en cualquier otro supuesto del que dependa $A(x)^{[x \rightarrow y]}$ y tampoco ocurre libre en el consecuente $\forall x A(x)$. \cite{SaraNegriJanVonPlato97} 
+\end{sfwt}
+
+Esta restricción sobre $\forall_I$ garantiza que nuestra idea de "generalización 
+de abstracción para cualquier otro valor arbitrario sobre $A(x)$" se mantenga.
+Por mencionar un ejemplo, al \textbf{sustituir} el símbolo $x$ por $t$ en la expresión
+$$f(x) = x + t,$$ si queremos conservar "el sentido" o "la idea" de "sumar el símbolo 
+$t$ al parámetro", deberíamos escribir $$f(t) = t + s,$$ de modo que $x$ fue sustituido 
+en la expresión original por $t$ y $t$ por $s$ en la expresión original; de esta forma 
+conservando la "intención" o "significado" original de la expresión. Por otro lado, si
+hacemos la sustitución sin este cuidado, llegaremos a $$f(t) = 2t.$$ 
+En muchos contextos dentro de matemáticas queremos conservar el sentido de las expresiones al cambiar
+de símbolos o notaciones; uno muy particular, que es el que nos encontramos estudiando,
+es el de la lógica matemática.
+
+Recordando que no sólo teníamos el axioma $QL1$ y la regla de inferencia $QR1$ sino que también contamos con el axioma
+\begin{itemize}
+    \item[QL2.] $A(x)^{[x \to t]} \supset \exists x A(x)$ \cite{PaoloMancosu56}
+\end{itemize}
+y la regla de inferencia
+\begin{itemize}
+    \item[QR2.] Si $B(x) \supset A$ es derivable, $x$ no no forma parte de $A$ como expresión, y $z$ es una variable que no forma parte de $B(x)$, entonces $\exists x B(x) \supset A$ es derivable. \cite{PaoloMancosu56}
+\end{itemize}
+
+entonces resulta natural que las reglas para el cuantificador existencial ($\exists$) sean las siguientes:
+
+\begin{definition}[Regla de introducción de $\exists$]
+    \hfill
+    \begin{prooftree}
+        \AxiomC{$m : A(x)^{[x \rightarrow a]}$}
+        \RightLabel{$\exists_I$}
+        \UnaryInfC{$\picopar{a, m} : \exists x A(x)$}
+    \end{prooftree}
+
+    donde $a$ es un término cerrado, esto es, que no tenga variables libres.
+\end{definition}
+
+\begin{definition}[Regla de eliminación de $\exists$]
+    \hfill
+    \begin{prooftree}
+        \AxiomC{$e : \exists x A(x)$}
+        \AxiomC{$s^{[x \to t]} : A(x)^{[x \to t]}$}
+        \shortDeduce
+        \DeduceC{$c : C$}
+        \RightLabel{$\exists_E$}
+        \BinaryInfC{$c : C$}
+    \end{prooftree}
+\end{definition}
+
+Esta última regla es de apariencia complicada, pero de interpretación sencilla:
+
+\begin{sfwt}{(una propuesta de) Interpretación para $\exists_E$}
+    Si $$e : \exists x A(x)$$ es una prueba de que existe alguien que hace
+    a $A$ verdadero tras sustituir $x$ por ese alguien, y observamos que 
+    $$s^{[x \rightarrow t]} : A(x)^{[x \rightarrow t]}$$ 
+    es una prueba de que al sustituir $x$ por $t$ en $A(x)$ uno
+    obtiene una  prueba $c : C$, entonces podemos concluir $C$ verdadera
+    con prueba $c$.
+\end{sfwt}
+
+También, ya que estamos en eso, presentamos una propuesta a interpretación para
+la regla de $\exists_I$:
+
+\begin{sfwt}{(una propuesta de) Interpretación para $\exists_I$}
+    Si al sustituir $x$ por $a$ en el predicado $A(x)$ obtenemos una
+    prueba $m$ de su veracidad, entonces tenemos un testigo $a$ y una prueba
+    $m$ de la veracidad de que existe un $x$ tal que $A(x)$.
+\end{sfwt}
+
+\begin{remark}
+    Es importante señalar que no necesariamente ocurre que en $\exists_I$
+    la prueba $m : A(x)$ depende de la variable. Considere por ejemplo
+    el predicado
+    \begin{center}
+        \textit{Existe un hombre tal que el cielo es azul}
+    \end{center}
+\end{remark}
+
+Como último comentario, la consideración que hay que tener con la sustitución es la misma que la impuesta para $\forall$: la sustitución no debe alterar el significado de la fórmula sobre la cual se hace el reemplazo de símbolos.
+\todo{Esta subsección se visitará más adelante pero con el enfoque de tipos.}
+\todo{Hacer mención de que se pueden consultar ejemplos en la literatura shalala}
+\subsection{Deducción natural en acción}
+\label{subsection:deduccion-nat-accion}
+
+En la sección anterior no mostramos muchos ejemplos. Esta decisión fue tomada con el propósito de que, una vez introducidas todas las reglas, tengamos muchos "juguetes" en los que probar esta nueva forma de pensar.
+
+\subsubsection{Ejemplos con $\wedge$}
+
+\begin{example}
+    Deduzca $S \land Q$ desde $Q \wedge S$
+
+    Una estrategia, no sólo común en deducción natural sino que también al momento de demostrar cualquier cosa en otras áreas de las matemáticas, es partir de lo que queremos concluir y ver qué condiciones necesitan satisfacerse para llegar a lo que queremos; de esta forma, vamos construyendo la demostración "de abajo hacia arriba".
+
+    \begin{enumerate}
+        \item Partimos de lo que queremos concluir, y como desconocemos en un principio de qué se sigue la conclusión, ponemos de forma temporal un signo de interrogación:
+
+            \begin{prooftree}
+                \AxiomC{?}
+                \UnaryInfC{$\picopar{s, q} : S \land Q$}
+            \end{prooftree}
+
+        \item Notamos que la única forma que sabemos para concluir algo de la forma $S \land Q$ es mediante la regla de introducción de $\land$. Por lo tanto,
+        nuestro árbol de derivación tiene que verse hasta cierto punto de la forma:
+
+            \begin{prooftree}
+                \AxiomC{?}
+                \AxiomC{?}
+                \RightLabel{$\land_I$}
+                \BinaryInfC{$\picopar{s, q} : S \land Q$}
+            \end{prooftree}
+
+        de nuevo, claramente de la forma de la regla de introducción de $\land$ debe ser que los signos de interrogación sean sustituidos por $S$ y $Q$ en ese orden (de izquierda a derecha):
+
+        \begin{prooftree}
+            \AxiomC{?}
+            \UnaryInfC{$s : S$}
+                                \AxiomC{?}
+                                \UnaryInfC{$q : Q$}
+            \RightLabel{$\land_I$}
+            \BinaryInfC{$\picopar{s, q} : S \land Q$}
+        \end{prooftree}
+
+        Es importante no olvidar que $S$ y $Q$ deben ser sustituidos en ese orden, y también que tanto $S$ como $Q$ deben venir de algún lado pues en principio no sabemos si son verdaderos hasta el momento, a diferencia de $Q \land S$ que sí es una fórmula que podemos dar por verdadera.
+
+        \item Esta última observación nos lleva a la siguiente pregunta: ¿cómo podemos obtener $S$ y $Q$? Recordando que $Q \land S$ es un 
+        supuesto dado por el enunciado mismo de lo que nos piden derivar, podemos usar la regla de eliminación de $\land$ para obtener $S$ 
+        y $Q$:
+        
+        \begin{prooftree}
+            \AxiomC{$\picopar{q, s} : Q \land S$}
+            \RightLabel{$\land_E$}
+            \UnaryInfC{$s : S$}
+                                \AxiomC{$\picopar{q, s} : Q \land S$}
+                                \RightLabel{$\land_E$}
+                                \UnaryInfC{$q : Q$}
+            \RightLabel{$\land_I$}
+            \BinaryInfC{$\picopar{s, q} : S \land Q$}
+        \end{prooftree}
+
+        Este último árbol de derivación es el deseado.
+    \end{enumerate}
+\end{example}
+
+En tanto que este resultado es en particular bastante útil, resumiremos esta misma construcción en una regla de inferencia:
+
+\begin{definition}
+    \label{def:and-conm-dn}
+   \hfill
+   \begin{prooftree}
+        \AxiomC{$x : B \land A$}
+        \RightLabel{$\land$-conm}
+        \UnaryInfC{$\land\mathrm{-conm}\  x : A \land B$}
+   \end{prooftree}
+\end{definition}
+
+Observe que la regla $\land$-conm es el caso particular del ejemplo anterior en el que $S := A$ y $Q := B$.
+
+Ese proceso de "dar vuelta" o "torcer" una expresión que pareciera tener cierto orden usualmente se puede encontrar en
+la literatura como \textit{twist}. Observe que la construcción que tenemos se ve reflejada en un diagrama con flechas de la siguiente
+manera:
+
+% https://q.uiver.app/#q=WzAsNixbMSwwLCJBXFx3ZWRnZSBCIl0sWzEsMiwiQlxcd2VkZ2UgQSJdLFsyLDAsIkIiXSxbMiwyLCJBIl0sWzAsMiwiQiJdLFswLDAsIkEiXSxbMCwyXSxbMSw0XSxbMSwzXSxbMCw1XSxbMyw1LCIiLDEseyJsYWJlbF9wb3NpdGlvbiI6MzAsInN0eWxlIjp7\inr haWwiOnsibmFtZSI6ImFycm93aGVhZCJ9fX1dLFs0LDIsIiIsMSx7ImxhYmVsX3Bvc2l0aW9uIjozMCwic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiYXJyb3doZWFkIn19fV0sWzEsMCwiIiwxLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiYXJyb3doZWFkIn0sImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+\[\begin{tikzcd}
+	A & {A\wedge B} & B \\
+	\\
+	B & {B\wedge A} & A
+	\arrow[from=1-2, to=1-3]
+	\arrow[from=3-2, to=3-1]
+	\arrow[from=3-2, to=3-3]
+	\arrow[from=1-2, to=1-1]
+	\arrow[tail reversed, from=3-3, to=1-1]
+	\arrow[tail reversed, from=3-1, to=1-3]
+	\arrow[dashed, tail reversed, from=3-2, to=1-2]
+\end{tikzcd}\]
+
+Donde las flechas con ambas cabezas representan $\iff$. 
+
+\begin{exercise}
+    Argumente por qué podemos asegurar que $A \land B \iff B \land A$ en el diagrama anterior.
+\end{exercise}
+
+\begin{example}
+    \label{ex:and-assoc-twist-dn}
+    Muestre que de suponer $(A \land B) \land C$ uno puede inferir $A \land (C \land B)$. \hfill \newline
+
+    Así como en el ejemplo anterior partimos de lo que queríamos concluir para construir el árbol de derivación, podemos comenzar por las hipótesis dadas e ir construyendo ahora de "arriba hacia abajo" el árbol deseado.
+        
+    Sabemos por hipótesis que $(A \land B) \land C$ es verdadero y
+    nuestra meta es construir un árbol de derivación que concluya en $A \land (C \land B)$. 
+    
+    ¿Cómo podemos proceder para lograr nuestro objetivo? Un primer paso es empezar por reflexionar qué clase de información nos brinda nuestra hipótesis.
+
+    Notemos que de nuestra hipótesis podemos obtener $(A \land B)$ y $C$ mediante aplicaciones de la regla de eliminación $\land_E$.
+
+        \begin{center}
+            \AxiomC{$h : (A \land B) \land C$}
+            \RightLabel{$\land_E$}
+            \UnaryInfC{$\pi_1\ h : A \land B$}
+            \DisplayProof
+            \hskip 1.5cm
+            \AxiomC{$h : (A \land B) \land C$}
+            \RightLabel{$\land_E$}
+            \UnaryInfC{$\pi_2\ h : C$}
+            \DisplayProof
+        \end{center}
+
+    Más aún, de $(A \land B)$ podemos obtener $A$ y $B$ mediante aplicaciones de la regla de eliminación $\land_E$.
+
+        \begin{center}
+            \AxiomC{$h : (A \land B) \land C$}
+            \RightLabel{$\land_E$}
+            \UnaryInfC{$\pi_1\ h : A \land B$}
+            \RightLabel{$\land_E$}
+            \UnaryInfC{$\pi_1 (\pi_1\ h) : A$}
+            \DisplayProof
+            \hskip 1.5cm
+            \AxiomC{$h : (A \land B) \land C$}
+            \RightLabel{$\land_E$}
+            \UnaryInfC{$\pi_1\ h : A \land B$}
+            \RightLabel{$\land_E$}
+            \UnaryInfC{$\pi_2 (\pi_1\ h ) : B$}
+            \DisplayProof
+        \end{center}
+
+    Recordando que queremos un árbol de derivación que concluya en
+    $A \land (C \land B)$, observamos que esa fórmula está compuesta por $A$ y $(C \land B)$, y por el análisis que hemos hecho hasta el momento sobre nuestra hipótesis, ¡deberíamos tener ya todos los ingredientes para formar el árbol deseado!
+
+    En efecto, obsérvese que podemos obtener $(C \land B)$ a partir de $C$ y $B$ mediante la regla de introducción $\land_I$.
+
+        \begin{prooftree}
+            \AxiomC{$\pi_2\ h : C$}
+            \AxiomC{$\pi_2 (\pi_1\ h ) : B$}
+            \RightLabel{$\land_I$}
+            \BinaryInfC{$\picopar{\pi_2\ h , \pi_2 (\pi_1\ h )} : C \land B$}
+        \end{prooftree}
+    
+    y podemos formar $A \land (C \land B)$ utilizando la regla de introducción $\land_I$.
+
+        \begin{prooftree}
+            \AxiomC{$\pi_1 (\pi_1\ h) : A$}
+            \AxiomC{$\picopar{\pi_2\ h , \pi_2 (\pi_1\ h )} : C \land B$}
+            \RightLabel{$\land_I$}
+            \BinaryInfC{$\picopar{\ \pi_1 (\pi_1\ h) ,\ \picopar{\pi_2\ h , \pi_2 (\pi_1\ h )}\ } : A \land (C \land B)$}
+        \end{prooftree}
+    
+    De esta forma, juntando todas las piezas en un solo árbol obtenemos la siguiente derivación.
+
+        \begin{prooftree}
+            \AxiomC{$h : (A \land B) \land C$}
+            \RightLabel{$\land_E$}
+            \UnaryInfC{$\pi_1\ h : A \land B$}
+            \RightLabel{$\land_E$}
+            \UnaryInfC{$\pi_1 \ (\pi_1\ h) : A$}
+            \AxiomC{$h : (A \land B) \land C$}
+            \RightLabel{$\land_E$}
+            \UnaryInfC{$\pi_2\ h : C$}
+            \AxiomC{$h : (A \land B) \land C$}
+            \RightLabel{$\land_E$}
+            \UnaryInfC{$\pi_1\ h : A \land B$}
+            \RightLabel{$\land_E$}
+            \UnaryInfC{$\pi_2\ (\pi_1\ h) : B$}
+            \RightLabel{$\land_I$}
+            \BinaryInfC{$\picopar{\pi_2\ h , \pi_2 (\pi_1\ h )} : C \land B$}
+            \RightLabel{$\land_I$}
+            \BinaryInfC{$\picopar{\ \pi_1 (\pi_1\ h) ,\ \picopar{\pi_2\ h , \pi_2 (\pi_1\ h )}\ } : A \land (C \land B)$}
+        \end{prooftree}
+\end{example}
+
+\begin{exercise}
+    Repita el ejemplo anterior, pero ahora empleando la estrategia de "abajo hacia arriba".
+\end{exercise}
+    
+\begin{exercise}
+    Muestre que de suponer $A$ uno puede deducir $A \land A$.
+\end{exercise}
+
+\begin{exercise}
+    Suponga que se tiene un testigo $p : A \wedge (B \wedge C)$. Deduzca una testigo de
+    $B$.
+\end{exercise}
+
+\begin{exercise}
+    Verifique que $A \wedge B \supset A$ y $A \wedge B \supset B$ son tautologías.
+\end{exercise}
+
+\begin{exercise}
+    \label{exercise: and-assoc-izq}
+    Muestre que de $A \land (B \land C)$ uno puede inferir $(A \land B) \land C$.
+    Si usted lo desea, puede utilizar la regla $\land$-conm y el ejemplo \ref{ex:and-assoc-twist-dn}.
+
+    En virtud de la utilidad de esta derivación, resumiremos el árbol en la siguiente regla.
+
+    \begin{definition}
+        \label{def:and-assoc-izq-dn}
+        \hfill
+        \begin{prooftree}
+            \AxiomC{$h : A \land (B \land C)$}
+            \RightLabel{$\land$-asoc-izq}
+            \UnaryInfC{$\land\text{-assoc-izq}\ h : (A \land B) \land C$}
+        \end{prooftree}
+    \end{definition}
+\end{exercise}
+
+\begin{exercise}
+    \label{exercise: and-assoc-der}
+    Muestre que de $(A \land B) \land C$ uno puede inferir $A \land (B \land C)$.
+    Si usted lo desea, puede utilizar la regla $\land$-conm y el ejemplo \ref{ex:and-assoc-twist-dn}.
+
+    En virtud de la utilidad de esta derivación, resumiremos el árbol en la siguiente regla.
+
+    \begin{definition}
+        \label{def:and-assoc-der-dn}
+        \hfill
+        \begin{prooftree}
+            \AxiomC{$h : (A \land B) \land C$}
+            \RightLabel{$\land$-asoc-der}
+            \UnaryInfC{$\land\text{-asoc-der}\ h : A \land (B \land C)$}
+        \end{prooftree}
+    \end{definition}
+\end{exercise}
+
+\begin{remark}
+    En general, cuando tenemos una operación $\star$ (en este caso $\star \equiv \land$)
+    tal que dados 3 elementos que puede operar se tiene que
+    $$
+        a \star(b \star c) \equiv (a \star b) \star c
+    $$
+
+    con $\equiv$ una noción de equivalencia (por ejemplo el igual $=$ en álgebra)
+    decimos que la operación $\star$ es asociativa. Así, en particular por los juegos
+    $\ref{exercise: and-assoc-der}$ y $\ref{exercise: and-assoc-izq}$ tenemos que $\land$ es
+    una operación asociativa. Como veremos en su momento, la suma de números naturales
+    y el producto son también ejemplos de operaciones asociativas.
+\end{remark}
+
+\begin{exercise}
+    Suponga que se tiene una prueba 
+    $$p : (A \wedge (B \wedge C)) \wedge (P \wedge Q)$$ 
+    y la derivación
+    $$
+        \pi_1\ (\pi_2\ (\pi_1\ p)) :\ ?
+    $$
+    Determine $?$, la proposición a la cual corresponde $\pi_1\ \pi_2\ \pi_1\ p$,
+    y reconstruya la derivación que sintetiza la expresión.
+
+\end{exercise}
+
+\begin{exercise}
+    Suponga que se tiene una prueba 
+    $$p_1 : A \wedge (B \wedge (C \wedge D))$$
+    y una prueba 
+    $$p_2 : (A \wedge B) \wedge (C \wedge D).$$ 
+    Deduzca una prueba de $D$ desde $p_1$ y $p_2$. ¿Se parecen las pruebas? 
+    ¿Por qué crees que se parecen?
+    ¿Puedes dar una implicación 
+    $$f : A \wedge (B \wedge (C \wedge D)) \supset (A \wedge B) \wedge (C \wedge D)$$ 
+    y otra
+    implicación 
+    $$g : (A \wedge B) \wedge (C \wedge D) \supset A \wedge (B \wedge (C \wedge D))?$$
+\end{exercise}
+
+\begin{exercise}
+    Sean
+    $$ \alpha : A\quad\quad \beta : B\quad\quad \gamma : C\quad\quad \delta : D $$
+    y considere las pruebas
+    $$
+    \picopar{\alpha, \picopar{\beta, \picopar{\gamma, \delta}}} : A \wedge (B \wedge (C \wedge D))
+    $$
+    $$
+        \picopar{\picopar{\alpha, \beta}, \picopar{\gamma, \delta}} : (A \wedge B) \wedge (C \wedge D)
+    $$
+
+    Con las respuestas dadas en el juego anterior acomplete las
+    siguientes derivaciones.
+    \begin{prooftree}
+        \AxiomC{$f : A \wedge (B \wedge (C \wedge D)) \supset (A \wedge B) \wedge (C \wedge D)$}
+        \AxiomC{$\picopar{\alpha, \picopar{\beta, \picopar{\gamma, \delta}}}:A \wedge (B \wedge (C \wedge D))$}
+        \BinaryInfC{$f\ \picopar{\alpha, \picopar{\beta, \picopar{\gamma, \delta}}}:\ ?$}
+    \end{prooftree}
+
+    \begin{prooftree}
+        \AxiomC{$g : (A \wedge B) \wedge (C \wedge D) \supset A \wedge (B \wedge (C \wedge D))$}
+        \AxiomC{$f\ \picopar{\alpha, \picopar{\beta, \picopar{\gamma, \delta}}}:\ ?$}
+        \BinaryInfC{$g\ (f\ \picopar{\alpha, \picopar{\beta, \picopar{\gamma, \delta}}}) :\ ??$}
+    \end{prooftree}
+
+    \begin{prooftree}
+        \AxiomC{$g : (A \wedge B) \wedge (C \wedge D) \supset A \wedge (B \wedge (C \wedge D))$}
+        \AxiomC{$\picopar{\picopar{\alpha, \beta}, \picopar{\gamma, \delta}} : (A \wedge B) \wedge (C \wedge D)$}
+        \BinaryInfC{$g\ \picopar{\picopar{\alpha, \beta}, \picopar{\gamma, \delta}}:\ ?$}
+    \end{prooftree}
+
+    \begin{prooftree}
+        \AxiomC{$f : A \wedge (B \wedge (C \wedge D)) \supset (A \wedge B) \wedge (C \wedge D)$}
+        \AxiomC{$g\ \picopar{\picopar{\alpha, \beta}, \picopar{\gamma, \delta}}:\ ?$}
+        \BinaryInfC{$f\ (g\ \picopar{\picopar{\alpha, \beta}, \picopar{\gamma, \delta}}) :\ ??$}
+    \end{prooftree}
+
+    \noindent ¿Qué puede concluir de las derivaciones anteriores? ¿Qué conclusiones puede obtener con respecto a $A \wedge (B \wedge (C \wedge D))$ y
+    $(A \wedge B) \wedge (C \wedge D)$?
+\end{exercise}
+
+\subsubsection{Ejemplos con $\supset$} \label{subsubsec: examples_impl}
+
+\begin{example}
+    Deduzca la fórmula $(A \land B) \supset (B \land A)$. \hfill \newline
+
+    Nuestro objetivo es llegar a una fórmula de la forma $P \supset Q$, donde $P := A \land B$ y $Q := B \land A$, y la única forma de hacer esto es mediante la regla de introducción $\supset_I$.
+
+    \begin{prooftree}
+        \AxiomC{$h_1 : A$}
+        \shortDeduce
+        \DeduceC{$h_k : B$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$f : A \supset B$}
+    \end{prooftree}
+
+    Por lo tanto, podemos partir de suponer $A \land B$ y mostrar que mediante una serie de pasos llegamos a $B \land A$. Para lograr esto último, sabemos que de $A \land B$ podemos obtener $B \land A$; más aún, ¡ya derivamos antes este resultado! pues esto último es un caso particular de la proposición \ref{def:and-conm-dn}. De esta forma, tenemos el siguiente árbol de derivación.
+
+    \begin{prooftree}
+        \AxiomC{$h : A \land B$}
+        \RightLabel{$\land$-conm}
+        \UnaryInfC{$\land\text{-conm}\ h : B \land A$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$(\lambda x\ .\ \land\text{-conm}(x) ): (A \land B) \supset (B \land A)$}
+    \end{prooftree}
+
+    Observe que la suposición $h : A \land B$ fue descargada al momento de aplicar la regla de introducción. \todo{incluir este comentario?}
+\end{example}
+
+\begin{exercise}
+    Deduzca la fórmula $(A \land B) \supset (A \lor B)$, pero sin utilizar $\land$-conm y verifique que el árbol resultante es el mismo que resulta de haber sustituido la derivación completa que resume $\land$-conm con $S := A$ y $Q := B$.
+\end{exercise}
+
+
+\begin{example}
+    Demuestre que $(A \supset B) \supset [(A \land C) \supset (B \land C)]$.
+
+    \hfill \newline A primer vistazo podemos apreciar que la fórmula a concluir es relativamente 
+    complicada. \textbf{Una estrategia general a seguir para este tipo de situaciones es dividir 
+    el problema en partes más sencillas}.
+
+    En virtud de la forma de la fórmula a deducir, sabemos que debemos utilizar la regla de 
+    introducción de $\supset$. La regla de introducción antes mencionada nos pide suponer que $A 
+    \supset B$ y deducir $(A \land C) \supset (B \land C)$.
+
+    \begin{prooftree}
+        \AxiomC{$h_1 : A \supset B$}
+        \shortDeduce
+        \DeduceC{$? : (A \land C) \supset (B \land C)$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda\ h_1\ .\  ?: (A \supset B) \supset [(A \land C) \supset (B \land C)]$}
+    \end{prooftree}
+
+    Notemos que, para deducir $(A \land C) \supset (B \land C)$, la única forma que tenemos de hacer esto es de nuevo mediante la regla de introducción de $\supset$.
+
+    \begin{prooftree}
+        \AxiomC{$h_2 : A \land C$}
+        \shortDeduce
+        \DeduceC{$? : B \land C$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda\ h_2\ .\ ? : (A \land C) \supset (B \land C)$}
+    \end{prooftree}
+
+    Notemos que de $h_2 : A \land B$ podemos obtener un testigo de $A$ 
+    por $\land_E$, y por $\supset_E$ podemos utilizar el testigo
+    antes adquirido para obtener $B$. Además, de $h_2$ podemos obtener
+    evidencia de $C$, y así contamos con todos los ingredientes para
+    formar un testigo de $B \wedge C$ como queríamos. Lo anterior
+    luce en un árbol de derivación como a continuación:
+
+    \begin{prooftree}
+        \AxiomC{$h_1 : A \supset B$}
+                                        \AxiomC{$h_2 : A \land C$}
+                                        \RightLabel{$\land_E$}
+                                        \UnaryInfC{$\pi_1\ h_2 : A$}
+
+        \RightLabel{$\supset_E$}
+        \BinaryInfC{$h_1 (\pi_1\ h_2) : B$}     \AxiomC{$h_2 : A \land C$}
+                                                \RightLabel{$\land_E$}
+                                                \UnaryInfC{$\pi_2\ h_2 : C$}
+        \RightLabel{$\land_I$}
+        \BinaryInfC{$\picopar{h_1 (\pi_1\ h_2)\ ,\ \pi_2\ h_2} : B \land C$}
+        
+    \end{prooftree}
+
+
+    Así, regresando a nuestro problema original más complicado, utilizando la solución al subproblema más sencillo que acabamos de resolver obtenemos el siguiente árbol de derivación.
+
+    \begin{prooftree}
+        \AxiomC{$h_1 : A \supset B$}
+        \AxiomC{$h_2 : A \land C$}
+        \BinaryInfC{$\picopar{h_1 (\pi_1\ h_2)\ ,\ \pi_2\ h_2} : B \land C$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda h_2\ .\ \picopar{h_1 (\pi_1\ h_2)\ ,\ \pi_2\ h_2}: (A \land C) \supset (B \land C)$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda h_1\ .\ (\lambda h_2\ .\ \picopar{h_1 (\pi_1\ h_2)\ ,\ \pi_2\ h_2}): (A \supset B) \supset ((A \land C) \supset (B \land C))$}
+    \end{prooftree}
+
+    Esto concluye la prueba.
+
+    Observe como en el testigo de $(A \supset B) \supset ((A \land C) \supset (B \land C))$, 
+    $$
+    \lambda h_1\ .\ (\lambda h_2\ .\ \picopar{h_1 (\pi_1\ h_2)\ ,\ \pi_2\ h_2}): (A \supset B) \supset ((A \land C) \supset (B \land C))
+    $$
+
+    estamos descargando las hipótesis al utilizar la regla de introducción de
+    $\supset$, y esto se ve reflejado en los terminos que acompañan a las
+    $lambda$.
+
+\end{example}
+
+\begin{example}
+    Demuestre que $[(A \supset B) \land (B \supset C)] \supset (A \supset C)$.
+    \hfill\newline
+
+    Notemos que la estructura general de la proposición que hay que probar
+    es 
+    $$
+        (P \land Q) \supset S
+    $$
+
+    por lo tanto, para nuestra prueba hay que comenzar suponiendo
+    $ P \land Q$ y probar que a partir de ese supuesto se sigue $S$.
+    Recuerde que esto es en virtud de la regla de introducción de $\supset$.
+
+    Supongamos entonces $(A \supset B) \land (B \supset C)$.
+    Necesitamos demostrar que $(A \supset C)$ para poder concluir lo que
+    queremos. De nuestra hipótesis podemos obtener de forma individual
+    $A \supset C$ y $B \supset C$.
+    
+    \begin{prooftree}
+        \AxiomC{$h_1 : (A \supset B) \land (B \supset C)$}
+        \UnaryInfC{$\pi_1\ h_1 : A \supset B$}
+        \DisplayProof
+        \hskip 1.5cm
+        \AxiomC{$h_1 : (A \supset B) \land (B \supset C)$}
+        \UnaryInfC{$\pi_2\ h_1 : B \supset C$}
+    \end{prooftree}
+
+    Nuestra meta actual es obtener algún testigo de $A \supset C$, pero
+    ¿cómo podemos obtener prueba de $A$ para concluir lo que queremos?
+
+    Como tenemos que probar una implicación, la regla de introducción de
+    $\supset$ nos pide mostrar que de suponer el antecedente podemos
+    concluir el consecuente. Por lo tanto, suponemos el antecedente
+    y buscamos construir con ese supuesto el consecuente. Como ya
+    tenemos $h_2 : A$ un testigo de $A$, podemos entonces concluir
+    $B$ con la información que obtuvimos de nuestro primer supuesto.
+    \begin{prooftree}
+        \AxiomC{$h_1 : (A \supset B) \land (B \supset C)$}
+        \UnaryInfC{$\pi_1\ h_1 : A \supset B$}
+        \AxiomC{$h_2 : A$}
+        \RightLabel{$\supset_E$}
+        \BinaryInfC{$(\pi_1\ h_1)\ h_2 : B$}
+    \end{prooftree}
+
+    Ya con un testigo de $B$, podemos obtener un testigo de $C$ a partir de
+    la información obtenida de nuestro primer supuesto.
+
+    \begin{prooftree}
+        \AxiomC{$h_1 : (A \supset B) \land (B \supset C)$}
+        \UnaryInfC{$\pi_1\ h_1 : A \supset B$}
+        \AxiomC{$h_2 : A$}
+        \RightLabel{$\supset_E$}
+        \BinaryInfC{$(\pi_1\ h_1)\ h_2 : B$}
+                        \AxiomC{$h_1 : (A \supset B) \land (B \supset C)$}
+                        \UnaryInfC{$\pi_2\ h_1 : B \supset C$}
+        \RightLabel{$\supset_E$}
+        \BinaryInfC{$(\pi_2\ h_1)\ ((\pi_1\ h_1)\ h_2) : C$}
+    \end{prooftree}
+
+    A este punto de la demostración podemos preguntarnos si ya podemos
+    concluir lo que queremos, y la respuesta es que sí. Notemos que
+    $h_2:A$ sigue siendo un supuesto abierto, de modo que debemos descargarlo.
+    Al descargarlo, obtendremos evidencia de $A \supset C$ y tendremos
+    $h_1 : (A \supset B) \land (B \supset C)$ pendiente por descargar.
+    Así, descargando todos nuestros supuestos obtenemos un testigo de 
+    $$
+    ((A \supset B) \land (B \supset C)) \supset (A \supset C)
+    $$
+
+    lo que queríamos. Así, nuestra derivación de $(A \supset B) \land (B \supset C) \supset (A \supset C)$ es la siguiente:
+
+    \todo{Check the proof in Agda}
+    \begin{prooftree}
+        \AxiomC{$h_1 : (A \supset B) \land (B \supset C)$}
+        \UnaryInfC{$\pi_1\ h_1 : A \supset B$}
+        \AxiomC{$h_2 : A$}
+        \RightLabel{$\supset_E$}
+        \BinaryInfC{$(\pi_1 h_1)\ h_2 : B$}
+                        \AxiomC{$h_1 : (A \supset B) \land (B \supset C)$}
+                        \UnaryInfC{$\pi_2\ h_1 : B \supset C$}
+        \RightLabel{$\supset_E$}
+        \BinaryInfC{$(\pi_2\ h_1)\ ((\pi_1\ h_1)\ h_2) : C$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda h_2\ .\ (\pi_2\ h_1)\ ((\pi_1\ h_1)\ h_2) : A \supset C$}
+        \RightLabel{$\supset_E$}
+        \UnaryInfC{$\lambda h_1\ .\ (\lambda h_2\ .\ (\pi_2\ h_1)\ ((\pi_1\ h_1)\ h_2)) : ((A \supset B) \land (B \supset C)) \supset (A \supset C)$}
+    \end{prooftree}
+
+    esto concluye la prueba.
+\end{example}
+
+\begin{example}
+    Demuestre que si $((A \supset C) \land (B \supset C)) \supset ((A \land B) \supset C)$.
+
+    \begin{proof}
+        \hfill \newline
+
+        Notemos que la estructura general de la proposición a demostrar es la siguiente:
+        $$
+            (P \land Q) \supset (R \supset S)
+        $$
+
+        Así, en virtud de que la única forma que tenemos para formar una derivación de algo
+        de la forma $X \supset Y$ es mediante $\supset_I$, suponemos $(P \land Q)$ para
+        derivar $(R \supset S)$; en este caso, esto significa en particular para nuestro
+        problema suponer $(A \supset C) \land (B \supset C)$ y derivar $(A \land B) \supset C$.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : (A \supset C) \land (B \supset C)$}
+        \end{prooftree}
+
+        Bajo un razonamiento totalmente análogo, para derivar entonces $(A \land B) \supset C$
+        debemos suponer $(A \land B)$ y buscar derivar $C$.
+
+        \begin{prooftree}
+            \AxiomC{$h_2 : (A \land B)$}
+        \end{prooftree}
+
+        De nuestro primer supuesto, podemos obtener $(A \supset C)$ y $(B \supset C)$ por $\land_E$.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : (A \supset C) \land (B \supset C)$}
+            \UnaryInfC{$\pi_1\ h_1 : (A \supset C) \quad \quad \pi_2\ h_2 : (B \supset C)$}
+        \end{prooftree}
+
+        Además, notemos que de $(A \land B)$ podemos concluir $A$ y $B$. 
+        
+        \begin{prooftree}
+            \AxiomC{$h_2 : (A \land B)$}
+            \UnaryInfC{$\pi_1\ h_2 : A \quad \quad \pi_2\ h_2 : B$}
+        \end{prooftree}
+
+        En virtud de nuestros primeros supuestos, mediante $\supset_E$ podemos 
+        concluir por lo anterior $C$. 
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : (A \supset C) \land (B \supset C)$}
+            \UnaryInfC{$\pi_1\ h_1 : (A \supset C)$}
+                                    \AxiomC{$h_2 : (A \land B)$}
+                                    \UnaryInfC{$\pi_1\ h_2 : A$}
+            \BinaryInfC{$(\pi_1\ h_1)\ (\pi_1\ h_2) : C$}
+        \end{prooftree}
+        
+        Así, de suponer $(A \land B)$ hemos logrado derivar $C$. 
+        Por lo tanto, podemos concluir $(A \land B) \supset B$
+        por la regla $\supset_I$ y, además por la misma regla podemos concluir 
+        $((A \supset C) \land (B \supset C)) \supset ((A \land B) \supset C)$ como queríamos.
+    \end{proof}
+\end{example}
+
+\begin{example}\label{example:prop_univ_prod_logica}
+    Demuestre que $(A \supset B) \supset ((A \supset C) \supset (A \supset (B \land C)))$. 
+    \hfill\newline
+
+    Notemos que la estructura general de la proposición a probar es la siguiente:
+    $$
+        P \supset (Q \supset R)
+    $$
+
+    Procedemos entonces de forma análoga a como lo hicimos en el ejemplo anterior.
+    Supongamos que $(A \supset B)$ y veamos que $((A \supset C) \supset (A \supset (B \land C)))$.
+    Para esto, supongamos entonces que $(A \supset C)$ y veamos que $(A \supset (B \land C))$,
+    pero para esto supongamos también $A$. Como $A$, entonces por $\supset_E$ tenemos $B$ y $C$.
+    Por lo tanto, de $\land_I$ tenemos $B \land C$. Dado que supusimos $A$, entonces 
+    $A \sup (B \land C)$ y, como para lo anterior supusimos $(A \supset C)$, entonces tenemos
+    $(A \supset C) \supset (A \supset (B \land C))$, y finalmente en virtud de que al principio
+    supusimos $(A \supset B)$ para concluir lo anterior, tenemos que 
+    $$
+        (A \supset B) \supset ((A \supset C) \supset (A \supset (B \land C)))
+    $$
+
+    como queríamos demostrar.
+    La derivación formal de lo anterior es entonces
+
+    \begin{prooftree}
+        \AxiomC{$h_1 : A \supset B$}
+        \AxiomC{$h_3 : A$}
+        \LeftLabel{$\supset_E$}
+        \BinaryInfC{$h_1\ h_3 : B$}
+        \AxiomC{$h_2 : A \supset C$}
+        \AxiomC{$h_3 : A$}
+        \RightLabel{$\supset_E$}
+        \BinaryInfC{$h_2\ h_3 : C$}
+        \BinaryInfC{$\picopar{h_1\ h_3\ ,\ h_2\ h_3}: B \land C$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda\ h_3\ .\ \picopar{h_1\ h_3\ ,\ h_2\ h_3}: A \supset (B \land C)$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda h_2\ .\ \lambda\ h_3\ .\ \picopar{h_1\ h_3\ ,\ h_2\ h_3}: (A \supset C) \supset (A \supset (B \land C))$}
+        \RightLabel{$\supset_I$}
+        \UnaryInfC{$\lambda h_1\ .\ (\lambda h_2\ .\ (\lambda\ h_3\ .\ \picopar{h_1\ h_3\ ,\ h_2\ h_3})): (A \supset B) \supset ((A \supset C) \supset (A \supset (B \land C)))$}
+    \end{prooftree}
+
+    Esto concluye la prueba.
+\end{example}
+
+\begin{remark}
+    Observe que la proposición anterior codifica lo que se mencionaba en la observación
+    \ref{remark:prop_univ_prod1} al presentar las reglas de introducción y eliminación de $\land$
+    de forma diagramática:
+    % https://q.uiver.app/#q=WzAsNCxbMiwyLCJDIl0sWzAsMCwiQSJdLFs0LDAsIkIiXSxbMiwwLCJBIFxcbG9yIEIiXSxbMiwwLCJcXHN1YnNldCIsMV0sWzEsMCwiXFxzdXBzZXQiLDFdLFsxLDMsImlubCIsMV0sWzIsMywiaW5yIiwxXSxbMywwLCJcXHN1cHNldCIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+    \[\begin{tikzcd}
+    	B && {B \land C} && C \\
+    	\\
+    	&& A
+    	\arrow["\supset"{description}, from=3-3, to=1-5]
+    	\arrow["\subset"{description}, from=3-3, to=1-1]
+    	\arrow["\pi_1"{description}, from=1-3, to=1-1]
+    	\arrow["\pi_2"{description}, from=1-3, to=1-5]
+    	\arrow["\supset"{description}, dashed, from=3-3, to=1-3]
+    \end{tikzcd}\]
+\end{remark}
+
+Ahora le toca a usted divertirse con los siguientes juegos.
+
+\begin{exercise}
+    Demuestre que $A \supset (A \land A)$.
+\end{exercise}
+
+\begin{exercise}
+    Demuestre que $(A \land (A \supset B)) \supset B$
+\end{exercise}
+
+\begin{exercise}
+    Demuestre que $[A \supset (B \supset C)] \supset [(A \supset B) \supset (A \supset C)]$.
+\end{exercise}
+
+\begin{exercise}\label{exercise:product_leftadjoint_logic1}
+    Demuestre que $((A \land B) \supset C) \supset (A \supset (B \supset C))$.
+\end{exercise}
+
+\begin{exercise}\label{exercise:product_leftadjoint_logic2}
+    Demuestre que $(A \supset (B \supset C)) \supset ((A \land B) \supset C)$.
+\end{exercise}
+
+\begin{exercise}
+    ¿Qué puede concluir de los ejercicios \ref{exercise:product_leftadjoint_logic1} y \ref{exercise:product_leftadjoint_logic2}?
+\end{exercise}
+
+\begin{exercise}\label{exercise:ejercicio_prop_univ}
+    Demuestre que $((A \supset B) \land (A \supset C)) \supset (A \supset (B \land C))$.
+    \newline\textbf{Nos referiremos a este juego posteriormente. Se recomienda por lo menos intentarlo.}
+    
+    \textit{Sugerencia:} Utilizar los juegos \ref{exercise:product_leftadjoint_logic1} y 
+    \ref{exercise:product_leftadjoint_logic2}
+    y el ejemplo \ref{example:prop_univ_prod_logica}.
+\end{exercise}
+
+\subsubsection{Ejemplos con $\vee$}
+
+\begin{example}
+    Demuestre
+    $$
+        ((A \supset C) \land (B \supset C)) \supset ((A \lor B) \supset C)
+    $$
+
+
+    \begin{proof}
+        \hfill\newline
+        Supongamos que $((A \supset C) \land (B \supset C))$ para ver que $((A \lor B) \supset C)$.
+        Por $\land_E$ tenemos $(A \supset C)$ y  $(B \supset C)$. En virtud de que queremos
+        probar una implicación, supongamos que $(A \lor B)$. 
+        
+        Por la regla de eliminación de $\vee$, en virtud de que $A \supset C$ y $B \supset C$
+        tenemos entonces que $C$. Como lo anterior vino de suponer $A \lor B$, entonces
+        $(A \lor B) \supset C$; luego, a su vez lo anterior es consecuencia de haber supuesto
+        $(A\supset C) \land (B \supset C)$, por lo que entonces
+        $$
+            ((A \supset C) \land (B \supset C)) \supset ((A \lor B) \supset C)
+        $$
+
+        como queríamos demostrar. La prueba anterior se ve reflejada en el siguiente
+        árbol de derivación:
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : (A \supset C) \land (B \supset C)$}
+            \UnaryInfC{$\pi_1\ h_1 : (A \supset C)$}
+            \AxiomC{$h_1 : (A \supset C) \land (B \supset C)$}
+            \UnaryInfC{$\pi_2\ h_1 : (B \supset C)$}
+            \AxiomC{$h_2 : (A \lor B)$}
+            \RightLabel{$\lor_E$}
+            \TrinaryInfC{$\ind_\lor(\pi_1\ h_1\ ,\ \pi_2\ h_1)\ h_2 : C$}
+            \UnaryInfC{$\lambda h_2\ .\ \ind_\lor(\pi_1\ h_1\ ,\ \pi_2\ h_1)\ h_2 : (A \lor B) \supset C$}
+            \UnaryInfC{$\lambda h_1\ .\ (\lambda h_2\ .\ \ind_\lor(\pi_1\ h_1\ ,\ \pi_2\ h_1)\ h_2) : ((A \supset C) \land (B \supset C)) \supset ((A \lor B) \supset C)$}
+        \end{prooftree}
+
+        Esto concluye la prueba.
+    \end{proof}
+\end{example}
+
+\begin{example}
+    Demuestre
+    $$
+        ([A \lor B] \land [A \supset C] \land [B \supset C]) \supset C
+    $$
+
+    \begin{proof}
+        \hfill \newline
+        Notemos que si hicimos el ejercicio \ref{exercise:product_leftadjoint_logic1}
+        podemos simplemente invocar el resultado, aplicar adecuadamente $\land-conm$ y obtener una  
+        prueba. Sin embargo, haremos la demostración partiendo de solamente las reglas y las    
+        derivaciones que hemos demostrado juntos.
+
+        Supongamos que $([A \lor B] \land [A \supset C] \land [B \supset C])$. Entonces
+        $A \lor B, A \supset C$ y $B \supset C$. Directamente por la regla de eliminación
+        de $\lor$ tenemos entonces que $C$. Así, por la regla de introducción de $\supset$
+        podemos concluir que
+
+        $$
+            ([A \lor B] \land [A \supset C] \land [B \supset C]) \supset C
+        $$
+
+        como se quería. La siguiente derivación testifica la correctud de nuestra demostración:
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : ([A \lor B] \land [A \supset C] \land [B \supset C])$}
+            \UnaryInfC{$\pi_1\ h_1 : A \lor B \quad\quad \pi_2\ h_1 : A \supset C \quad\quad \pi_3\ h_1 : B \supset C$}
+            \RightLabel{$\lor_E$}
+            \UnaryInfC{$\ind_\lor(\pi_2\ h_1, \pi_3\ h_1)\ (\pi_1\ h_1) : C$}
+            \UnaryInfC{$\lambda h_1\ .\ \ind_\lor(\pi_2\ h_1, \pi_3\ h_1)\ (\pi_1\ h_1) : ([A \lor B] \land [A \supset C] \land [B \supset C]) \supset C$}
+        \end{prooftree}
+    \end{proof}
+\end{example}
+
+\begin{example}
+    Demuestre
+    $$
+        (P \lor (Q \lor R)) \supset ((P \lor Q) \lor R)
+    $$
+
+    \begin{proof}
+        \hfill\newline
+        Supongamos que $P \lor (Q \lor R)$ para concluir $(P \lor Q) \lor R$.
+        Procedemos por análisis de casos:
+        \begin{itemize}
+            \item Caso $P$:
+
+            Si $P$, entonces por $\lor_I$ tenemos $(P \lor Q)$, y de nuevo por $\lor_I$ tenemos
+            $(P \lor Q) \lor R$.
+
+            \begin{prooftree}
+                \AxiomC{$h_2 : P$}
+                \RightLabel{$\lor_I$}
+                \UnaryInfC{$\inl\ h_2 : P \lor Q$}
+                \RightLabel{$\lor_I$}
+                \UnaryInfC{$\inl\ (\inl\ h_2 ): (P \lor Q) \lor R$}
+                \UnaryInfC{$\lambda h_2\ .\ \inl\ (\inl\ h_2 ): P \supset ((P \lor Q) \lor R)$}
+                \UnaryInfC{$f \equiv \lambda h_2\ .\ \inl\ (\inl\ h_2 ): P \supset ((P \lor Q) \lor R)$}
+            \end{prooftree}
+
+            \textbf{Nota:} En la última linea del árbol de derivación se muestra
+            $$
+                f \equiv \lambda h_2\ .\ \inl\ (\inl\ h_2 ): P \supset ((P \lor Q) \lor R)
+            $$
+
+            Esto significa que estamos definiendo $f$ tal que es \textit{sintácticamente equivalente}
+            a la expresión a la derecha de $\equiv$. Estas definiciones sólo son una conveniencia
+            didáctica agregada que no forman parte de la teoría ni el lenguaje formal. Por lo tanto,
+            cada que veamos el símbolo $f$ dentro de este contexto, sabremos que lo podemos
+            intercambiar sin consecuencia alguna por $\lambda h_2\ .\ \inl\ (\inl\ h_2 )$. Sin embargo
+            nos atendremos a una regla: sólo podremos dar nombre o definir algo una vez que lo
+            hayamos construído o demostrado.
+
+            \item Caso $Q \lor R$:
+
+            Si $Q \lor R$, entonces tenemos dos subcasos:
+            \begin{itemize}
+                \item Subcaso $Q$:
+
+                    Si $Q$, entonces por $\lor_I$ tenemos $(P \lor Q)$, y de nuevo por $\lor_I$ 
+                    tenemos $(P \lor Q) \lor R$.
+
+                    \begin{prooftree}
+                        \AxiomC{$h_4 : Q$}
+                        \RightLabel{$\lor_I$}
+                        \UnaryInfC{$\inr \ h_4 : P \lor Q$}
+                        \RightLabel{$\lor_I$}
+                        \UnaryInfC{$\inl\ (\inr \ h_4) : (P \lor Q) \lor R$}
+                        \UnaryInfC{$g \equiv \lambda h_4\ .\ \inl\ (\inr \ h_4) : Q \supset (P \lor Q) \lor R)$}
+                    \end{prooftree}
+
+
+                \item Subcaso $R$:
+
+                    Si $R$, entonces por $\lor_I$ tenemos $(P \lor Q) \lor R$.
+
+                    \begin{prooftree}
+                        \AxiomC{$h_5 : R$}
+                        \RightLabel{$\lor_I$}
+                        \UnaryInfC{$\inr \ h_5 : (P \lor Q) \lor R$}
+                        \UnaryInfC{$s \equiv \lambda h_5\ .\ \inr \ h_5 : R \supset ((P \lor Q) \lor R)$}
+                    \end{prooftree}
+
+
+            \end{itemize}
+        \end{itemize}
+        Así, como en cualquier caso tenemos $(P \lor Q) \lor R$ 
+        entonces podemos concluir por $\lor_E$ que $(P \lor Q) \lor R$.
+        Además, como lo anterior fue consecuencia de haber supuesto $(P \lor Q) \lor R$, entonces
+        por $\supset_I$ tenemos que $(P \lor (Q \lor R)) \supset ((P \lor Q) \lor R)$ como se 
+        quería.
+
+        \begin{prooftree}
+            \AxiomC{$h_3 : Q \lor R$}
+            \AxiomC{$g : Q \supset ((P \lor Q) \lor R))$}
+            \AxiomC{$s : R \supset ((P \lor Q) \lor R)$}
+            \RightLabel{$\lor_E$}
+            \TrinaryInfC{$\ind_\lor (g,s)\ h_3 : (P \lor Q) \lor R$}
+            \UnaryInfC{$\lambda h_3\ .\ \ind_\lor (g,s)\ h_3 : (Q \lor R) \supset ((P \lor Q) \lor R)$}
+            \UnaryInfC{$m \equiv \lambda h_3\ .\ \ind_\lor (g,s)\ h_3 : (Q \lor R) \supset ((P \lor Q) \lor R)$}
+        \end{prooftree}
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : P \lor (Q \lor R)$}
+            \AxiomC{$f : P \supset ((P \lor Q) \lor R)$}
+            \AxiomC{$m : (Q \lor R) \supset ((P \lor Q) \lor R)$}
+            \RightLabel{$\lor_E$}
+            \TrinaryInfC{$\ind_\lor(f, m)\ h_1 : ((P \lor Q) \lor R)$}
+            \UnaryInfC{$\lambda h_1\ .\ \ind_\lor(f, m)\ h_1 : (P \lor (Q \lor R)) \supset ((P \lor Q) \lor R)$}
+        \end{prooftree}
+
+        %\begin{prooftree}
+        %    %\AxiomC{h_1 : $P \lor (Q \lor R)$}
+        %    \AxiomC{$h_2 : P$}
+        %    \UnaryInfC{$\inl\ h_2 : P \lor Q$}
+        %    \UnaryInfC{$\inl\ (\inl\ h_2 ): (P \lor Q) \lor R$}
+        %    \UnaryInfC{$\lambda h_2\ .\ \inl\ (\inl\ h_2 ): P \supset ((P \lor Q) \lor R)$}
+%
+        %    %\AxiomC{$h_3 : Q \lor R$}
+        %    \AxiomC{$h_4 : Q$}
+        %    \UnaryInfC{$\inr \ h_4 : P \lor Q$}
+        %    \UnaryInfC{$\inl\ \inr \ h_4 : (P \lor Q) \lor R$}
+        %    \UnaryInfC{$\lambda h_4\ .\ \inr \ h_4 : Q \supset (\inl\ \inr \ h_4 : (P \lor Q) \lor R)$}
+        %    \AxiomC{$h_5 : R$}
+        %    \UnaryInfC{$\inr \ h_5 : (P \lor Q) \lor R$}
+        %    \UnaryInfC{$\lambda h_5\ .\ \inr \ h_5 : R \supset ((P \lor Q) \lor R)$}
+        %    \TrinaryInfC{$(P \lor Q) \lor R$}
+        %\end{prooftree}
+    \end{proof}
+\end{example}
+
+\begin{example}
+    Demuestre que
+    $$
+        (A \lor (B \land Q)) \supset ((A \lor B) \land (A \lor Q))
+    $$
+
+    \begin{proof}
+        \hfill\newline
+
+        Supongamos $(A \lor (B \land Q))$ para demostrar $((A \lor B) \land (A \lor Q))$.
+        Procedemos por análisis de casos:
+        \begin{itemize}
+            \item Caso $A$
+
+            Si $A$, entonces por $\lor_I$ tenemos $(A \lor B)$ y también $(A \lor Q)$ y así
+            en particular podemos concluir $(A \lor B) \land (A \lor Q)$.
+            Como supusimos $A$, entonces por $\supset_I$ tenemos que 
+            $A \supset ((A \lor B) \land (A \lor Q))$.
+
+            \begin{prooftree}
+                \AxiomC{$h_2 : A$}
+                \UnaryInfC{$\inl h_2 : A \lor B$}
+                \AxiomC{$h_2 : A$}
+                \UnaryInfC{$\inr h_2 : A \lor Q$}
+                \BinaryInfC{$\picopar{\inl h_2\ ,\ \inr h_2} : (A \lor B) \land (A \lor Q)$}
+                \UnaryInfC{$\lambda h_2\ .\ \picopar{\inl h_2\ ,\ \inr h_2} : A \supset ((A \lor B) \land (A \lor Q))$}
+                \UnaryInfC{$f \equiv \lambda h_2\ .\ \picopar{\inl h_2\ ,\ \inr h_2} : A \supset ((A \lor B) \land (A \lor Q))$}
+            \end{prooftree}
+            
+            \item Caso $B \land Q$
+            
+            Si $B \land Q$, entonces $B$ y $Q$ por $\land_E$. Luego, dado $B$ obtenemos $(A \lor B)$
+            y por $Q$ tenemos $(A \lor Q)$; de esta forma mediante $\land_I$ tenemos $(A \lor B) \land (A \lor Q)$. Así, como partimos de $B \land Q$ y demostramos $(A \lor B) \land (A \lor Q)$
+            entonces por $\supset_I$ podemos concluir $(B \land Q) \supset ((A \lor B) \land (A \lor Q))$.
+
+            \begin{prooftree}
+                \AxiomC{$h_3 : B \land Q$}
+                \UnaryInfC{$\pi_1\ h_3 : B$}
+                \UnaryInfC{$\inr \pi_1\ h_3 : A \lor B$}
+                                            \AxiomC{$h_3 : B \land Q$}
+                                            \UnaryInfC{$\pi_2\ h_3 : Q$}
+                                            \UnaryInfC{$\inr \pi_1\ h_3 : A \lor Q$}
+                \BinaryInfC{$\picopar{\inr \pi_1\ p\ ,\ \inr \pi_1\ h_3} : (A \lor B)\land (A \lor Q)$}
+                \UnaryInfC{$\lambda\ h_3\ .\ \picopar{\inr \pi_1\ p\ ,\ \inr \pi_1\ h_3} : (B \land Q) \supset ((A \lor B)\land (A \lor Q))$}
+                \UnaryInfC{$g \equiv \lambda\ h_3\ .\ \picopar{\inr \pi_1\ p\ ,\ \inr \pi_1\ h_3} : (B \land Q) \supset ((A \lor B)\land (A \lor Q))$}
+            \end{prooftree}
+        \end{itemize}
+
+        De esta forma, como en cualquier caso tenemos que $((A \lor B) \land (A \lor Q))$ entonces por 
+        $\lor_E$ podemos concluir $((A \lor B) \land (A \lor Q))$. 
+        
+        \begin{prooftree}
+            \AxiomC{$h_1 : (A \lor (B \land Q))$}
+            \AxiomC{$f : A \supset ((A \lor B) \land (A \lor Q))$}
+            \AxiomC{$g : (B \land Q) \supset ((A \lor B)\land (A \lor Q))$}
+            \TrinaryInfC{$\ind_\lor(f, h)\ h_1 : (A \lor B)\land (A \lor Q)$}
+        \end{prooftree}
+        
+        Finalmente, como lo anterior es
+        consecuencia de haber supuesto desde un principio que $A \lor (B \land Q)$, entonces por
+        $\supset_I$ podemos concluir $(A \lor (B \land Q)) \supset ((A \lor B) \land (A \lor Q))$,
+        lo que queríamos demostrar.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : (A \lor (B \land Q))$}
+            \AxiomC{$f : A \supset ((A \lor B) \land (A \lor Q))$}
+            \AxiomC{$g : (B \land Q) \supset ((A \lor B)\land (A \lor Q))$}
+            \TrinaryInfC{$\ind_\lor(f, h)\ h_1 : (A \lor B)\land (A \lor Q)$}
+            \UnaryInfC{$\lambda h_1\ .\ \ind_\lor(f, g)\ h_1 : (A \lor (B \land Q)) \supset ((A \lor B)\land (A \lor Q))$}
+        \end{prooftree}
+
+    \end{proof}
+\end{example}
+
+Ahora le toca divertirse a usted.
+
+\begin{exercise}
+    Demuestre que 
+    $$
+        P \supset (P \wedge P)\text{ y que }(P \wedge P) \supset P.
+    $$
+\end{exercise}
+
+\begin{exercise}
+    Demuestre que 
+    $$
+        ((P \lor Q) \lor R) \supset (P \lor (Q \lor R)).
+    $$
+\end{exercise}
+
+\begin{exercise}
+    Demuestre que 
+    $$
+        (P \lor (P \land Q)) \supset P \text{ y } P \supset (P \lor (P \land Q)).
+    $$
+\end{exercise}
+
+\begin{exercise}
+    Demuestre que
+    $$
+        ((A \lor B) \supset C) \supset ((A \supset C) \land (B \supset C))
+    $$
+\end{exercise}
+
+\begin{remark}
+    Observe que la prueba anterior y el primer ejemplo de esta sección testifican que el diagrama de 
+    la observación 
+    \ref{remark:prop_univ_coprod1} está bien hecho, en el sentido de que en efecto
+    muestra una propiedad de $\lor$.
+\end{remark}
+
+\begin{exercise}
+    Demuestre que
+
+    $$
+        ((A \lor B) \land (A \lor Q)) \supset (A \lor (B \land Q))
+    $$
+\end{exercise}
+
+\subsubsection{Ejemplos con $\neg$}
+
+Trabajar con la negación es un poco truculento. La recomendación del autor para
+aprovechar esta sección; donde me di la libertad de hacer muchos ejemplos y explicarlos
+de forma que la cantidad de detalles va disminuyendo gradualmente; es que intente hacer las
+demostraciones por cuenta propia, valiéndose de lo que se tocó en secciones anteriores.
+Si encuentra mucha dificultad, intente empezar con la derivación en árbol y luego escrita
+en prosa, o comience haciendo un bosquejo de la demostración en prosa y con ella
+dibuje el árbol de derivación para corraborar que su argumento está bien.
+Si nota que aún se atora, no desespere pues es normal cuando uno apenas comienza
+a trabajar con un objeto matemático nuevo. La recomendación en ese caso es que
+lea las pruebas hasta que sienta que puede avanzar en la demostración por cuenta propia.
+
+\begin{example} \label{exercise:principio-no-contradiccion}
+    Demuestre que
+    $$
+        \neg (A \land \neg A)
+    $$
+
+    A esta proposición se le suele llamar \textit{ley de no contradicción}.
+
+    \begin{proof}
+        \hfill \newline
+        Por la regla de introducción de $\neg$, para probar $\neg (A \land \neg A)$
+        debemos suponer $(A \land \neg A)$ y deducir $\bot$. Así, supongamos $(A \land \neg A)$.
+        
+        Si $(A \land \neg A)$, entonces por $\land_E$ podemos concluir $A$ y $\neg A$.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : A \land \neg A$}
+            \UnaryInfC{$\pi_1\ h_1 : A \quad \quad \pi_2\ h_1 : \neg A$}
+        \end{prooftree}
+
+        Como $\neg A$, por $\supset_E$ tenemos que en virtud de $A$ y 
+        $A \supset \bot A$ podemos deducir $\bot$. 
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : A \land \neg A$}
+            \UnaryInfC{$\pi_1\ h_1 : A \quad \quad \pi_2\ h_1 : \neg A$}
+            \RightLabel{$\neg_E$}
+            \UnaryInfC{$\bot$}
+        \end{prooftree}
+        
+        Como concluimos $\bot$ a partir de suponer $(A \land \neg A)$, entonces por $\supset_I$ tenemos $(A \land \neg A) \supset \bot$ como queríamos.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : A \land \neg A$}
+            \UnaryInfC{$\pi_1\ h_1 : A$}
+            \AxiomC{$h_1 : A \land \neg A$}
+            \UnaryInfC{$\pi_2\ h_1 : \neg A$}
+            \RightLabel{$\neg_E$}
+            \BinaryInfC{$\bot$}
+            \UnaryInfC{$\neg h_1 : \neg (A \land \neg A)$}
+        \end{prooftree}
+    \end{proof}
+\end{example}
+
+\begin{example}\label{example:implicacion-implica-neg-conjuncion}
+    Demuestre que
+    $$
+        (A \supset B) \supset \neg (A \land \neg B)
+    $$
+    
+    Esta proposición es muy útil, pues permite expresar la implicación en términos de la
+    conjunción y negación. Además, el converso también es cierto y le tocará a usted demostrarlo
+    en el juego \ref{exercise:and-y-neg-implicacion}, de modo que en verdad $\neg (A \land \neg B)$
+    es equivalente a $A \supset B$.
+    \begin{proof}
+        \hfill\newline
+
+        Como debemos demostrar una implicación, primero suponemos el antecedente para derivar el
+        consecuente y, así poder concluir con $\supset_I$ la implicación.
+
+        Supongamos $(A \supset B)$. 
+        
+        \begin{prooftree}
+            \AxiomC{$h_1 : A \supset B$}
+        \end{prooftree}
+
+        Como queremos demostrar $\neg (A \land \neg B)$, por la
+        regla de introducción de $\neg$ debemos entonces suponer $A \land \neg B$ y derivar $\bot$.
+        Así, supongamos entonces $A \land \neg B$. 
+        
+        \begin{prooftree}
+            \AxiomC{$h_1 : A \supset B$}
+            \DisplayProof
+            \hskip 1.5cm
+            \AxiomC{$h_2 : A \land \neg B$}
+        \end{prooftree}
+        
+        Por $\land_E$ obtenemos $A$ y $\neg B$.
+        Observese que si tuvieramos $B$ entonces con $\neg B$ podriamos concluir de $\bot$ por $\neg_E$.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : A \supset B$}
+            \DisplayProof
+            \hskip 1.5cm
+            \AxiomC{$h_2 : A \land \neg B$}
+            \UnaryInfC{$\pi_1\ h_2 : A$}
+            \DisplayProof
+            \hskip 0.5cm
+            \AxiomC{$h_2 : A \land \neg B$}
+            \UnaryInfC{$\pi_2\ h_2 : \neg B$}
+        \end{prooftree}
+
+        Recordando que tenemos como hipótesis $A \supset B$, y además contamos con $A$, entonces
+        por $\supset_E$ podemos derivar $B$. 
+        
+        \begin{prooftree}
+            \AxiomC{$h_1 : A \supset B$}
+                        \AxiomC{$h_2 : A \land \neg B$}
+                        \UnaryInfC{$\pi_1\ h_2 : A$}
+            \BinaryInfC{$h_1\ (\pi_1\ h_2) : B$}
+            \DisplayProof
+            \hskip 0.5cm
+            \AxiomC{$h_2 : A \land \neg B$}
+            \UnaryInfC{$\pi_2\ h_2 : \neg B$}
+        \end{prooftree}
+        
+        Así como $B$ y $\neg B$, por $\neg_E$ obtenemos entonces $\bot$. 
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : A \supset B$}
+                        \AxiomC{$h_2 : A \land \neg B$}
+                        \UnaryInfC{$\pi_1\ h_2 : A$}
+            \BinaryInfC{$h_1\ (\pi_1\ h_2) : B$}
+                        \AxiomC{$h_2 : A \land \neg B$}
+                        \UnaryInfC{$\pi_2\ h_2 : \neg B$}
+            \RightLabel{$\neg_E$}
+            \BinaryInfC{$\bot$}
+        \end{prooftree}
+        
+        Como concluimos $\bot$ de suponer $A \land \neg B$, entonces por $\neg_I$
+        tenemos $\neg (A \land \neg B)$ y, más aún como lo anterior lo concluimos de suponer
+        $A \supset B$, entonces podemos concluir por $\supset_I$
+        $$
+            (A \supset B) \supset \neg (A \land \neg B)
+        $$
+        lo que queríamos demostrar.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : A \supset B$}
+                        \AxiomC{$h_2 : A \land \neg B$}
+                        \UnaryInfC{$\pi_1\ h_2 : A$}
+            \BinaryInfC{$h_1\ (\pi_1\ h_2) : B$}
+                        \AxiomC{$h_2 : A \land \neg B$}
+                        \UnaryInfC{$\pi_2\ h_2 : \neg B$}
+            \RightLabel{$\neg_E$}
+            \BinaryInfC{$\bot$}
+            \RightLabel{$\neg_I$}
+            \UnaryInfC{$\lambda h_2\ .\ (\pi_2\ h_2)\ (h_1\ (\pi_1\ h_2)) : \neg(A \land \neg B)$}
+            \UnaryInfC{$\lambda h_1\ .\ \lambda h_2\ .\ (\pi_2\ h_2)\ (h_1\ (\pi_1\ h_2)) : (A \supset B) \supset \neg(A \land \neg B)$}
+        \end{prooftree}
+    \end{proof}
+\end{example}
+
+\begin{example}\label{example:negacion-disjuncion-distribuye}
+    Demuestre que 
+    $$
+        \neg (A \lor B) \supset (\neg A \land \neg B)
+    $$
+
+
+    Esta proposición es muy útil, porque nos permite expresar la negación de una disjunción
+    como una conjunción. Le daremos un uso en el ejemplo \ref{example:doble-neg-3erexcl}. 
+    \begin{proof}
+        \hfill\newline
+
+        Supongamos $\neg (A \lor B)$. 
+        
+        \begin{prooftree}
+            \AxiomC{$h_1 : \neg (A \lor B)$}    
+        \end{prooftree}
+
+        Para demostrar $\neg A \land \neg B$
+        debemos ver que $\neg A$ y $\neg B$ se sigue de nuestra hipótesis, y 
+        para demostar $\neg A$ y $\neg B$ debemos suponer $A$ y deducir $\bot$, 
+        y análogamente para $B$.
+
+        \begin{prooftree}
+            %\AxiomC{$h_1 : \neg (A \lor B)$}
+                \AxiomC{$h_2 : A$}
+                \shortDeduce
+                \DeduceC{$\bot$}
+                \UnaryInfC{$? : \neg A$}
+                        \AxiomC{$h_3 : B$}
+                        \shortDeduce
+                        \DeduceC{$\bot$}
+                        \UnaryInfC{$? : \neg B$}
+            \BinaryInfC{$? : \neg A \land \neg B$}
+        \end{prooftree}
+
+        Supongamos entonces $A$. Si $A$, entonces $A \lor B$ pero por hipótesis $\neg (A \lor B)$.
+        Por $\neg_E$ entonces podemos concluir $\bot$. Por lo tanto, $\neg A$. Bajo un razonamiento
+        totalmente análogo obtenemos $\neg B$.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : \neg (A \lor B)$}
+            \AxiomC{$h_2 : A$}
+            \UnaryInfC{$\inl h_2 : A \lor B$}
+            %\BinaryInfC{$h_1\ (\inl h_2) : $}
+            \RightLabel{$\neg_E$}
+            \BinaryInfC{$\bot$}
+            \UnaryInfC{$h_1\ (\inl h_2) : \neg A$}
+            \UnaryInfC{$f \equiv h_1\ (\inl h_2) : \neg A$}
+        \end{prooftree}
+
+        Así, por $\neg_I$ tenemos $\neg A \land \neg B$. Como concluimos lo anterior de suponer $\neg (A \lor B)$ entonces por $\supset_I$ tenemos 
+        $$\neg (A \lor B) \supset (\neg A \land \neg B)$$
+        como queríamos demostrar.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : \neg (A \lor B)$}
+            \AxiomC{$h_2 : A$}
+            \UnaryInfC{$\inl h_2 : A \lor B$}
+            %\BinaryInfC{$h_1\ (\inl h_2) : $}
+            \RightLabel{$\neg_E$}
+            \BinaryInfC{$\bot$}
+            \UnaryInfC{$h_1\ (\inl h_2) : \neg A$}
+            \UnaryInfC{$f \equiv h_1\ (\inl h_2) : \neg A$}
+
+            \AxiomC{$h_1 : \neg (A \lor B)$}
+            \AxiomC{$h_3 : B$}
+            \UnaryInfC{$\inr h_3 : A \lor B$}
+            %\BinaryInfC{$h_1\ (\inl h_3) : $}
+            \RightLabel{$\neg_E$}
+            \BinaryInfC{$\bot$}
+            \UnaryInfC{$h_1\ (\inr h_3) : \neg B$}
+            \UnaryInfC{$g \equiv h_1\ (\inr h_3) : \neg B$}
+            \BinaryInfC{$\picopar{f, g} : \neg A \land \neg B$}
+            \UnaryInfC{$\lambda h_1\ .\  \picopar{f, g} : \neg (A \lor B) \supset (\neg A \land \neg B)$}
+    \end{prooftree}
+    \end{proof}
+\end{example}
+
+\begin{example}
+    Demuestre que 
+        $$
+            (\neg A \land \neg B) \supset \neg (A \lor B)
+        $$
+    Observe que esta proposición es el converso de la anterior.
+    En general, las proposiciones o resultados que nos permiten expresar
+    algunas cosas de otra forma, y que además nos permiten regresar a la forma original sin
+    requisito alguno más que una forma de hacerlo o evidencia de que se puede hacer, son
+    resultados sumamente útiles e importantes, y hablaremos de ellos en secciones siguientes.
+
+    \begin{proof}
+        \hfill\newline
+
+        Supongamos que $\neg A \land \neg B$ para demostrar $\neg (A \lor B)$; para esto
+        último basta suponer $(A \lor B)$ y llegar a $\bot$. Supongamos que $A \lor B$.
+        
+        \begin{prooftree}
+            \AxiomC{$h_1 : \neg A \land \neg B \quad\quad\quad h_2 : A \lor B$}
+            \shortDeduce
+            \DeduceC{$\bot$}
+            \UnaryInfC{$? : \neg (A \lor B)$}
+        \end{prooftree}
+
+        Notemos que por $\neg A \land \neg B$ tenemos $\neg A$ y $\neg B$.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : \neg A \land \neg B$}
+            \UnaryInfC{$\pi_1\ h_1 : \neg A$}
+            \DisplayProof
+            \hskip 1.5cm
+            \AxiomC{$h_1 : \neg A \land \neg B$}
+            \UnaryInfC{$\pi_2\ h_1 : \neg B$}
+        \end{prooftree}
+
+        Procedemos por análisis de casos sobre $A \lor B$.
+        Si $A$, como tenemos $\neg A$ entonces concluimos $\bot$; y análogamente para $B$.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : \neg A \land \neg B$}
+            \UnaryInfC{$\pi_1\ h_1 : \neg A$}
+                                                \AxiomC{$h_3 : A$}
+            \BinaryInfC{$\bot$}
+            \DisplayProof
+            \hskip 1.5cm
+            \AxiomC{$h_1 : \neg A \land \neg B$}
+            \UnaryInfC{$\pi_2\ h_1 : \neg B$}
+                                                \AxiomC{$h_4 : B$}
+            \BinaryInfC{$\bot$}
+            %\BinaryInfC{$(\pi_1\ h_2)\ h_3 : $}
+        \end{prooftree}
+
+        Así, en cualquier caso de $(A \lor B)$ se tiene una forma de deducir $\bot$, 
+        por lo que entonces $\neg (A \lor B)$. 
+        
+        \begin{prooftree}
+            \AxiomC{$h_1 : \neg A \land \neg B$}
+            \UnaryInfC{$\pi_1\ h_1 : \neg A$}
+            \LeftLabel{$\neg_E$}
+                                                \AxiomC{$h_3 : A$}
+            \BinaryInfC{$\bot$}
+            \AxiomC{$h_1 : \neg A \land \neg B$}
+            \UnaryInfC{$\pi_2\ h_1 : \neg B$}
+                                                \AxiomC{$h_4 : B$}
+            \RightLabel{$\neg_E$}
+            \BinaryInfC{$\bot$}
+            \AxiomC{$h_2 : A \lor B$}
+            \TrinaryInfC{$\bot$}
+            \UnaryInfC{$\lambda h_2 \ .\ \lambda h_3\ .\ \lambda h_4\ .\ \ind ((\pi_1\ h_1)\ h_3\ ,\ (\pi_2\ h_1)\ h_4)\ h_2 : \neg (A \lor B)$}
+        \end{prooftree}
+        
+        Como esto último lo concluimos de haber 
+        supuesto desde un inicio $\neg A \land \neg B$, entonces 
+        $(\neg A \land \neg B) \supset \neg (A \lor B)$.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : \neg A \land \neg B$}
+            \UnaryInfC{$\pi_1\ h_1 : \neg A$}
+            \LeftLabel{$\neg_E$}
+                                                \AxiomC{$h_3 : A$}
+            \BinaryInfC{$\bot$}
+            \AxiomC{$h_1 : \neg A \land \neg B$}
+            \UnaryInfC{$\pi_2\ h_1 : \neg B$}
+                                                \AxiomC{$h_4 : B$}
+            \RightLabel{$\neg_E$}
+            \BinaryInfC{$\bot$}
+            \AxiomC{$h_2 : A \lor B$}
+            \TrinaryInfC{$\bot$}
+            \RightLabel{$\neg_I$}
+            \UnaryInfC{$\lambda h_2\ .\ \lambda h_3\ .\ \lambda h_4\ .\ \ind ((\pi_1\ h_1)\ h_3\ ,\ (\pi_2\ h_1)\ h_4)\ h_2 : \neg (A \lor B)$}
+            \UnaryInfC{$\lambda h_1\ .\ \lambda h_2\ .\ \lambda h_3\ .\ \lambda h_4\ .\ \ind ((\pi_1\ h_1)\ h_3\ ,\ (\pi_2\ h_1)\ h_4)\ h_2 : (\neg A \land \neg B) \supset \neg (A \lor B)$}
+        \end{prooftree}
+
+    \end{proof}
+
+
+\end{example}
+
+\begin{exercise}\label{exercise:and-y-neg-implicacion}
+    Demuestre que
+    $$
+        \neg (A \land \neg B) \supset (A \supset B)
+    $$
+\end{exercise}
+
+\begin{example}
+    Demuestre que
+    $$
+        \neg (A \supset B) \supset A
+    $$
+    
+
+    \begin{proof}
+        \hfill\newline
+
+        Como debemos demostrar una implicación, primero suponemos el antecedente para derivar el
+        consecuente y, así poder concluir con $\supset_I$ la implicación.
+
+        Supongamos $\neg (A \supset B)$. Notemos que es una negación
+    \end{proof}
+\end{example}
+
+\begin{example}
+    Demuestre que
+    $$
+        \neg (A \lor B) \supset (\neg A \land \neg B)
+    $$
+
+    \begin{proof}
+        \hfill\newline 
+
+        Supongamos que $\neg (A \lor B)$ y veamos que $(\neg A \land \neg B)$.
+        Para ello, en virtud de la regla de introducción de $\land$, debemos derivar entonces
+        $\neg A$ y $\neg B$ y, para esto último, por $\neg_I$ debemos suponer $A$ y derivar $\bot$
+        y suponer $B$ y derivar $\bot$.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : \neg (A \lor B)$}
+        \end{prooftree}
+
+        Si $A$, entonces $A \lor B$. Como $\neg (A \lor B)$, entonces por $\neg_E$ tenemos $\bot$ y
+        por $\neg_I$ tenemos $\neg A$.
+        Análogamente, si $B$, entonces $A \lor B$ y como $\neg (A \lor B)$, se tiene $\bot$ y así
+        por $\neg_I$ concluimos $\neg B$.
+
+        \begin{prooftree}
+            \AxiomC{$h_2 : A$}
+            \UnaryInfC{$\inl h_2 : A \lor B$}
+            \AxiomC{$h_1 : \neg (A \lor B)$}
+            \RightLabel{$\neg_E$}
+            \BinaryInfC{$\bot$}
+            \RightLabel{$\neg_I$}
+            \UnaryInfC{$h_1\ (\inl h_2) : \neg A$}
+            \UnaryInfC{$\lambda h_1\ .\ h_1\ (\inl h_2) : \neg (A \lor B) \supset \neg A$}
+        \end{prooftree}
+
+        \begin{prooftree}
+            \AxiomC{$h_3 : B$}
+            \UnaryInfC{$\inr h_3 : A \lor B$}
+            \AxiomC{$h_1 : \neg (A \lor B)$}
+            \RightLabel{$\neg_E$}
+            \BinaryInfC{$\bot$}
+            \RightLabel{$\neg_I$}
+            \UnaryInfC{$h_1\ (\inr h_3) : \neg B$}
+            \UnaryInfC{$\lambda h_1\ .\ h_1\ (\inr h_3) : \neg (A \lor B) \supset \neg B$}
+        \end{prooftree}
+
+        Luego, notese que tenemos 
+        $$
+        \neg (A \lor B) \supset \neg A \quad \quad \neg (A \lor B) \supset \neg B
+        $$
+
+        y por lo tanto
+
+        $$
+        (\neg (A \lor B) \supset \neg A) \land (\neg (A \lor B) \supset \neg B)
+        $$
+        Entonces por el juego \ref{exercise:ejercicio_prop_univ} podemos concluir que
+        $$
+        \neg (A \lor B) \supset (\neg A \land \neg B)
+        $$
+
+        como queríamos.
+
+        \begin{prooftree}
+            \AxiomC{$h_2 : A$}
+            \UnaryInfC{$\inl h_2 : A \lor B$}
+            \AxiomC{$h_1 : \neg (A \lor B)$}
+            \LeftLabel{$\neg_E$}
+            \BinaryInfC{$\bot$}
+            \RightLabel{$\neg_I$}
+            \RightLabel{$\neg_I$}
+            \UnaryInfC{$h_1\ (\inl h_2) : \neg A$}
+            \UnaryInfC{$\lambda h_1\ .\ h_1\ (\inl h_2) : \neg (A \lor B) \supset \neg A$}
+            %\UnaryInfC{$f \equiv \lambda h_1\ .\ h_1\ (\inl h_2) : \neg (A \lor B) \supset \neg A$}
+                        \AxiomC{$h_3 : B$}
+                        \UnaryInfC{$\inr h_3 : A \lor B$}
+                        \AxiomC{$h_1 : \neg (A \lor B)$}
+                        \RightLabel{$\neg_E$}
+                        \BinaryInfC{$\bot$}
+                        \RightLabel{$\neg_I$}
+                        \UnaryInfC{$h_1\ (\inr h_3) : \neg B$}
+                        \UnaryInfC{$\lambda h_1\ .\ h_1\ (\inr h_3) : \neg (A \lor B) \supset \neg B$}
+                        %\UnaryInfC{$g \equiv \lambda h_1\ .\ h_1\ (\inr h_3) : \neg (A \lor B) \supset \neg B$}
+            \BinaryInfC{$\picopar{\lambda h_1\ .\ h_1\ (\inl h_2)\ ,\ \lambda h_1\ .\ h_1\ (\inr h_3)} : (\neg (A \lor B) \supset \neg A) \land (\neg (A \lor B) \supset \neg B)$}
+            \RightLabel{(Juego \ref{exercise:ejercicio_prop_univ})}
+            \UnaryInfC{$\lambda h_1 \ .\ \picopar{h_1\ (\inl h_2)\ ,\ h_1\ (\inr h_3)} : \neg (A \lor B) \supset (\neg A \land \neg B)$}
+        \end{prooftree}
+
+         
+    \end{proof}
+\end{example}
+
+\begin{example} \label{example:doble-neg-3erexcl}
+    Demuestre que
+    $$
+        \neg \neg (A \lor \neg A)
+    $$
+
+    Observe que la proposición nos dice que la negación de la negación del principio
+    del tercer excluido es válido en lógica intuicionista, sin embargo esto no significa
+    que $A \lor \neg A$ es verdad en general.
+
+    \begin{proof}
+        \hfill \newline
+
+        Como queremos probar la negación de una proposición, por la regla $\neg_I$ debemos
+        suponer $\neg(A \lor \neg A)$ y llegar a $\bot$ para demostrar lo que queremos.
+        Entonces supongamos $\neg (A \lor \neg A)$. 
+        
+        \begin{prooftree}
+            \AxiomC{$h_1 : \neg (A \lor \neg A)$}
+        \end{prooftree}
+
+        Notemos que para poder eliminar
+        la negación de la proposición, debemos proveer de $A$ o de $\neg A$, para lo cual
+        no tenemos forma. Nos gustaría mucho tener alguna forma de reexpresar lo que tenemos
+        en una manera más útil para nuestros fines. Haciendo memoria que en el
+        ejemplo \ref{example:negacion-disjuncion-distribuye} demostramos una proposición
+        que nos permite reexpresar la negación de una disyunción, expresamos
+        $\neg (A \lor \neg A)$ como $\neg A \land \neg \neg A$. 
+        
+        \begin{prooftree}
+            \AxiomC{$h_1 : \neg (A \lor \neg A)$}
+            \RightLabel{Ejemplo \ref{example:negacion-disjuncion-distribuye}}
+            \UnaryInfC{$h_1' : \neg A \land \neg \neg A$}
+        \end{prooftree}  
+        
+        Notemos además
+        que la proposición obtenida es de la forma
+        $$
+            P \land \neg P
+        $$
+        con $P \equiv \neg A$, y por el principio de no contradicción 
+        (ejemplo \ref{exercise:principio-no-contradiccion}) tenemos automáticamente
+        que 
+        $$
+            \neg (\neg A \land \neg \neg A)
+        $$
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : \neg (A \lor \neg A)$}
+            \RightLabel{Ejemplo \ref{example:negacion-disjuncion-distribuye}}
+            \UnaryInfC{$h_1' : (\neg A) \land \neg (\neg A)$}
+            \RightLabel{Ejemplo \ref{exercise:principio-no-contradiccion}}
+            \UnaryInfC{$\bot$}
+            \RightLabel{$\neg_I$}
+            \UnaryInfC{$\neg h_1 : \neg \neg (A \lor \neg A)$}
+        \end{prooftree}
+        Esto concluye la demostración.
+    \end{proof}
+\end{example}
+
+A continuación podrá encontrar algunos juegos que le ayudarán a entender mejor
+cómo trabajar con la negación.
+
+\begin{exercise}
+    Demuestre que 
+    $$((\neg A) \lor B) \supset (A \supset B)$$
+\end{exercise}
+
+\begin{exercise}
+    Demuestre que 
+    $$
+        \neg A \supset (B \lor \neg A)
+    $$
+\end{exercise}
+
+\begin{exercise}
+    Demuestre que
+    $$
+        \neg ((A \supset \neg A) \land (\neg A \supset A))
+    $$
+\end{exercise}
+
+\begin{exercise}
+    Demuestre que
+    $$
+        \neg (\neg A \land \neg \neg A)
+    $$
+
+    A esta proposición se le conoce como la \textit{ley del tercer excluido para la negación}.
+\end{exercise}
+
+\begin{exercise}
+    $$
+        \neg(A \lor B) \supset \neg A
+    $$
+\end{exercise}
+
+\subsubsection{Ejemplos con $\bot$ y $\top$}
+
+Después de haber trabajado con la negación, trabajar con $\bot$ es más familiar.
+Se deja como un reto al lector o lectora verificar que las pruebas presentadas
+a continuación están bien mediante el árbol de derivación, o en su caso, 
+escribir una prueba en prosa dada un árbol de derivación.
+
+\begin{example}
+    Demuestre que
+
+    $$
+        \bot \supset A
+    $$
+
+    \begin{proof}
+        \hfill\newline
+
+        Se sigue de inmediato por el principio de explosión.
+    \end{proof}
+\end{example}
+
+\begin{example}
+    Demuestre que
+
+    $$
+        \neg A \supset ( A \supset \bot)
+    $$
+
+    \begin{proof}
+        \hfill\newline
+        Supongamos $\neg A$ para demostrar $A \supset \bot$.
+        Como queremos demostrar $A \supset \bot$, basta suponer $A$ y concluir $\bot$.
+        Por $\neg_E$, de $\neg A$ y $A$ obtenemos $\bot$. Así, por la regla de introducción
+        de $\supset$ tenemos $A \supset \bot$. Como lo anterior fue consecuencia de haber
+        supuseto $\neg A$, entonces $\neg A \supset (A \supset \bot)$.
+    \end{proof}
+\end{example}
+
+\begin{example}
+    Demuestre que
+
+    $$
+        (A \supset \bot) \supset \neg A
+    $$
+
+    \begin{proof}
+        \hfill \newline
+        \begin{prooftree}
+            \AxiomC{$h_1 : A \supset \bot$}
+            \AxiomC{$h_2 : A$}
+            \BinaryInfC{$\bot$}
+            \UnaryInfC{$\lambda h_2\ .\ h_1 h_2 : \neg A$}
+            \UnaryInfC{$\lambda h_1\ .\ \lambda h_2\ .\ h_1 h_2 : (A \supset \bot) \supset \neg A$}
+        \end{prooftree}
+        
+    \end{proof}
+
+\end{example}
+
+\begin{example}
+    Demuestre que
+
+    $$
+        \neg \bot \supset \top    
+    $$
+
+    \begin{proof}
+
+        Como $\top$ se sigue de cualquier contexto en una prueba, entonces
+        en particular lo podemos usar en el contexto donde $\neg \bot$ es una hipótesis.
+        Por lo tanto, por $\supset_I$ tenemos $\neg \bot \supset \top$ como queríamos.
+        
+        \begin{prooftree}
+            \AxiomC{$h_1 : \neg \bot$}
+            \RightLabel{$\top_I$}
+            \UnaryInfC{$\star : \top$}
+            \UnaryInfC{$\lambda h_1\ .\ \star : \neg \bot \supset \top$}    
+        \end{prooftree}
+    \end{proof}
+\end{example}
+
+\begin{example}
+    Demuestre que
+
+    $$
+        \neg \top \supset \bot
+    $$
+\end{example}
+
+\begin{exercise}
+    Demuestre que
+
+    $$
+        \neg \neg \bot \supset \bot    
+    $$
+\end{exercise}
+
+\begin{exercise}\label{example:negneg-top}
+    Demuestre que
+
+    $$
+        \neg \neg \top \supset \top
+    $$
+\end{exercise}
+
+\begin{exercise}
+    Si usted intenta demostrar
+    $$
+        \neg \neg A \supset A
+    $$
+
+    encontrará que no es posible. Observe que esta proposición es un caso 
+    más general del ejemplo \ref{example:negneg-top}. 
+    ¿Por qué cree que no es posible demostrar esta proposición a diferencia del
+    ejemplo antes mencionado?
+
+\end{exercise}
+
+\begin{exercise}
+    Si usted intenta demostrar
+    $$
+        \neg A \lor A
+    $$
+
+    encontrará que no es posible. ¿Por qué cree que no es posible?
+    Si suponemos válida la proposición $\neg \neg A \supset A$, y
+    disponemos de todas las proposiciones que hemos probado en esta
+    sección, ¿puede demostrar la proposición?
+\end{exercise}
+
+\begin{example}
+    Demuestre que
+    $$
+        \neg (A \supset \bot) \supset A
+    $$
+\end{example}
+
+\begin{exercise}
+    Demuestre que
+
+    $$
+        \bot \supset \neg(A \lor \neg A)
+    $$
+
+\end{exercise}
+
+\subsubsection{Ejemplos con $\forall$}
+
+\begin{example}
+    Demuestre que $\forall x (A \land B(x)) \supset (A \land \forall x B(x))$.
+
+    \begin{proof}
+        \hfill\newline
+        Supongamos que $\forall x (A \land B(x))$ para demostrar $(A \land \forall x B(x))$.
+        \begin{prooftree}
+            \AxiomC{$h_1 : \forall x (A \land B(x))$}
+        \end{prooftree}
+        Para concluir $(A \land \forall x B(x))$ primero debemos demostrar $A$ y luego $\forall x B(x)$.
+        \begin{prooftree}
+            \AxiomC{$h_1 : \forall x (A \land B(x))$}
+            \shortDeduce
+            \DeduceC{$? : A \quad \quad ? : \forall x B(x)$}
+            \UnaryInfC{$? : A \land \forall x B(x)$}
+            \UnaryInfC{$\lambda h_1 \ .\ ? : \forall x (A \land B(x)) \supset A \land \forall x B(x)$}
+        \end{prooftree}
+        Para obtener $A$, notemos que por $\forall_E$ podemos dar $t$ tal que $A \land B(t)$ y, de $\land_E$
+        concluir el $A$ que buscamos. 
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : \forall x (A \land B(x))$}
+            \RightLabel{$\forall_E$}
+            \UnaryInfC{$h_1(t) : A \land B(t)$}
+            \UnaryInfC{$\pi_1 h_1(t) : A$}
+
+                \AxiomC{$h_1 : \forall x (A \land B(x))$}
+                \shortDeduce
+                \DeduceC{$? : \forall x B(x)$}
+
+            \BinaryInfC{$? : A \land \forall x B(x)$}
+            \UnaryInfC{$\lambda h_1 \ .\ ? : \forall x (A \land B(x)) \supset A \land \forall x B(x)$}
+        \end{prooftree}
+
+
+        Por otro lado, dado $s$ arbitrario tal que $A \land B(s)$ 
+        podemos obtener $B(s)$. Como $s$ fue arbitrario, entonces $\forall x B(x)$ como queríamos.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : \forall x (A \land B(x))$}
+            \RightLabel{$\forall_E$}
+            \UnaryInfC{$h_1(t) : A \land B(t)$}
+            \UnaryInfC{$\pi_1 h_1(t) : A$}
+
+                \AxiomC{$h_1 : \forall x (A \land B(x))$}
+                \RightLabel{$\forall_E$}
+                \UnaryInfC{$h_1(s) : A \land B(s)$}
+                \UnaryInfC{$\pi_1 h_1(s) : B(s)$}
+                \RightLabel{$\forall_I$}
+                \UnaryInfC{$\lambda x\ .\ \pi_1 h_1(x) : \forall x B(x)$}
+
+            \BinaryInfC{$\picopar{\pi_1 h_1(t)\ ,\ (\lambda x\ .\ \pi_1 h_1(x))} : A \land \forall x B(x)$}
+            \UnaryInfC{$\lambda h_1 \ .\ \picopar{\pi_1 h_1(t)\ ,\ (\lambda x\ .\ \pi_1 h_1(x))} : \forall x (A \land B(x)) \supset A \land \forall x B(x)$}
+        \end{prooftree}
+    \end{proof}
+\end{example}
+
+\begin{example}
+    Demuestre que
+
+    $$
+        (\forall x P(x) \supset Q(x)) \supset ((\forall x P(x)) \supset (\forall x Q(x)))
+    $$
+
+    \begin{proof}
+        \hfill\newline
+        Supongamos que $\forall x P(x) \supset Q(x)$ para ver que $(\forall x P(x)) \supset (\forall x Q(x))$.
+        Para esto, basta suponer $\forall x P(x)$ y ver que $\forall x Q(x)$. 
+        
+        \begin{prooftree}
+            \AxiomC{$h_1 : \forall x P(x) \supset Q(x)$}
+            \hskip 1.5cm
+            \DisplayProof
+            \AxiomC{$h_2 : \forall x P(x)$}
+        \end{prooftree}
+        
+        
+        
+        Sea entonces $s$ arbitrario pero fijo. Como por hipótesis tenemos que 
+        $$h_1 : \forall x P(x) \supset Q(x),$$
+        entonces en particular para $s$ tendremos que $P(s) \supset Q(s)$ por $\forall_E$. 
+        
+        \begin{prooftree}
+            \AxiomC{$h_1 : \forall x P(x) \supset Q(x)$}
+            \RightLabel{$\forall_E$}
+            \UnaryInfC{$h_1(s) : P(x) \supset Q(s)$}
+        \end{prooftree}
+
+        Además, como también tenemos por hipótesis que $\forall x P(x)$,
+        entonces en particular para $s$ tendremos $P(s)$ por $\forall_E$. Así, por $\supset_E$ podemos concluir $Q(s)$.
+        Como $s$ fue arbitraria pero fija, entonces por $\forall_I$ tenemos que $\forall x Q(x)$.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : \forall x P(x) \supset Q(x)$}
+            \RightLabel{$\forall_E$}
+            \UnaryInfC{$h_1(s) : P(s) \supset Q(s)$}
+                \AxiomC{$h_2 : \forall x P(x)$}
+                \RightLabel{$\forall_E$}
+                \UnaryInfC{$h_2(s) : P(s)$}
+            \BinaryInfC{$h_1(s)\ h_2(s) : Q(s)$}
+            \RightLabel{$\forall_I$}
+            \UnaryInfC{$\lambda x\ .\ h_1(x)\ h_2(x):\forall x Q(x)$}
+        \end{prooftree}
+
+        Por lo tanto, $(\forall x P(x)) \supset (\forall x Q(x))$ y como lo anterior fue deducido a partir
+        de haber supuesto $\forall x P(x) \supset Q(x)$, entonces 
+        $$
+            (\forall x P(x) \supset Q(x)) \supset ((\forall x P(x)) \supset (\forall x Q(x)))
+        $$
+        como queríamos demostrar.
+
+        \begin{prooftree}
+            \AxiomC{$h_1 : \forall x P(x) \supset Q(x)$}
+            \RightLabel{$\forall_E$}
+            \UnaryInfC{$h_1(s) : P(s) \supset Q(s)$}
+                \AxiomC{$h_2 : \forall x P(x)$}
+                \RightLabel{$\forall_E$}
+                \UnaryInfC{$h_2(s) : P(s)$}
+            \BinaryInfC{$h_1(s)\ h_2(s) : Q(s)$}
+            \RightLabel{$\forall_I$}
+            \UnaryInfC{$\lambda x\ .\ h_1(x)\ h_2(x):\forall x Q(x)$}
+            \UnaryInfC{$\lambda h_2\ .\ \lambda x\ .\ h_1(x)\ h_2(x):\forall x P(x) \supset \forall x Q(x)$}
+            \UnaryInfC{$\lambda h_1\ .\ \lambda h_2\ .\ \lambda x\ .\ h_1(x)\ h_2(x):(\forall x P(x) \supset Q(x)) \supset ((\forall x P(x)) \supset (\forall x Q(x)))$}
+        \end{prooftree}
+    \end{proof}
+\end{example}
+
+\begin{example}
+    Demuestre que
+
+    $$
+        (\forall x A(x) \land B(x)) \supset ((\forall x A (x)) \land (\forall x B (x)))
+    $$
+\end{example}
+
+\begin{example}
+    Demuestre que
+
+    $$
+        (\forall x B(x) \lor C(x)) \supset ((\forall x B(x)) \lor (\forall x C(x)))
+    $$
+\end{example}
+
+\begin{example}
+    Demuestre que
+
+    $$
+        (\forall x B(x) \lor C) \supset ((\forall x. B(x)) \lor C)
+    $$
+\end{example}
+
+\begin{example}
+    Demuestre que
+
+    $$
+        ((\forall x. B(x)) \lor (\forall x . C(x))) \supset (\forall x B(x) \lor C(x))
+    $$
+\end{example}
+
+\todo{Ver cual de las 3 anteriores no se pueden probar}
+
+\begin{exercise}
+    Demuestre que
+
+    $$
+        ((\forall x A (x)) \land (\forall x B (x))) \supset (\forall x A(x) \land B(x))
+    $$
+\end{exercise}
+
+\subsubsection{Ejemplos con $\exists$}
+
+\begin{example}
+    Demuestre que 
+    $$
+        \exists x \exists y P(x, y) \supset \exists y \exists x P(y, x)
+    $$ 
+\end{example}
+
+\subsection{Deducción natural para la lógica clásica}
+
+Hasta el momento nuestro sistema de deducción natural codifica la lógica intuicionista, sin embargo al intentar demostrar fórmulas como
+$$
+    \neg(x \land y) \supset (\neg x \lor \neg y)
+$$
+
+$$
+    \neg \neg x \supset x
+$$
+
+$$
+    x \lor \neg x
+$$
+
+uno encontrará obstáculos. La veracidad de estas fórmulas dependen de axiomas adicionales sobre la lógica intuicionista; por lo tanto al agregar estos axiomas adicionales la lógica resultante deja de ser intuicionista y se convierte en lógica clásica.
+
+El axioma adicional que consideramos en esta sección es uno atribuido a Prawitz \cite{PaoloMancosu56} y se puede considerar como una generalización a la regla de $\bot$ que dimos en secciones anteriores.
+
+\begin{center}
+    \begin{prooftree}
+        \AxiomC{$[\neg A]$}
+        \shortDeduce
+        \DeduceC{$\bot$}
+        \RightLabel{$\bot_K$}
+        \UnaryInfC{$A$}
+    \end{prooftree}
+\end{center}
+
+Esta regla adicional codifica un principio de prueba por contradicción: Si de suponer que la premisa $A$ es falsa se llega al absurdo $\bot$, entonces es porque cometimos un error al suponer $A$ como falsa; en virtud de que \textbf{(en lógica clásica)} un enunciado es exclusivamente verdadero o falso, entonces debe ser que $A$ es verdadero.
+
+En el razonamiento anterior, es importante hacer énfasis en que su potencial validez depende fuertemente de suponer que un enunciado es o no es; como habíamos comentado antes, esta suposición es lo que distingue a la lógica intuicionista de la lógica clásica.
+
+\section{Parte 2: Funciones, recursión e inducción}
+\todo{TODO Para prox martes tener al menos la mitad de la primera subseccion}
+\todo{TODO y tener las subsecciones mejor definidas}
+\subsection{La esencia de las funciones}
+
+\subsection{Funciones y cómputo}
+
+%\subsection{Recursión}
+
+%Para las siguientes dos secciones, juntarlas (calculo lambda simplemente tipado)
+
+\subsection{Un primer acercamiento a los Tipos}
+
+
+\subsection{Funciones y Tipos}
+
+\section{Parte 3: Introducción a la teoría de tipos dependientes de Per-Martin Löf}
+% Dar una embarrada de tipos inductivos
+
+\begin{itemize}
+    \item Parte I: Un poco de lógica
+    \begin{enumerate}
+        \item Introducción
+        \begin{enumerate}
+            \item Lógica como herramienta de razonamiento.
+        \end{enumerate}
+        \item Lenguajes
+        \begin{enumerate}
+            \item Lenguaje y metalenguaje.
+            \item Un lenguaje común para hablar de colecciones.
+        \end{enumerate}
+        \item Lógica proposicional.
+        \begin{enumerate}
+            \item Lógica proposicional.
+            \item El lenguaje de la lógica proposicional.
+            \item Una introducción a la semántica de la lógica proposicional.
+            \item Cálculo de proposiciones.
+            \item Derivaciones como árboles.
+        \end{enumerate}
+        \item Lógica de predicados.
+        \begin{enumerate}
+            \item Motivación.
+            \item El lenguaje de la lógica de predicados.
+            \item Variables libres y variables ligadas.
+            \item Sintaxis de la lógica de predicados.
+            \item Verdad, falsedad y derivaciones en la lógica de predicados.
+        \end{enumerate}
+        \item Deducción natural.
+        \begin{enumerate}
+            \item Introducción.
+            \item Reglas y deducciones.
+            \item Deducción natural en acción.
+            \item Deducción natural para la lógica clásica.
+        \end{enumerate}
+    \end{enumerate}
+    \item Parte II Funciones, recursión e inducción.
+    \begin{enumerate}
+        \item La esencia de las funciones.
+        \item Funciones y cómputo.
+        \item Recursión.
+        \item Un primer acercamiento a los tipos.
+        \item Funciones y tipos.
+    \end{enumerate}
+    \begin{enumerate}
+        \item Introducción a la teoría de tipos de Per Martin-Löf
+        \begin{enumerate}
+            \item Teoría de tipos dependiente.
+            \item El tipo de las funciones dependientes.
+            \item Algunos tipos inductivos
+            \item Tipos identidad
+            \item Universos
+            \item El tipo de los números naturales
+            \begin{enumerate}
+                \item Construcción
+                \item Operaciones
+                \item La decidibilidad e igualdad decidible
+                \item Principio del buen orden.
+                \item La infinitud de los números primos.
+            \end{enumerate}
+            \item El tipo de los números enteros
+            \begin{enumerate}
+                \item Resultados básicos de divisibilidad.
+                \item Congruencias.
+                \item Grupos cíclicos.
+            \end{enumerate}
+        \end{enumerate}
+        \item Introducción a las matemáticas univalentes
+        \begin{enumerate}
+            \item Equivalencias.
+            \item Tipos contráctiles y funciones contráctiles.
+            \item El teorema fundamental de los tipos identidad.
+            \item Proposiciones, conjuntos y niveles superiores de truncamiento.
+            \item Extensionalidad de funciones.
+            \item Truncamiento proposicional.
+            \item Factorizaciones de imágen.
+            \item Tipos finitos.
+            \item El axioma de univalencia.
+            \item Cocientes de conjuntos.
+        \end{enumerate}
+    \end{enumerate}
+    
+\end{itemize}
+
+\bibliography{biblio}
+\bibliographystyle{plain}
+
+\end{document}
+
