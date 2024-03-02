@@ -1,0 +1,16 @@
+Borrador*
+*.aux
+main_libro.tex
+main.tex
+Tesis Al 24 Julio 2023.pdf
+*.agdai
+*.out
+*.log
+*.fls
+*.py
+*.sync*
+*.toc
+*.bbl
+*.blg
+*.fdb*
+.vscode
