@@ -25,9 +25,9 @@
 \usepackage[skins]{tcolorbox}
 \usepackage{bussproofs}
 \usepackage{bussproofs-extra}
+\usepackage{bbold}
 \usepackage{quiver}
 \graphicspath{ {./img/} }
-
 \newtcolorbox{sfwt}[2][]{%
   enhanced,colback=white,colframe=black,coltitle=black,
   sharp corners,boxrule=0.4pt,
@@ -159,7 +159,7 @@ La teoría homotópica de tipos es un área de estudio de las matemáticas relat
 Esta área de estudio contempla herramientas de la teoría de los lenguajes de programación, el álgebra, la teoría de categorías, la lógica matemática y la topología.
 El poder expresivo del lenguaje formal empleado por la teoría de tipos homotópica así como su fundamento teórico es tan expresivo y general que permite
 ofrecer una teoría alternativa a la teoría de conjuntos para fundamentar las matemáticas. Dentro de las ventajas que brinda emplear este lenguaje
-está la posibilidad de emplear computadoras para verificar la correctud de demostraciones matemáticas.
+está la posibilidad de utilizar computadoras para verificar la correctud de demostraciones matemáticas.
 
 Es importante notar que al ser ésta una teoría constructiva desde su concepción, técnicas propias que dependen de axiomas o teoremas no constructivos como lo son
 la ley del tercer excluido, o el teorema de elección generalizado, no se encuentran disponibles en todos los contextos a diferencia de las "matemáticas clásicas".
@@ -584,7 +584,78 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \end{theorem}
 
     \subsubsection{Universos de tipos}
-        
+        La teoría de conjuntos permite tener conjuntos cuyos elementos son 
+        conjuntos. De manera similar, la teoría de tipos ofrece un mecanismo
+        para definir tipos cuyos términos son también tipos. Los 
+        \textbf{universos} de tipos consisten de un tipo $\mathfrak{U}$ junto
+        con una familia de tipos $\mathfrak{T}$ definida sobre $\mathfrak{U}$.
+        La idea es pensar que dado $X : \mathfrak{U}$, $\mathfrak{T}(X)$ es
+        una "\textit{interpretación}" externa a $\mathfrak{U}$ de $X$.
+        \begin{definition}[Universo]
+            Un universo es un tipo $\mathfrak{U}$ junto con una familia
+            $\mathfrak{U}$ sobre $\mathfrak{U}$ llamada 
+            \textit{familia universal} tales que satisfacen los siguientes
+            axiomas:
+
+            \begin{itemize}
+                \item $\mathfrak{U}$ es tal que existe 
+                $$
+                \check{\Pi} : \prod\limits_{X : \mathfrak{U}} 
+                    (\mathfrak{T}(X) \rightarrow \mathfrak{U}) 
+                        \rightarrow \mathfrak{U}
+                $$
+                tal que satisface la siguiente igualdad de juicio:
+                $$
+                    \mathfrak{T}(\check{\Pi(X,Y)}) \equiv 
+                        \prod\limits_{x : \mathfrak{T}(X)} \mathfrak{T}(Y(x))
+                $$
+                para cualesquiera $X : \mathfrak{U}$ y 
+                    $Y : \mathfrak{T}(X) \rightarrow \mathfrak{U}$.
+                \item $\mathfrak{U}$ es tal que existe
+                $$
+                \check{\Sigma} : \prod\limits_{X : \mathfrak{U}} 
+                    (\mathfrak{T}(X) \rightarrow \mathfrak{U}) 
+                        \rightarrow \mathfrak{U}
+                $$
+                tal que satisface la siguiente igualdad de juicio:
+                $$
+                    \mathfrak{T}(\Sigma(X,Y)) \equiv 
+                        \sum\limits_{x : \mathfrak{T}(X)}\mathfrak{T}(Y(x))
+                $$
+                para cualesquiera $X : \mathfrak{U}$ y 
+                $Y : \mathfrak{T}(X) \rightarrow \mathfrak{U}$.
+                \item $\mathfrak{U}$ es tal que existe
+                $$
+                    \check{I} : \prod\limits_{X : \mathfrak{U}} \mathfrak{T}(X)  
+                        \rightarrow (\mathfrak{T}(X) \rightarrow \mathfrak{U})
+                $$
+                tal que satisface la siguiente igualdad de juicio:
+                $$
+                    \mathfrak{T}(\check{I}(X, x, y)) \equiv (x = y)
+                $$
+                para cualesquiera $X : \mathfrak{U}$ y $x,y : \mathfrak{T}(X)$.
+                \item $\mathfrak{U}$ es tal que existe 
+                $$
+                    \check{+}:\mathfrak{U} \rightarrow \mathfrak{U} 
+                        \rightarrow \mathfrak{U}
+                $$
+                tal que satisface la igualdad de juicio
+                $$
+                    \mathfrak{T}(X \check{+} Y) \equiv 
+                        \mathfrak{T}(X) + \mathfrak{T}(Y)
+                $$
+                \item $\mathfrak{U}$ es tal que existen $\check{\mathbb{1}}, 
+                \check{\mathbb{0}}, \check{\mathbb{N}}$ tales que satisfacen las 
+                siguientes igualdades de juicio:
+                \begin{align*}
+                    \mathfrak{T}(\check{\mathbb{1}}) \equiv \mathbb{1}\\
+                    \mathfrak{T}(\check{\mathbb{0}}) \equiv \mathbb{0}\\
+                    \mathfrak{T}(\check{\mathbb{N}}) \equiv \mathbb{N}
+                \end{align*}
+            \end{itemize}
+            
+        \end{definition}
+
         
         
         
