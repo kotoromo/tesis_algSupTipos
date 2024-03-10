@@ -563,6 +563,8 @@ de proponer y dar una base teórica para una formalización del temario de álge
             Sea $\Gamma$ un contexto tal que de este se deduce
             $$
                 \Gamma \vdash A \equiv A'\ \type    
+            $$
+            $$
                 \Gamma \vdash a : A
             $$
             Entonces se puede deducir $\Gamma \vdash a : A'$.
@@ -582,6 +584,217 @@ de proponer y dar una base teórica para una formalización del temario de álge
             $\Gamma \vdash A \equiv A'$ y $\Gamma \vdash a \equiv b : A$.
             Entonces se puede deducir que $\Gamma \vdash a \equiv b : A'$.
         \end{theorem}
+
+    \subsection{Tipos primitivos}
+        Ya que contamos con un minimo fundamento sobre el cual poder construir
+        tipos, procedemos a discutir sobre aquellos tipos que el sistema
+        permite construir desde un contexto vacío. Estos tipos formarán los
+        bloques básicos sobre los que haremos las construcciones de nuevos
+        tipos y más aún, serán de gran utilidad para comenzar a darnos una idea
+        de cómo codificar objetos matemáticos en este lenguaje.
+    \subsubsection{Funciones dependientes}
+        Una función dependiente podemos pensarla como aquella tal que permite
+        que el codominio varíe en función de un elemento del dominio. En
+        la teoría de conjuntos se presenta una construcción semejante, y es la
+        del producto generalizado. Recordando, el producto generalizado de una
+        familia indizada es
+        $$
+            \prod\limits_{i \in \Gamma} X_i := 
+            \{f : \Gamma \rightarrow \bigcup\limits_{i \in \Gamma} X_i\ 
+                \vert\ \forall i \in \Gamma\ f(i) \in X_i\}
+        $$
+
+        de modo que un elemento $f$ del producto cartesiano es una función que
+        dibuja una serie de posibilidades para el valor que puede tomar 
+        $f(i) \in X_i$. Esta misma situación se nos presentó al introducir las
+        familias de tipos,
+        $$
+            \mathrm{Ctx}, i : \Gamma \vdash X(i)\ \type
+        $$
+        $$
+            \mathrm{Ctx}, i : \Gamma \vdash f(i) : X(i)
+        $$
+        de modo que $f : X$ es una función dependiente.
+        \begin{definition}[tipo de funciones dependientes]
+            La \textbf{regla de formación} del tipo de funciones dependientes 
+            establece que la existencia de una familia de tipos es suficiente
+            para obtener un tipo de funciones dependientes:
+            \begin{center}
+                \AxiomC{$\Gamma, x : A \vdash B(x)\ \type$}
+                \UnaryInfC{$\Gamma \vdash \prod\limits_{x : A}B(x)\ \type$}
+                \DisplayProof
+            \end{center}
+            Además, la formación del tipo producto es congruente con la igualdad
+            juiciosa, esto es,
+            \begin{center}
+                \AxiomC{$\Gamma \vdash A \equiv A'\ \type$}
+                \AxiomC{$\Gamma x : A \vdash B(x) \equiv B'(x)\ \type$}
+                \BinaryInfC{$\Gamma \vdash \prod\limits_{x: A} B(x)\ \type 
+                    \equiv \prod\limits_{x:A'}B(x)\ \type$}
+                \DisplayProof
+            \end{center}
+
+            La \textbf{regla de introducción} establece que los elementos del
+            tipo de funciones dependientes son exactamente las funciones que
+            asignan a un término "índice" de la familia a una función
+
+            \begin{center}
+                \AxiomC{$\Gamma, x : A \vdash b(x):B(x)$}
+                \UnaryInfC{$\Gamma \vdash \lambda x\ .\ b(x) : B(x)$}
+                \DisplayProof
+            \end{center}
+            Más aún, postulamos la congruencia de esta regla ante la igualdad
+            juiciosa:
+            \begin{center}
+                \AxiomC{$\Gamma, x : A \vdash b(x) \equiv b'(x) : B(x)$}
+                \UnaryInfC{$\Gamma \vdash \lambda x\ .\ b(x) \equiv \lambda x\ .\ b'(x) : \prod\limits_{x : A} B(x)$}
+                \DisplayProof
+            \end{center}
+
+            La \textbf{regla de eliminación} del tipo de funciones dependientes,
+            como es de esperarse, nos permite eliminar de un árbol de deducción
+            un término del tipo de funciones dependientes siempre y cuando
+            podamos evaluarlo para obtener un término del tipo resultante:
+            \begin{center}
+                \AxiomC{$\Gamma \vdash f : \prod\limits_{x : A} B(x)$}
+                \UnaryInfC{$\Gamma, x : A \vdash f(x) : B(x)$}
+                \DisplayProof
+            \end{center}
+
+            La \textbf{regla de cómputo} del tipo de funciones dependientes
+            postula que la evaluación de un término de $\prod_{x : A} B(x)$ es
+            simplemente evaluar el término dado en $A$ en $b(x) : B(x)$,
+            semejante a la reducción $\beta$ del cálculo lambda:
+            \begin{center}
+                \AxiomC{$\Gamma, a : A\vdash b(a) : B(a)$}
+                \UnaryInfC{$\Gamma, x : A \vdash (\lambda x\ .\ b(x))(a) \equiv b(a) : B(x)$}
+                \DisplayProof
+            \end{center}
+            Es importante remarcar que, es necesario garantizar la existencia
+            del elemento en el contradominio que le corresponde a $a : A$ para
+            poder aplicar la regla de cómputo.
+
+            Por otro lado, \textbf{la regla $\eta$} nos asegura que los elementos de un
+            tipo de funciones dependientes son exactamente funciones.
+            \begin{center}
+                \AxiomC{$\Gamma \vdash b : \prod\limits_{x : A} B(x)$}
+                \UnaryInfC{$\Gamma \vdash \lambda x\ .\ b(x) \equiv b : \prod\limits_{x : A} B(x)$}
+                \DisplayProof
+            \end{center}
+        \end{definition}
+
+        \begin{remark}
+            Análogamente a su simíl en conjuntos, una familia de tipos involucra
+            una elección, en este caso de un $b(x) : B(x)$ dado un $x : A$.
+        \end{remark}
+        \begin{remark}
+            Observe que la regla de cómputo y la regla $\eta$ son inversas 
+            mutuas.
+        \end{remark}
+
+        Observe que, si tratamos con una familia de tipos constante; esto es que
+        el tipo codominio no varia según el término índice; tenemos una función.
+        Las reglas que definen al tipo de funciones dependientes se simplifican
+        entonces:
+        \begin{center}
+            \AxiomC{$\Gamma \vdash A\ \type$}
+            \AxiomC{$\Gamma \vdash B\ \type$}
+            \RightLabel{(weakening)}
+            \BinaryInfC{$\Gamma, x : A \vdash B\ \type$}
+            \UnaryInfC{$\Gamma \vdash \prod\limits_{x : A} B\ \type$}
+            \DisplayProof
+        \end{center}
+        De modo que, ante una situación como la anterior la regla de 
+        introducción nos diría que las funciones son exactamente las
+        abstracciones lambdas sobre un tipo en función de un término:
+        \begin{center}
+            \AxiomC{$\Gamma x : A \vdash b(x) : B$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ b(x) : \prod\limits_{x : A} B$}
+            \DisplayProof
+        \end{center}
+
+        La regla de eliminación nos dice exactamente lo que esperaríamos de un
+        tipo que codifica una función:
+        \begin{center}
+            \AxiomC{$\Gamma \vdash f : \prod\limits_{x : A} B$}
+            \UnaryInfC{$\Gamma, x : A \vdash f(x) : B$}
+            \DisplayProof
+        \end{center}
+        Si evaluamos una función $f$ con dominio en $A$ y codominio en $B$ en un
+        elemento $x : A$ del dominio, entonces $f(x) : B$.
+
+        Así, mediante una regla de derivación consolidamos nuestra definición
+        del tipo de funciones o equivalentemente llamado tipo flecha:
+        
+        \begin{definition}[tipo de funciones]
+            El tipo de funciones de un tipo $A$ en un tipo $B$ se define como
+            a continuación:
+            \begin{center}
+                \AxiomC{$\Gamma \vdash A\ \type$}
+                \AxiomC{$\Gamma \vdash B\ \type$}
+                \BinaryInfC{$\Gamma, x : A \vdash B\ \type$}
+                \UnaryInfC{$\Gamma \vdash \prod\limits_{x : A} B\ \type$}
+                \UnaryInfC{$\Gamma \vdash A \rightarrow B := \prod\limits_{x : A} B\ \type$}
+                \DisplayProof
+            \end{center}
+        \end{definition}
+        En general, dada una construcción podemos crear una definición con base
+        en el resultado final. Para ello, conveniremos en el símbolo $:=$ para
+        denotar que se está realizando una definición. Como es de esperarse,
+        las mismas reglas que aplicaban para el tipo de funciones dependientes
+        aplican para nuestra definición del tipo de funciones:
+
+        \begin{center}
+            \AxiomC{$\Gamma \vdash A\ \type$}
+            \AxiomC{$\Gamma \vdash B\ \type$}
+            \BinaryInfC{$\Gamma \vdash A \rightarrow B\ \type$}
+            \DisplayProof
+            \hskip 1.5 em
+            \AxiomC{$\Gamma, x : A \vdash f(x) : B$}
+            \UnaryInfC{$\Gamma \vdash \lambda\ x\ .\ f(x) : A \rightarrow B$}
+            \DisplayProof
+        \end{center}
+        \begin{center}
+            \AxiomC{$\Gamma \vdash A \equiv A' \type$}
+            \AxiomC{$\Gamma \vdash B \equiv B' \type$}
+            \BinaryInfC{$\Gamma \vdash A \rightarrow B \equiv A' \rightarrow B'\ \type$}
+            \DisplayProof
+        \end{center}
+        \begin{center}
+            \AxiomC{$\Gamma \vdash f: A \rightarrow B$}
+            \UnaryInfC{$\Gamma, x : A \vdash f(x) : B$}
+            \DisplayProof
+            \hskip 1.5 em
+            \AxiomC{$\Gamma \vdash f \equiv g : A \rightarrow B$}
+            \UnaryInfC{$\Gamma, x : A \vdash f(x) \equiv g(x) : B$}
+            \DisplayProof
+        \end{center}
+        \begin{center}
+            \AxiomC{$\Gamma, x : A \vdash f(x) : B$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ f(x) : A \rightarrow B$}
+            \DisplayProof
+            \hskip 1.5 em
+            \AxiomC{$\Gamma \vdash f : A \rightarrow B$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ f(x) \equiv f : A \rightarrow B$}
+            \DisplayProof
+        \end{center}
+        \begin{center}
+            \AxiomC{$\Gamma \vdash B\ \type$}
+            \AxiomC{$\Gamma, a : A \vdash f(a) : B$}
+            \BinaryInfC{$\Gamma, a : A \vdash (\lambda\ x\ .\ f(x))(a) \equiv f(a) : B$}
+            \DisplayProof
+        \end{center}
+    Para terminar con esta subsección se presentan a continuación algunas
+    construcciones útiles con tipos flecha.
+    \subsubsection*{Algunas construcciones útiles con el tipo flecha}
+    La flecha identidad.
+    La composición de flechas.
+    \subsubsection{Productos dependientes}
+    \subsubsection{Coproducto}
+    % tengo que evaluar si esto si va.... se puede quedar como comentario.
+    \subsubsection{Tipos inductivos}
+    
+    \subsubsection{Tipos de identidad}
 
     \subsubsection{Universos de tipos}
         La teoría de conjuntos permite tener conjuntos cuyos elementos son 
@@ -656,10 +869,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
             
         \end{definition}
 
-        
-        
-        
-    \subsubsection{Tipos primitivos}
+\subsection{Tipos primitivos}
 
 \subsection{Tipos inductivos}
 
