@@ -304,8 +304,9 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \end{definition}
 
         \begin{remark}
-            Nótese que tanto el término como el tipo dependen del término $x : A$, de modo que abusando de la notación podemos pensar a este proceso como
-            una función
+            Nótese que tanto el término como el tipo dependen del término 
+            $x : A$, de modo que abusando de la notación podemos pensar a este 
+            proceso como una función
             \begin{align*}
                 \mathrm{Term(A)} \times (\mathrm{Term(A)} \rightarrow \mathrm{Types}) &\rightarrow \mathrm{Term}(B(x))\\
                 \picopar{x : A\ ,\ x : A \mapsto B(x)\ \type}\mapsto b(x) : B(x)
@@ -313,8 +314,10 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \end{remark}
         
     \subsubsection{Clases de reglas de inferencia}
-        Las siguientes reglas de inferencia describen de forma explicita las suposicón de que hicimos en la definición \ref{def:familia_tipos}.
-        Es de esperarse que, si tenemos en un contexto las variables $A\ \type, x : A$, entonces desde ese mismo contexto podamos deducir
+        Las siguientes reglas de inferencia describen de forma explicita las 
+        suposiciones de que hicimos en la definición \ref{def:familia_tipos}.
+        Es de esperarse que, si tenemos en un contexto las variables 
+        $A\ \type, x : A$, entonces desde ese mismo contexto podamos deducir
         $A\ \type$ y $x : A$ por separado.
         \begin{center}
             \AxiomC{$\Gamma, x : A \vdash B(x)\ \type$}
