@@ -828,22 +828,17 @@ de proponer y dar una base teórica para una formalización del temario de álge
     Así como partimos desde arriba la construcción, es usual comenzar desde
     abajo e ir construyendo el árbol desde abajo hacia arriba, rellenando huecos
     que vayan surgiendo para llegar a lo deseado. Utilizaremos esta técnica para
-    definir la operación de composición.\newline\newline
+    definir la operación de composición a modo de exhibición.\newline\newline
     \textbf{La composición de flechas.}\newline\todo{Revisar como introducir esto. Creo que me estoy comiendo pasos.}
-    Supongamos que tenemos dos flechas:
-    $$
-        f : A \rightarrow B\quad g : B \rightarrow C
-    $$
-
-    y queremos definir la composición de estas:
-    $$
-        \mathrm{comp}(f,g) : A \rightarrow C
-    $$
-    Así, un punto de partida es pensar en el tipo que debería tener nuestro
-    objeto deseado.
+    Bajo el paradigma de \textit{tipos como proposiciones y términos como 
+    demostraciones}, un buen punto de partida es plasmar en un tipo lo que se 
+    desea demostrar. En este caso, queremos demostrar que dadas dos flechas 
+    $f : A \rightarrow B$ y $g : B \rightarrow C$ podemos definir una flecha 
+    $\mathrm{comp}(f, g) : A \rightarrow C$ que sea tal que 
+    $\mathrm{comp}(f, g)(x) := g(f(x))$. 
+    Así, el tipo que deseamos demostrar que tiene al menos un término es:
     \begin{center}
-        \AxiomC{$?$}
-        \UnaryInfC{$\Gamma \vdash ? : A \rightarrow C$}
+        \AxiomC{$\Gamma \vdash ? : (B^A \rightarrow C^B) \rightarrow C^A$}
         \DisplayProof
     \end{center}
 
@@ -851,28 +846,25 @@ de proponer y dar una base teórica para una formalización del temario de álge
     Desde luego tiene que ser un término de tipo flecha, y la regla de
     introducción de estos objetos nos dice que en general tienen la forma
     $\lambda\ x\ .\ h(x)$, por lo que nuestro objeto deseado no será la
-    excepción. Más aún, la composición de funciones es tal que dado un elemento
-    del dominio de $f$ este se corresponde con un elemento del contradominio de
-    $g$ de modo que $g(f(x))$ resulta una elección natural para la regla de
-    correspondencia.
+    excepción. 
     \begin{center}
-        \AxiomC{$?$}
-        \UnaryInfC{$\Gamma \vdash \lambda\ x\ .\ g(f(x)) : A \rightarrow C$}
+        \AxiomC{$\Gamma \vdash ?$}
+        \UnaryInfC{$\Gamma \vdash \lambda\ x\ .\ ? : (B^A \rightarrow C^B) \rightarrow C^A$}
         \DisplayProof
     \end{center}
     De nuevo, como nuestro resultado es un término de tipo flecha, el paso
     inmediato anterior debe ser una aplicación de la regla de introducción de
-    este tipo, donde el elemento de entrada debe ser de tipo $A$ y el elemento
-    de salida debe ser de tipo $C$.
+    este tipo. Esta regla de introducción solicita de nosotros una 
+    \textit{entrada}: un término de tipo $C^A$ que debe ser deducido a partir 
+    del tipo $B^A \rightarrow C^B$.
     \begin{center}
-        \AxiomC{$\Gamma, ? \vdash x : A$}
-        \AxiomC{$\Gamma, ? \vdash g(f(x)) : C$}
-        \BinaryInfC{$\Gamma, x : A \vdash g(f(x)) : C$}
-        \UnaryInfC{$\Gamma \vdash \lambda\ x\ .\ g(f(x)) : A \rightarrow C$}
+        \AxiomC{$\Gamma, ? : B^A \rightarrow C^B \vdash ? : C^A$}
+        \UnaryInfC{$\Gamma \vdash \lambda\ x\ .\ ? : (B^A \rightarrow C^B) \rightarrow C^A$}
         \DisplayProof
     \end{center}
+    
     Ahora bien, debemos probar que en efecto $\Gamma, x : A \vdash g(f(x)) : C$.
-    Por la regla de elemento genérico facilmente podemos deducir desde 
+    Por la regla de elemento genérico fácilmente podemos deducir desde 
     $A\ \type$ que $\Gamma, x : A \vdash x : A$. Por otro lado, si $f$ y $g$ son
     elementos de tipo flecha, entonces podemos aplicar la regla de eliminación
     para obtener desde $g$ un elemento de tipo $C$ suponiendo que en efecto
