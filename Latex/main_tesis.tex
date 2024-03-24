@@ -151,6 +151,62 @@ lógica, denominada lógica de primer orden y de la cual hablaremos a lo largo d
 pero no necesariamente de forma minuciosa como se haría en un curso de lógica matemática. El motivo detrás de desarrollarla paso por 
 paso es que el entendimiento de la lógica es primordial para estudiar matemáticas y para hacer matemáticas.
 
+\section{Algunos conceptos categóricos}
+\subsection{Introducción}
+La idea de esta sección es presentar simplemente algunos conceptos de la teoría
+de categorías a los cuales se harán referencia a lo largo del texto. Aunque es
+posible introducir el contenido principal del texto sin hacer mención explícita 
+a las categorías, el autor encuentra fascinante, bella y esclarecedora la 
+conexión que existe entre la lógica matemática, la teoría de tipos y la teoría 
+de categorías y por lo tanto se ha decidido incluir esta sección así como las
+referencias explícitas a las categorías a lo largo del texto. Además, otra
+motivación para incluir esta sección en la tesis es que lamentablemente en la
+facultad de ciencias no es común que se impartan cursos de forma obligatoria de
+teoría de categorías por lo que el autor considera que es irrazonable asumir que
+la lectora o el lector esté familiarizado con las categorías.
+
+Dado que el principal contenido de este texto no son las categorías sino la
+teoría homotópica de tipos y su aplicación a la formalización de matemáticas,
+no se ahondará en las categorías más allá de lo necesario para exhibir la
+conexión entre las categorías y la teoría de tipos y la riqueza que esta
+introduce a la teoría; sin embargo, en tanto que el propósito también es aquel
+de motivar al lector o a la lectora a explorar estas conexiones, se incluirán
+referencias a textos donde se puede profundizar en el tema.
+
+\subsection{Primeros conceptos}
+
+\begin{definition}[Categoría]
+    Una categoría $\mathcal{C}$ consiste de la siguiente información:
+    \begin{enumerate}
+        \item Una colección de objetos $\mathrm{Obj}(\mathcal{C})$.
+        \item Para cada par de objetos $A, B \in \mathrm{Obj}(\mathcal{C})$ una colección de morfismos $\mathcal{C}(A, B)$.
+        \item Una noción de composición entre morfismos de tal modo que si $f \in \mathcal{C}(A, B)$ y $g \in \mathcal{C}(B, C)$ entonces
+        existe un morfismo $gf \in \mathcal{C}(A, C)$.
+        % https://q.uiver.app/#q=WzAsMyxbMCwwLCJBIl0sWzEsMCwiQiJdLFsyLDAsIkMiXSxbMCwxLCJmIl0sWzEsMiwiZyJdLFswLDIsImdmIiwyLHsiY3VydmUiOjN9XV0=
+        \[\begin{tikzcd}
+	        A & B & C
+	        \arrow["f", from=1-1, to=1-2]
+	        \arrow["g", from=1-2, to=1-3]
+	        \arrow["gf"', curve={height=18pt}, from=1-1, to=1-3]
+        \end{tikzcd}\]
+    \end{enumerate}
+    
+\end{definition}
+
+\begin{definition}[Categoría cartesiana cerrada (CCC) \cite{Lambek1986-LAMITH-2}]
+   Una categoría $\mathcal{C}$ es cartesiana cerrada o $CCC$ si
+   \begin{itemize}
+    \item Existe un objeto terminal $\mathbb{1}$.
+    \item Existen operaciones $(\_\times\_)$ y $(\_)^{(\_)}$ tales que:
+    \begin{itemize}
+        \item Para toda $A \in \mathrm{Obj}(\mathcal{C})$ existe una único 
+              morfimso $A \xrightarrow{!A} \mathbb{1}$.
+        \item $\mathcal{C}(C, A \times B) \cong \mathcal{C}(C, A) \times \mathcal{C}(C, B)$.
+        \item $\mathcal{C}(A, C^{B}) \cong \mathcal{C}(A \times B, C)$.
+    \end{itemize}
+   \end{itemize}
+\end{definition}
+
 \section{Formalización de matemáticas en Agda}
 
 \subsection{Introducción}
@@ -740,6 +796,10 @@ de proponer y dar una base teórica para una formalización del temario de álge
                 \UnaryInfC{$\Gamma \vdash A \rightarrow B := \prod_{(x : A)} B\ \type$}
                 \DisplayProof
             \end{center}
+        
+            En algunas ocasiones emplearemos la notación $B^A$ para denotar
+            $A \rightarrow B$. Esto es, $B^A$ dentoa el tipo de funciones de $A$ en
+            $B$. 
         \end{definition}
         En general, dada una construcción podemos crear una definición con base
         en el resultado final. Para ello, conveniremos en el símbolo $:=$ para
@@ -829,9 +889,48 @@ de proponer y dar una base teórica para una formalización del temario de álge
     abajo e ir construyendo el árbol desde abajo hacia arriba, rellenando huecos
     que vayan surgiendo para llegar a lo deseado. Utilizaremos esta técnica para
     definir la operación de composición a modo de exhibición.\newline\newline
+    \textbf{Tomando múltiples argumentos}\newline\newline
+    Ciertamente pareciera que nuestro tratamiento sobre el tipo flecha tiene la
+    limitante sobre el número de argumentos que puede tomar una función. En las
+    matemáticas que conocemos es común observar funciones que requiere de más de
+    una entrada, como por ejemplo la suma aritmética entre dos números
+    naturales. Sin embargo, el tratamiento dado sobre los elementos del tipo
+    $\Pi$ nos permite expresar esta clase de funciones. Para demostrarlo,
+    consideremos el caso de la suma de dos números naturales:
+    $$
+        +_{\mathbb{N}} : \mathbb{N} \times \mathbb{N} \rightarrow \mathbb{N}
+    $$
+    Notemos que si proporcionamos un número natural $n \in \mathbb{N}$ y lo 
+    aplicamos como entrada a la función suma, estamos ante la situación en
+    donde cualquier otro número natural $m \in \mathbb{N}$ al ser aplicado como
+    entrada a la función (manteniendo fijo a $n$) nos da como resultado la suma
+    de la nueva entrada $m$ con $n$. Es decir, podemos pensar que al aplicar un
+    solo argumento a la función, restringimos las entradas a un grado de
+    libertad menor, que es lo mismo que decir que estamos ante una nueva función
+    que, para este caso particular, toma un argumento menos.
+    \begin{align*}
+        +_{n} : \mathbb{N} &\rightarrow \mathbb{N}\\
+        m &\mapsto m +_{\mathbb{N}} n
+    \end{align*}
+    Esta perspectiva entonces pareciera sugerir que las funciones que toman más
+    de dos parámetros son simplemente funciones que toman un argumento y 
+    regresan una función que toma el siguiente argumento y así de forma
+    sucesiva hasta llegar al resultado final.
+    \begin{align*}
+        +_\mathbb{N} : \mathbb{N} &\rightarrow (\mathbb{N} \rightarrow \mathbb{N})\\
+        n &\mapsto +_n : \mathbb{N} \rightarrow \mathbb{N}
+    \end{align*}
+    Este proceso recibe el nombre de "currying" en honor al matemático Haskell 
+    Curry, a pesar de que fueron Frege y Schönfinkel quienes originalmente 
+    concibieron la idea.\footnote{Ver \cite{schonfinkel} y \cite{frege}
+    para más información sobre sus origenes.}
+    Queda pendiente demostrar que efectivamente esta perspectiva es correcta.
+    \begin{theorem}[Currying]
+        
+    \end{theorem}
     \textbf{La composición de flechas.}\newline\todo{Revisar como introducir esto. Creo que me estoy comiendo pasos.}
     Bajo el paradigma de \textit{tipos como proposiciones y términos como 
-    demostraciones}, un buen punto de partida es plasmar en un tipo lo que se 
+    demostraciones}, un buen punto de partida es expresar en un tipo lo que se 
     desea demostrar. En este caso, queremos demostrar que dadas dos flechas 
     $f : A \rightarrow B$ y $g : B \rightarrow C$ podemos definir una flecha 
     $\mathrm{comp}(f, g) : A \rightarrow C$ que sea tal que 
@@ -863,6 +962,30 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \DisplayProof
     \end{center}
     
+    Siguiendo el mismo razonamiento, debemos obtener un término de tipo flecha
+    $B^A \rightarrow C^B$ y con este deducir un término de tipo $C^A$. Como ya
+    se ha mencionado antes, este término depende de un término de tipo $B^A$ a
+    partir del cual se deduce un término de tipo $C^B$.
+    \begin{center}
+        \AxiomC{$\Gamma, ? : B^A \vdash ? : C^B$}
+        \UnaryInfC{$\Gamma, ? : B^A \rightarrow C^B \vdash ? : C^A$}
+        \UnaryInfC{$\Gamma \vdash \lambda\ x\ .\ ? : (B^A \rightarrow C^B) \rightarrow C^A$}
+        \DisplayProof
+    \end{center}
+
+    Por hipótesis contamos con dos términos $f : B^A$ y $g : C^B$. Luego,
+    por una aplicación de la regla de debilitamiento podemos inducir una
+    dependencia de $g$ sobre $f$, obteniendo así el siguiente árbol de 
+    deducción:
+    \begin{center}
+        \AxiomC{$\Gamma \vdash f : B^A$}
+        \AxiomC{$\Gamma \vdash g : C^B$}
+        \RightLabel{(weakening)}
+        \BinaryInfC{$\Gamma, f : B^A \vdash g : C^B$}
+        \UnaryInfC{$\Gamma, ? : B^A \rightarrow C^B \vdash ? : C^A$}
+        \UnaryInfC{$\Gamma \vdash \lambda\ x\ .\ ? : (B^A \rightarrow C^B) \rightarrow C^A$}
+        \DisplayProof
+    \end{center}
     Ahora bien, debemos probar que en efecto $\Gamma, x : A \vdash g(f(x)) : C$.
     Por la regla de elemento genérico fácilmente podemos deducir desde 
     $A\ \type$ que $\Gamma, x : A \vdash x : A$. Por otro lado, si $f$ y $g$ son
