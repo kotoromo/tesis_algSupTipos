@@ -2,4 +2,4 @@ open import Primitivas
 
 module Notacion where
 
-    Type = Set
+    Type = Set 

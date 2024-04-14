@@ -333,6 +333,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         Nos reservamos el derecho de poder definir nuevas reglas de inferencia a partir de otras, y diremos que estas nuevas reglas son \textbf{derivables}.
     
     \subsubsection{Familias de tipos}
+    \todo{Poner el codigo en agda de esto}
         Una idea universal bastante útil es la de un "agrupamiento de agrupamientos"; ejemplos clásicos de este patrón de pensamiento son
         las familias de conjuntos; en teoría de conjuntos; y los enunciados; en lógica de primer órden. En la teoría de tipos dependientes
         de Per Martin-Löf contamos con un marco de trabajo que engloba esta idea, la cual es la de una \textit{familia de tipos}.
@@ -620,6 +621,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
 
         \begin{center}
             \AxiomC{$\Gamma \vdash A\ \type$}
+            \RightLabel{VAR-intro}
             \UnaryInfC{$\Gamma, x : A \vdash x : A$}
             \DisplayProof
         \end{center}
@@ -694,6 +696,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         tipos y más aún, serán de gran utilidad para comenzar a darnos una idea
         de cómo codificar objetos matemáticos en este lenguaje.
     \subsubsection{Funciones dependientes}
+    \todo{Poner codigo en agda de esto}
         Una función dependiente podemos pensarla como aquella tal que permite
         que el codominio varíe en función de un elemento del dominio. En
         la teoría de conjuntos se presenta una construcción semejante, y es la
@@ -852,21 +855,24 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \begin{center}
             \AxiomC{$\Gamma \vdash A\ \type$}
             \AxiomC{$\Gamma \vdash B\ \type$}
+            \RightLabel{$\rightarrow$-intro}
             \BinaryInfC{$\Gamma \vdash A \rightarrow B\ \type$}
             \DisplayProof
             \hskip 1.5 em
             \AxiomC{$\Gamma, x : A \vdash f(x) : B$}
+            \RightLabel{$\lambda$-abs}
             \UnaryInfC{$\Gamma \vdash \lambda\ x\ .\ f(x) : A \rightarrow B$}
             \DisplayProof
         \end{center}
         \begin{center}
-            \AxiomC{$\Gamma \vdash A \equiv A' \type$}
-            \AxiomC{$\Gamma \vdash B \equiv B' \type$}
+            \AxiomC{$\Gamma \vdash A \equiv A'\ \type$}
+            \AxiomC{$\Gamma \vdash B \equiv B'\ \type$}
             \BinaryInfC{$\Gamma \vdash A \rightarrow B \equiv A' \rightarrow B'\ \type$}
             \DisplayProof
         \end{center}
         \begin{center}
             \AxiomC{$\Gamma \vdash f: A \rightarrow B$}
+            \RightLabel{$\rightarrow$-elim}
             \UnaryInfC{$\Gamma, x : A \vdash f(x) : B$}
             \DisplayProof
             \hskip 1.5 em
@@ -875,20 +881,35 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \DisplayProof
         \end{center}
         \begin{center}
-            \AxiomC{$\Gamma, x : A \vdash f(x) : B$}
-            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ f(x) : A \rightarrow B$}
-            \DisplayProof
-            \hskip 1.5 em
             \AxiomC{$\Gamma \vdash f : A \rightarrow B$}
             \UnaryInfC{$\Gamma \vdash \lambda x\ .\ f(x) \equiv f : A \rightarrow B$}
             \DisplayProof
-        \end{center}
-        \begin{center}
+            \hskip 1.5em
             \AxiomC{$\Gamma \vdash B\ \type$}
             \AxiomC{$\Gamma, a : A \vdash f(a) : B$}
             \BinaryInfC{$\Gamma, a : A \vdash (\lambda\ x\ .\ f(x))(a) \equiv f(a) : B$}
             \DisplayProof
         \end{center}
+    \todo{Poner la implementación en agda de esto}
+    
+    \begin{remark}
+        Observe que dados dos tipos $A$ y $B$ podemos obtener una función
+        genérica de $A$ en $B$ y evaluarla.
+        \begin{center}
+            \AxiomC{$\Gamma \vdash A\ \type$}
+            \AxiomC{$\Gamma \vdash B\ \type$}
+            \RightLabel{$\rightarrow$-intro}
+            \BinaryInfC{$\Gamma \vdash A \rightarrow B\ \type$}
+            \RightLabel{VAR-intro}
+            \UnaryInfC{$\Gamma, f : A \rightarrow B \vdash f : A \rightarrow B$}
+            \RightLabel{$\rightarrow$-elim}
+            \UnaryInfC{$\Gamma, f : A \rightarrow B, x : A \vdash f(x) : B$}
+            \DisplayProof
+        \end{center}
+    \end{remark}
+
+    \todo{Poner la prueba en agda de esto tambien}
+    
     Para terminar con esta subsección se presentan a continuación algunas
     construcciones útiles con tipos flecha.
     \subsubsection*{Algunas construcciones útiles con el tipo flecha}
@@ -970,80 +991,159 @@ de proponer y dar una base teórica para una formalización del temario de álge
     \begin{theorem}[Currying]
         
     \end{theorem}
-    \textbf{La composición de flechas.}\newline\todo{Revisar como introducir esto. Creo que me estoy comiendo pasos.}
-    Bajo el paradigma de \textit{tipos como proposiciones y términos como 
-    demostraciones}, un buen punto de partida es expresar en un tipo lo que se 
-    desea demostrar. En este caso, queremos demostrar que dadas dos flechas 
-    $f : A \rightarrow B$ y $g : B \rightarrow C$ podemos definir una flecha 
-    $\mathrm{comp}(f, g) : A \rightarrow C$ que sea tal que 
-    $\mathrm{comp}(f, g)(x) := g(f(x))$. 
-    Así, el tipo que deseamos demostrar que tiene al menos un término es:
+    \textbf{La composición de flechas.}\newline
+    Consideremos tres tipos en un contexto $\Gamma$, $A$, $B$ y $C$. Gracias a
+    la regla de debilitamiento de los tres tipos podemos obtener al menos dos
+    funciones genéricas: $A \rightarrow B$ y $B \rightarrow C$, un elemento
+    de $B$ y un elemento de $C$.
     \begin{center}
-        \AxiomC{$\Gamma \vdash ? : (B^A \rightarrow C^B) \rightarrow C^A$}
+        \AxiomC{$\Gamma \vdash A\ \type$}
+        \AxiomC{$\Gamma \vdash B\ \type$}
+        \BinaryInfC{$\Gamma \vdash A \rightarrow B\ \type$}
+        \UnaryInfC{$\Gamma, f : A \rightarrow B \vdash f : A \rightarrow B$}
+        \UnaryInfC{$\Gamma, f : A \rightarrow B, x : A \vdash f(x) : B$}
+        \DisplayProof
+        \hskip 1.5em
+        \AxiomC{$\Gamma \vdash B\ \type$}
+        \AxiomC{$\Gamma \vdash C\ \type$}
+        \BinaryInfC{$\Gamma \vdash B \rightarrow C\ \type$}
+        \UnaryInfC{$\Gamma, g : B \rightarrow C \vdash g : B \rightarrow C$}
+        \todo{Ver por que es necesario este paso...}
+        \UnaryInfC{$\Gamma, g : B \rightarrow C, y : B \vdash g(y) : C$}
         \DisplayProof
     \end{center}
+    En virtud de lo anterior, omitimos en el árbol de deducción estos pasos.
+    % Este paso es necesario para poner en contexto a f y a x para
+    % ensamblar la composición. Las dependencias se agregan por
+    % la regla de debilitamiento.
+    Luego, como podemos evaluar funciones genéricas en elementos, y justamente
+    contamos con un elemento, obtenemos un elemento de $C$.
+    {\small
+    \begin{center}
+        \AxiomC{$\Gamma \vdash A\ \type$}
+        \AxiomC{$\Gamma \vdash B\ \type$}
+        \BinaryInfC{$\Gamma \vdash A \rightarrow B\ \type$}
+        \UnaryInfC{$\Gamma, f : A \rightarrow B \vdash f : A \rightarrow B$}
+        \UnaryInfC{$\Gamma, f : B^A, x : A \vdash f(x) : B$}
+        \UnaryInfC{$\Gamma, f : B^A, x : A, g : B^A \vdash f(x) : B$}
+        \DisplayProof
+        \hskip 1.5em
+        \AxiomC{$\Gamma \vdash B\ \type$}
+        \AxiomC{$\Gamma \vdash C\ \type$}
+        \BinaryInfC{$\Gamma \vdash B \rightarrow C\ \type$}
+        \UnaryInfC{$\Gamma, g : B \rightarrow C \vdash g : B \rightarrow C$}
+        \UnaryInfC{$\Gamma, g : B \rightarrow C, y : B \vdash g(y) : C$}
+        \UnaryInfC{$\Gamma, g : C^B, f : B^A, y : B \vdash g(y) : C$}
+        \UnaryInfC{$\Gamma, g : C^B, f : B^A, y : B, x : A \vdash g(y) : C$}
+        \DisplayProof
+    \end{center}
+    }
+    Por sustitución de $f(x)$ sobre $y$ obtenemos $g(f(x)) : C$.
 
-    Sin embargo desconocemos la forma explícita que tiene dicho objeto.
-    Desde luego tiene que ser un término de tipo flecha, y la regla de
-    introducción de estos objetos nos dice que en general tienen la forma
-    $\lambda\ x\ .\ h(x)$, por lo que nuestro objeto deseado no será la
-    excepción. 
     \begin{center}
-        \AxiomC{$\Gamma \vdash ?$}
-        \UnaryInfC{$\Gamma \vdash \lambda\ x\ .\ ? : (B^A \rightarrow C^B) \rightarrow C^A$}
-        \DisplayProof
-    \end{center}
-    De nuevo, como nuestro resultado es un término de tipo flecha, el paso
-    inmediato anterior debe ser una aplicación de la regla de introducción de
-    este tipo. Esta regla de introducción solicita de nosotros una 
-    \textit{entrada}: un término de tipo $C^A$ que debe ser deducido a partir 
-    del tipo $B^A \rightarrow C^B$.
-    \begin{center}
-        \AxiomC{$\Gamma, ? : B^A \rightarrow C^B \vdash ? : C^A$}
-        \UnaryInfC{$\Gamma \vdash \lambda\ x\ .\ ? : (B^A \rightarrow C^B) \rightarrow C^A$}
+        \AxiomC{$\Gamma \vdash A\ \type$}
+        \AxiomC{$\Gamma \vdash B\ \type$}
+        \BinaryInfC{$\Gamma, f : B^A, x : A \vdash f(x) : B$}
+        \UnaryInfC{$\Gamma, f : B^A, x : A, g : B^A \vdash f(x) : B$}
+
+        \AxiomC{$\Gamma \vdash B\ \type$}
+        \AxiomC{$\Gamma \vdash C\ \type$}
+        \BinaryInfC{$\Gamma, g : B \rightarrow C, y : B \vdash g(y) : C$}
+        \UnaryInfC{$\Gamma, g : C^B, f : B^A, y : B \vdash g(y) : C$}
+        \UnaryInfC{$\Gamma, g : C^B, f : B^A, y : B, x : A \vdash g(y) : C$}
+        \BinaryInfC{$\Gamma, g : C^B, f : B^A, x : A \vdash g(f(x)) : C$}
         \DisplayProof
     \end{center}
     
-    Siguiendo el mismo razonamiento, debemos obtener un término de tipo flecha
-    $B^A \rightarrow C^B$ y con este deducir un término de tipo $C^A$. Como ya
-    se ha mencionado antes, este término depende de un término de tipo $B^A$ a
-    partir del cual se deduce un término de tipo $C^B$.
-    \begin{center}
-        \AxiomC{$\Gamma, ? : B^A \vdash ? : C^B$}
-        \UnaryInfC{$\Gamma, ? : B^A \rightarrow C^B \vdash ? : C^A$}
-        \UnaryInfC{$\Gamma \vdash \lambda\ x\ .\ ? : (B^A \rightarrow C^B) \rightarrow C^A$}
-        \DisplayProof
-    \end{center}
+    Luego, abstrayendo sobre $x$ obtenemos una función que nos recuerda a la
+    composición de funciones.
 
-    Por hipótesis contamos con dos términos $f : B^A$ y $g : C^B$. Luego,
-    por una aplicación de la regla de debilitamiento podemos inducir una
-    dependencia de $g$ sobre $f$, obteniendo así el siguiente árbol de 
-    deducción:
-    \begin{center}
-        \AxiomC{$\Gamma \vdash f : B^A$}
-        \AxiomC{$\Gamma \vdash g : C^B$}
-        \RightLabel{(weakening)}
-        \BinaryInfC{$\Gamma, f : B^A \vdash g : C^B$}
-        \UnaryInfC{$\Gamma, ? : B^A \rightarrow C^B \vdash ? : C^A$}
-        \UnaryInfC{$\Gamma \vdash \lambda\ x\ .\ ? : (B^A \rightarrow C^B) \rightarrow C^A$}
-        \DisplayProof
-    \end{center}
-    Ahora bien, debemos probar que en efecto $\Gamma, x : A \vdash g(f(x)) : C$.
-    Por la regla de elemento genérico fácilmente podemos deducir desde 
-    $A\ \type$ que $\Gamma, x : A \vdash x : A$. Por otro lado, si $f$ y $g$ son
-    elementos de tipo flecha, entonces podemos aplicar la regla de eliminación
-    para obtener desde $g$ un elemento de tipo $C$ suponiendo que en efecto
-    $f(x) : B$.
     \begin{center}
         \AxiomC{$\Gamma \vdash A\ \type$}
-        \UnaryInfC{$\Gamma, x \vdash x : A$}
-        \AxiomC{$\Gamma, ? \vdash f(x) : B$}
-        \UnaryInfC{$\Gamma, f(x) : B \vdash g(f(x)) : C$}
-        \BinaryInfC{$\Gamma, x : A \vdash g(f(x)) : C$}
-        \UnaryInfC{$\Gamma \vdash \lambda\ x\ .\ g(f(x)) : A \rightarrow C$}
+        \AxiomC{$\Gamma \vdash B\ \type$}
+        \BinaryInfC{$\Gamma, f : B^A, x : A \vdash f(x) : B$}
+        \UnaryInfC{$\Gamma, f : B^A, x : A, g : B^A \vdash f(x) : B$}
+
+        \AxiomC{$\Gamma \vdash B\ \type$}
+        \AxiomC{$\Gamma \vdash C\ \type$}
+        \BinaryInfC{$\Gamma, g : B \rightarrow C, y : B \vdash g(y) : C$}
+        \UnaryInfC{$\Gamma, g : C^B, f : B^A, y : B \vdash g(y) : C$}
+        \UnaryInfC{$\Gamma, g : C^B, f : B^A, y : B, x : A \vdash g(y) : C$}
+        \BinaryInfC{$\Gamma, g : C^B, f : B^A, x : A \vdash g(f(x)) : C$}
+        \UnaryInfC{$\Gamma, g : C^B, f : B^A \vdash \lambda x\ .\ g(f(x)) : C^A$}
         \DisplayProof
     \end{center}
 
+    Finalmente, abstraemos sobre $f$ y $g$ para dar con un término que es
+    testigo de la existencia de la composición de funciones.
+    \begin{center}
+        \AxiomC{$\Gamma \vdash A\ \type$}
+        \AxiomC{$\Gamma \vdash B\ \type$}
+        \BinaryInfC{$\Gamma, f : B^A, x : A \vdash f(x) : B$}
+        \UnaryInfC{$\Gamma, f : B^A, x : A, g : B^A \vdash f(x) : B$}
+
+        \AxiomC{$\Gamma \vdash B\ \type$}
+        \AxiomC{$\Gamma \vdash C\ \type$}
+        \BinaryInfC{$\Gamma, g : B \rightarrow C, y : B \vdash g(y) : C$}
+        \UnaryInfC{$\Gamma, g : C^B, f : B^A, y : B \vdash g(y) : C$}
+        \UnaryInfC{$\Gamma, g : C^B, f : B^A, y : B, x : A \vdash g(y) : C$}
+        \BinaryInfC{$\Gamma, g : C^B, f : B^A, x : A \vdash g(f(x)) : C$}
+        \UnaryInfC{$\Gamma, g : C^B, f : B^A \vdash \lambda x\ .\ g(f(x)) : C^A$}
+        \UnaryInfC{$\Gamma, g : C^B \vdash \lambda f\ .\ \lambda x\ .\ g(f(x)) : B^A \rightarrow C^A$}
+        \UnaryInfC{$\Gamma \vdash \lambda g\ .\ (\lambda f\ .\ \lambda x\ .\ g(f(x))) : C^B \rightarrow (B^A \rightarrow C^A)$}
+        \UnaryInfC{$\Gamma \vdash \_\circ\_ := \lambda g\ .\ (\lambda f\ .\ \lambda x\ .\ g(f(x))) : C^B \rightarrow (B^A \rightarrow C^A)$}
+        \DisplayProof
+    \end{center}
+    Ya que tenemos una noción de composición de funciones y una identidad para
+    cada tipo, estaría muy bien mostrar que nuestra noción de composición es
+    asociativa para poder decir que tenemos una categoría.
+
+    \begin{theorem}[Asociatividad de la composición]
+        Si de un contexto gamma se tienen flechas $f : B^A$, $g : C^B$ y 
+        $h : D^C$, entonces $h \circ (g \circ f) \equiv (h \circ g) \circ f$.
+    \end{theorem}
+
+    \begin{proof}\hskip\newline
+        \begin{center}
+            \AxiomC{$\Gamma \vdash f : B^A$}
+            \UnaryInfC{$\Gamma, x : A \vdash f(x) : B$}
+                \AxiomC{$\Gamma \vdash g : C^B$}
+                \UnaryInfC{$\Gamma, y : B \vdash g(y) : C$}
+                \UnaryInfC{$\Gamma, y : B, x : A \vdash g(y) : C$}
+            \BinaryInfC{$\Gamma, x : A \vdash g(f(x)) : C$}
+                    \AxiomC{$\Gamma \vdash h : D^C$}
+                    \UnaryInfC{$\Gamma, z : C \vdash h(z) : D$}
+                    \UnaryInfC{$\Gamma, z : C, x : A \vdash h(z) : D$}
+            \BinaryInfC{$\Gamma x : A \vdash h(g(f(x))) : D$}
+            \UnaryInfC{$\Gamma x : A \vdash h(g(f(x)))  \equiv h (g (f(x))): D$}
+            \UnaryInfC{$\Gamma x : A \vdash h ((g \circ f)(x))  \equiv (h \circ g) (f(x)): D$}
+            \UnaryInfC{$\Gamma x : A \vdash (h \circ (g \circ f)) (x)\equiv ((h \circ g) \circ f) (x): D$}
+            \UnaryInfC{$\Gamma \vdash h \circ (g \circ f) \equiv (h \circ g) \circ f : D^A$}
+            \DisplayProof
+        \end{center}
+    \end{proof}
+
+    \begin{theorem}
+        Sean $f : B^A$, $Id_A : A \rightarrow A$ y $Id_B : B \rightarrow B$.
+        Entonces $f \circ Id_A \equiv f$ y  $Id_B \circ f \equiv f$.
+    \end{theorem}
+    \begin{proof}\hskip\newline\todo{Checar}
+        \begin{center}
+            \AxiomC{$\Gamma \vdash f : B^A$}
+            \UnaryInfC{$\Gamma, x : A \vdash f(x) : B$}
+            \UnaryInfC{$\Gamma, x : A \vdash f(Id_A(x)) : B$}
+            \UnaryInfC{$\Gamma, x : A \vdash (f \circ Id_A)(x) : B$}
+            \UnaryInfC{$\Gamma \vdash f \circ Id_A \equiv f : B^A$}
+            \DisplayProof
+        \end{center}
+
+        \begin{center}
+            \AxiomC{$\Gamma x : A \vdash (Id_B (f(x)) \equiv f(x) : B^A$}
+            \UnaryInfC{$\Gamma x : A \vdash (Id_B \circ f)(x) \equiv f(x) : B^A$}
+            \UnaryInfC{$\Gamma \vdash  Id_B \circ f \equiv f : B^A$}
+            \DisplayProof
+        \end{center}
+    \end{proof}
     \subsubsection{Productos dependientes}
     \subsubsection{Coproducto}
     % tengo que evaluar si esto si va.... se puede quedar como comentario.

@@ -14,14 +14,23 @@ module Funciones where
 
     f es-funcion (refl a) = refl (f a)
 
-    _∘_ : ∀ {ℓ₁ ℓ₂ ℓ₃ : Level}
+
+
+    {- _∘_ : ∀ {ℓ₁ ℓ₂ ℓ₃ : Level}
             {A : Set ℓ₁} {B : Set ℓ₂} {C : Set ℓ₃}
             → (B → C)
             → (A → B)
             --------------------------
             → (A → C)
     
-    f ∘ g = λ x → f (g x)
+    f ∘ g = λ x → f (g x) 
+
+    infixl 10 _∘_ -}
+
+    _∘_ : ∀ {A B C : Type}
+         → ∀ (f : B → C) (g : A → B)
+         → A → C
+    _∘_ f g = λ x → f (g x)
 
     infixl 10 _∘_
     
@@ -37,7 +46,10 @@ module Funciones where
 
     _es-mono : ∀ {A B C : Type} 
                  (f : A → B)
-               → Type  
-    
+               → Type
+
     _es-mono {A} {B} {C} f = ∀ (g h : C → A) → 
                 ((f ∘ g ≡ f ∘ h) → g ≡ h)
+    
+    {- _es-mono {A} {B} {C} f = ∀ (g h : C → A) → 
+                ((f ∘ g ≡ f ∘ h) → g ≡ h) -}

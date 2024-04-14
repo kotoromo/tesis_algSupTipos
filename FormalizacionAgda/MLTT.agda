@@ -74,3 +74,11 @@ record _×_ (A : 𝓤  ̇) (B : 𝓥  ̇) : 𝓤 ⊔ 𝓥  ̇ where
         proj₁ : A
         proj₂ : B
 infixr 2 _×_
+
+{-
+    Dados dos tipos A y B, podemos obtener una funcion generica de A en B
+    y evaluarla
+
+-}
+
+lemma : ∀ {A B : 𝓤} → A :  

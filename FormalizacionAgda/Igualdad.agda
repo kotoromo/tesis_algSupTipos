@@ -1,3 +1,4 @@
+-- open import Universos
 open import Notacion
 
 module Igualdad where
