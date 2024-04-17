@@ -1008,7 +1008,8 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \AxiomC{$\Gamma \vdash C\ \type$}
         \BinaryInfC{$\Gamma \vdash B \rightarrow C\ \type$}
         \UnaryInfC{$\Gamma, g : B \rightarrow C \vdash g : B \rightarrow C$}
-        \todo{Ver por que es necesario este paso...}
+        %\todo{Ver por que es necesario este paso...}
+        % Esta relacionado con la regla de sustitucion parece ser.
         \UnaryInfC{$\Gamma, g : B \rightarrow C, y : B \vdash g(y) : C$}
         \DisplayProof
     \end{center}
@@ -1039,12 +1040,29 @@ de proponer y dar una base teórica para una formalización del temario de álge
     \end{center}
     }
     Por sustitución de $f(x)$ sobre $y$ obtenemos $g(f(x)) : C$.
+    \begin{remark}
+        Observe que lo anterior fue necesario para aplicar la regla de
+        sustitución. En efecto, en este caso
+        \begin{align*}
+            &\hat{\Gamma} := \{\Gamma, f : B^A, x : A, g : C^B \}\\
+            &\mathfrak{J} := g(y) : C\\
+            &\Delta = \varnothing
+        \end{align*}
+        de modo que
+        \begin{center}
+            \AxiomC{$\hat{\Gamma} \vdash f(x):B$}
+            \AxiomC{$\hat{\Gamma}, y : B \vdash g(y) : C$}
+            \BinaryInfC{$\hat{\Gamma}, \Delta[f(x)/y] \vdash \mathfrak{J}[f(x)/y]$}
+            \UnaryInfC{$\hat{\Gamma} \vdash g(f(x)) : C$}
+            \DisplayProof
+        \end{center}
+    \end{remark}
 
     \begin{center}
         \AxiomC{$\Gamma \vdash A\ \type$}
         \AxiomC{$\Gamma \vdash B\ \type$}
         \BinaryInfC{$\Gamma, f : B^A, x : A \vdash f(x) : B$}
-        \UnaryInfC{$\Gamma, f : B^A, x : A, g : B^A \vdash f(x) : B$}
+        \UnaryInfC{$\Gamma, f : B^A, x : A, g : C^B \vdash f(x) : B$}
 
         \AxiomC{$\Gamma \vdash B\ \type$}
         \AxiomC{$\Gamma \vdash C\ \type$}
@@ -1054,7 +1072,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \BinaryInfC{$\Gamma, g : C^B, f : B^A, x : A \vdash g(f(x)) : C$}
         \DisplayProof
     \end{center}
-    
+
     Luego, abstrayendo sobre $x$ obtenemos una función que nos recuerda a la
     composición de funciones.
 
@@ -1062,7 +1080,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \AxiomC{$\Gamma \vdash A\ \type$}
         \AxiomC{$\Gamma \vdash B\ \type$}
         \BinaryInfC{$\Gamma, f : B^A, x : A \vdash f(x) : B$}
-        \UnaryInfC{$\Gamma, f : B^A, x : A, g : B^A \vdash f(x) : B$}
+        \UnaryInfC{$\Gamma, f : B^A, x : A, g : C^B \vdash f(x) : B$}
 
         \AxiomC{$\Gamma \vdash B\ \type$}
         \AxiomC{$\Gamma \vdash C\ \type$}
@@ -1080,7 +1098,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \AxiomC{$\Gamma \vdash A\ \type$}
         \AxiomC{$\Gamma \vdash B\ \type$}
         \BinaryInfC{$\Gamma, f : B^A, x : A \vdash f(x) : B$}
-        \UnaryInfC{$\Gamma, f : B^A, x : A, g : B^A \vdash f(x) : B$}
+        \UnaryInfC{$\Gamma, f : B^A, x : A, g : C^B \vdash f(x) : B$}
 
         \AxiomC{$\Gamma \vdash B\ \type$}
         \AxiomC{$\Gamma \vdash C\ \type$}
@@ -1094,13 +1112,19 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \UnaryInfC{$\Gamma \vdash \_\circ\_ := \lambda g\ .\ (\lambda f\ .\ \lambda x\ .\ g(f(x))) : C^B \rightarrow (B^A \rightarrow C^A)$}
         \DisplayProof
     \end{center}
+    Es decir, dados $f : B^A, g : C^B$
+    $$
+        g\circ f \equiv \lambda x\ .\ g(f(x)) : C^A
+    $$
+
     Ya que tenemos una noción de composición de funciones y una identidad para
     cada tipo, estaría muy bien mostrar que nuestra noción de composición es
     asociativa para poder decir que tenemos una categoría.
 
     \begin{theorem}[Asociatividad de la composición]
-        Si de un contexto gamma se tienen flechas $f : B^A$, $g : C^B$ y 
-        $h : D^C$, entonces $h \circ (g \circ f) \equiv (h \circ g) \circ f$.
+        Si de un contexto $\Gamma$ se tienen flechas $f : B^A$, $g : C^B$ y 
+        $h : D^C$, entonces 
+        $h \circ (g \circ f) \equiv (h \circ g) \circ f : A \rightarrow D$.
     \end{theorem}
 
     \begin{proof}\hskip\newline
@@ -1114,36 +1138,74 @@ de proponer y dar una base teórica para una formalización del temario de álge
                     \AxiomC{$\Gamma \vdash h : D^C$}
                     \UnaryInfC{$\Gamma, z : C \vdash h(z) : D$}
                     \UnaryInfC{$\Gamma, z : C, x : A \vdash h(z) : D$}
-            \BinaryInfC{$\Gamma x : A \vdash h(g(f(x))) : D$}
-            \UnaryInfC{$\Gamma x : A \vdash h(g(f(x)))  \equiv h (g (f(x))): D$}
-            \UnaryInfC{$\Gamma x : A \vdash h ((g \circ f)(x))  \equiv (h \circ g) (f(x)): D$}
-            \UnaryInfC{$\Gamma x : A \vdash (h \circ (g \circ f)) (x)\equiv ((h \circ g) \circ f) (x): D$}
+            \BinaryInfC{$\Gamma, x : A \vdash h(g(f(x))) : D$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x)))  \equiv h (g (f(x))): D$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h ((g \circ f)(x))  \equiv (h \circ g) (f(x)): D$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ (h \circ (g \circ f)) (x)\equiv ((h \circ g) \circ f) (x): D$}
             \UnaryInfC{$\Gamma \vdash h \circ (g \circ f) \equiv (h \circ g) \circ f : D^A$}
             \DisplayProof
         \end{center}
     \end{proof}
 
     \begin{theorem}
-        Sean $f : B^A$, $Id_A : A \rightarrow A$ y $Id_B : B \rightarrow B$.
-        Entonces $f \circ Id_A \equiv f$ y  $Id_B \circ f \equiv f$.
+        Sea $f : A \rightarrow B$ en un contexto $\Gamma$. Entonces
+        $\Id_{B} \circ f \equiv f$ y $f \circ \Id_{A} \equiv f$.
     \end{theorem}
-    \begin{proof}\hskip\newline\todo{Checar}
-        \begin{center}
-            \AxiomC{$\Gamma \vdash f : B^A$}
-            \UnaryInfC{$\Gamma, x : A \vdash f(x) : B$}
-            \UnaryInfC{$\Gamma, x : A \vdash f(Id_A(x)) : B$}
-            \UnaryInfC{$\Gamma, x : A \vdash (f \circ Id_A)(x) : B$}
-            \UnaryInfC{$\Gamma \vdash f \circ Id_A \equiv f : B^A$}
-            \DisplayProof
-        \end{center}
 
+    \begin{proof}
+        Notemos que el hecho $f \in \Gamma$ implica que $A,B\ \type \in \Gamma$.
+        Así,
         \begin{center}
-            \AxiomC{$\Gamma x : A \vdash (Id_B (f(x)) \equiv f(x) : B^A$}
-            \UnaryInfC{$\Gamma x : A \vdash (Id_B \circ f)(x) \equiv f(x) : B^A$}
-            \UnaryInfC{$\Gamma \vdash  Id_B \circ f \equiv f : B^A$}
+            \AxiomC{$\Gamma \vdash B\ \type$}
+            \UnaryInfC{$\Gamma \vdash \Id_B : B \rightarrow B$}
+                \AxiomC{$\Gamma \vdash A\ \type$}
+            \RightLabel{W}
+            \BinaryInfC{$\Gamma, x : A \vdash \Id_B : B \rightarrow B$}
+            \UnaryInfC{$\Gamma, x : A, b : B \vdash \Id_B(b) : B$}
+                \AxiomC{$\Gamma \vdash f : A \rightarrow B$}
+                \RightLabel{$\rightarrow$-ev}
+                \UnaryInfC{$\Gamma, x : A \vdash f(x) : B$}
+            \BinaryInfC{$\Gamma, x : A \vdash \Id_B (f(x)) : B$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ \Id_B (f(x)) : A \rightarrow B$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ \Id_B (f(x)) \equiv \lambda x\ \Id_B (f(x)) : A \rightarrow B$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ (\Id_B \circ f)(x) \equiv \lambda x\ (\lambda y\ .\ y) (f(x)) : A \rightarrow B$}
+            \RightLabel{$\beta$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ (\Id_B \circ f)(x) \equiv \lambda x\ f(x) : A \rightarrow B$}
+            \RightLabel{$\eta$}
+            \UnaryInfC{$\Gamma \vdash \Id_B \circ f \equiv f : A \rightarrow B$}
             \DisplayProof
         \end{center}
+        \todo{falta el otro jsjs}
     \end{proof}
+
+    Con ello, como los tipos junto con los tipos flecha satisfacen:
+    \begin{itemize}
+        \item Para cualquier tipo $A$ existe $\Id_A : A \rightarrow A$.
+        \item Para cualesquiera dos tipos $A, B$ existe un término $A \rightarrow B$.
+        \item Dadas dos flechas $A \rightarrow B$, $B \rightarrow C$
+        existe una tercera flecha $A \rightarrow C$.
+        \item Para cualesquiera flecha $f : A \rightarrow B$ se satisface 
+        \begin{itemize}
+            \item $f \circ \Id_A \equiv f$
+            \item $\Id_B \circ f \equiv f$
+        \end{itemize}
+        \item Para cualesquiera tres flechas $f : A \rightarrow B, g : B \rightarrow C, h : C \rightarrow D$
+        se tiene que $f\circ (g\circ h) \equiv (f \circ g) \circ h$
+    \end{itemize}
+    
+    entonces tenemos
+
+    \begin{theorem}
+        La colección
+        $$
+            \{A \ \vert\ A\ \type\}
+        $$
+        junto con
+        $$
+            \mathrm{Hom}(A, B)_{A, B\ \type} := \{f \ \vert\ f : A \rightarrow B\}
+        $$
+        conforma una categoría con la noción de composición definida por $\_\circ\_$.
+    \end{theorem}
     \subsubsection{Productos dependientes}
     \subsubsection{Coproducto}
     % tengo que evaluar si esto si va.... se puede quedar como comentario.
