@@ -574,13 +574,22 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \begin{center}
             \AxiomC{$\Gamma \vdash a \equiv a' : A$}
             \AxiomC{$\Gamma, x : A, \Delta \vdash b : B\ \type$}
-            \BinaryInfC{$\Gamma, \Delta[a/x] \vdash b[x/a] : B[a/x] \equiv b[x/a] : B[a'/x]$}
+            \RightLabel{$[a/x]$-cong}
+            \BinaryInfC{$\Gamma, \Delta[a/x] \vdash b[a/x] \equiv b[a'/x] : B[a/x]$}
             \DisplayProof
         \end{center}
 
-        A partir de este momento acordamos en denotar a $b[x/a]$ por simplemente
-        $b(a)$, y a $B[x/a]$ por $B(a)$ a menos que sea necesario emplear la
-        notación usual de sustitución.
+        \begin{notation}\hfill
+            \begin{itemize}
+                \item A partir de este momento acordamos en denotar a $b[x/a]$ por simplemente
+                $b(a)$, y a $B[x/a]$ por $B(a)$ a menos que sea necesario emplear la
+                notación usual de sustitución.
+                \item La regla también se denotar\'a por \textit{S-cong} o simplemente \textit{cong} para aligerar
+                la notación cuando sea necesario.
+            \end{itemize}
+        \end{notation}
+
+        
         
         Consideremos la siguente regla
 
@@ -725,6 +734,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
             para obtener un tipo de funciones dependientes:
             \begin{center}
                 \AxiomC{$\Gamma, x : A \vdash B(x)\ \type$}
+                \RightLabel{$\Pi$}
                 \UnaryInfC{$\Gamma \vdash \prod_{(x : A)}B(x)\ \type$}
                 \DisplayProof
             \end{center}
@@ -733,6 +743,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \begin{center}
                 \AxiomC{$\Gamma \vdash A \equiv A'\ \type$}
                 \AxiomC{$\Gamma x : A \vdash B(x) \equiv B'(x)\ \type$}
+                \RightLabel{$\Pi$-eq}
                 \BinaryInfC{$\Gamma \vdash \prod_{(x: A)} B(x)\ \type 
                     \equiv \prod_{(x:A')}B(x)\ \type$}
                 \DisplayProof
@@ -744,6 +755,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
 
             \begin{center}
                 \AxiomC{$\Gamma, x : A \vdash b(x):B(x)$}
+                \RightLabel{$\lambda$}
                 \UnaryInfC{$\Gamma \vdash \lambda x\ .\ b(x) : B(x)$}
                 \DisplayProof
             \end{center}
@@ -751,6 +763,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
             juiciosa:
             \begin{center}
                 \AxiomC{$\Gamma, x : A \vdash b(x) \equiv b'(x) : B(x)$}
+                \RightLabel{$\lambda$-eq}
                 \UnaryInfC{$\Gamma \vdash \lambda x\ .\ b(x) \equiv \lambda x\ .\ b'(x) : \prod_{(x : A)} B(x)$}
                 \DisplayProof
             \end{center}
@@ -761,6 +774,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
             podamos evaluarlo para obtener un término del tipo resultante:
             \begin{center}
                 \AxiomC{$\Gamma \vdash f : \prod_{(x : A)} B(x)$}
+                \RightLabel{ev}
                 \UnaryInfC{$\Gamma, x : A \vdash f(x) : B(x)$}
                 \DisplayProof
             \end{center}
@@ -771,6 +785,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
             semejante a la reducción $\beta$ del cálculo lambda:
             \begin{center}
                 \AxiomC{$\Gamma, a : A\vdash b(a) : B(a)$}
+                \RightLabel{$\beta$}
                 \UnaryInfC{$\Gamma, x : A \vdash (\lambda x\ .\ b(x))(a) \equiv b(a) : B(x)$}
                 \DisplayProof
             \end{center}
@@ -782,6 +797,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
             tipo de funciones dependientes son exactamente funciones.
             \begin{center}
                 \AxiomC{$\Gamma \vdash b : \prod_{(x : A)} B(x)$}
+                \RightLabel{$\eta$}
                 \UnaryInfC{$\Gamma \vdash \lambda x\ .\ b(x) \equiv b : \prod_{(x : A)} B(x)$}
                 \DisplayProof
             \end{center}
@@ -909,6 +925,26 @@ de proponer y dar una base teórica para una formalización del temario de álge
     \end{remark}
 
     \todo{Poner la prueba en agda de esto tambien}
+
+    \begin{theorem}[Extensionalidad bajo la igualdad de juicio]
+        \hfill
+        \begin{center}
+            \AxiomC{$\Gamma \vdash f : \prod_{(x : A)} B(x)$}
+            \AxiomC{$\Gamma \vdash g : \prod_{(x : A)} B(x)$}
+            \AxiomC{$\Gamma, x : A \vdash f(x) \equiv g(x) : B(x)$}
+            \TrinaryInfC{$\Gamma \vdash f \equiv g : \prod_{(x : A)} B(x)$}
+            \DisplayProof
+        \end{center}
+    \end{theorem}
+    \begin{proof}
+        \hfill
+        \AxiomC{$\Gamma \vdash $}
+    \end{proof}
+
+    \begin{corollary}[Extensionalidad bajo la igualdad de juicio]
+        Sean $f : A \rightarrow B$, $g : A \rightarrow B$ y $x : A$ términos en
+        un contexto $\Gamma$. Entonces 
+    \end{corollary}
     
     Para terminar con esta subsección se presentan a continuación algunas
     construcciones útiles con tipos flecha.
@@ -1127,7 +1163,62 @@ de proponer y dar una base teórica para una formalización del temario de álge
         $h \circ (g \circ f) \equiv (h \circ g) \circ f : A \rightarrow D$.
     \end{theorem}
 
-    \begin{proof}\hskip\newline
+    \newpage
+    Consideremos el siguiente \'arbol de deducción:
+    \begin{center}
+        \AxiomC{$\Gamma \vdash B\ \type$}
+        \UnaryInfC{$\Gamma \vdash \Id_B : B \rightarrow B$}
+            \AxiomC{$\Gamma \vdash A\ \type$}
+        \RightLabel{W}
+        \BinaryInfC{$\Gamma, x : A \vdash \Id_B : B \rightarrow B$}
+        \UnaryInfC{$\Gamma, x : A, b : B \vdash \Id_B(b) : B$}
+            \AxiomC{$\Gamma \vdash f : A \rightarrow B$}
+            \RightLabel{$\rightarrow$-ev}
+            \UnaryInfC{$\Gamma, x : A \vdash f(x) : B$}
+        \BinaryInfC{$\Gamma, x : A \vdash \Id_B (f(x)) : B$}
+        \UnaryInfC{$\Gamma \vdash \lambda x\ \Id_B (f(x)) : A \rightarrow B$}
+        \UnaryInfC{$\Gamma \vdash \lambda x\ \Id_B (f(x)) \equiv \lambda x\ \Id_B (f(x)) : A \rightarrow B$}
+        \UnaryInfC{$\Gamma \vdash \lambda x\ (\Id_B \circ f)(x) \equiv \lambda x\ (\lambda y\ .\ y) (f(x)) : A \rightarrow B$}
+        \RightLabel{$\beta$}
+        \UnaryInfC{$\Gamma \vdash \lambda x\ (\Id_B \circ f)(x) \equiv \lambda x\ f(x) : A \rightarrow B$}
+        \RightLabel{questapasandoaqui}
+        \UnaryInfC{$\Gamma \vdash \Id_B \circ f \equiv f : A \rightarrow B$}
+        \DisplayProof
+    \end{center}
+    Mi duda yace en el paso \textit{questapasandoaqui}. Tras pensar un rato esto
+    es lo que pienso:
+    \newline
+    \textbf{REGLA QUE SEGUN YO SE ASUME}\todo{Resolver esto...}
+    \newline
+    Es como si se hiciera trampa con la regla $\eta$. Me deja un mal sabor de 
+    boca porque para mi no es claro que es lo que esta pasando.
+    \begin{center}
+        \AxiomC{$\Gamma \vdash \lambda x . f(x) \equiv \lambda x . g(x)$}
+        \UnaryInfC{$\Gamma \vdash f \equiv g$}
+        \DisplayProof
+    \end{center}
+
+    Lo que se me ocurre que podria estar pasando tras bambalinas es un argumento 
+    como el siguiente:
+
+    \begin{center}
+        \AxiomC{$\Gamma \vdash \lambda x . f(x) \equiv \lambda x . g(x) : \prod_{(x : A)} B(x)$}
+            \AxiomC{$\Gamma \vdash f : \prod_{(x : A)} B(x)$}
+            \RightLabel{$\eta$}
+            \UnaryInfC{$\Gamma \vdash f \equiv \lambda x . f(x) : B(x)$}
+                \AxiomC{$\Gamma \vdash g : \prod_{(x : A)} B(x)$}
+                \RightLabel{$\eta$}
+                \UnaryInfC{$\Gamma \vdash g \equiv \lambda x . g(x) : B(x)$}
+        \RightLabel{magia}
+        \TrinaryInfC{$\Gamma \vdash f \equiv g : \prod_{(x : A)} B(x)$}
+        \DisplayProof
+    \end{center}
+    
+    Lo que no se es que esta ocurriendo en el paso \textit{magia}.\newline
+    {\huge auxiliooooooooooo}
+    \newpage
+
+    \begin{proof}\hfill
         \begin{center}
             \AxiomC{$\Gamma \vdash f : B^A$}
             \UnaryInfC{$\Gamma, x : A \vdash f(x) : B$}
@@ -1142,6 +1233,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x)))  \equiv h (g (f(x))): D$}
             \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h ((g \circ f)(x))  \equiv (h \circ g) (f(x)): D$}
             \UnaryInfC{$\Gamma \vdash \lambda x\ .\ (h \circ (g \circ f)) (x)\equiv ((h \circ g) \circ f) (x): D$}
+            \todo{Averiguar por que esto es legal. Es como si se asumiera la regla}
             \UnaryInfC{$\Gamma \vdash h \circ (g \circ f) \equiv (h \circ g) \circ f : D^A$}
             \DisplayProof
         \end{center}
@@ -1174,6 +1266,10 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \RightLabel{$\eta$}
             \UnaryInfC{$\Gamma \vdash \Id_B \circ f \equiv f : A \rightarrow B$}
             \DisplayProof
+        \end{center}
+
+        \begin{center}
+            \AxiomC{$\Gamma$}
         \end{center}
         \todo{falta el otro jsjs}
     \end{proof}
