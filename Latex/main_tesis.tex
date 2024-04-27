@@ -1,4 +1,11 @@
 \documentclass{article}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
 \usepackage{array}
 \usepackage{graphicx}
 \usepackage[spanish,es-noshorthands, es-lcroman]{babel}
@@ -523,6 +530,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \begin{center}
             \AxiomC{$\Gamma \vdash a : A$}
             \AxiomC{$\Gamma, x : A, \Theta \vdash \mathfrak{T}$}
+            \RightLabel{$a/x$}
             \BinaryInfC{$\Gamma, \Theta[a/x] \vdash \mathfrak{T}[a/x]$}
             \DisplayProof
         \end{center}
@@ -938,7 +946,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
     El siguiente lema nos permitirá simplificar las demostraciones al abstraer
     el proceso de evaluación de un término de un tipo flecha en un elemento de
     su dominio.
-    \begin{lemma}\hfill
+    \begin{lemma}\label{lemma:eval-fun}\hfill
         \begin{center}
             \AxiomC{$\Gamma \vdash f : \prod_{(x : A)} B(x)$}
             \AxiomC{$\Gamma \vdash a : A$}
@@ -979,7 +987,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
     \end{theorem}
     \begin{proof}\hfill\newline
         \todo{Arreglar esto de tal forma que se vea bien}
-        {\tiny
+        {\small
         \begin{center}
             \AxiomC{$\Gamma, x : A \vdash f(x) \equiv g(x) : B(x)$} 
             \LeftLabel{$\lambda$-eq}
@@ -1053,10 +1061,28 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \DisplayProof
     \end{center}
 
-    Así como partimos desde arriba la construcción, es usual comenzar desde
-    abajo e ir construyendo el árbol desde abajo hacia arriba, rellenando huecos
-    que vayan surgiendo para llegar a lo deseado. Utilizaremos esta técnica para
-    definir la operación de composición a modo de exhibición.\newline\newline
+    Claramente nuestra flecha identidad debe satisfacer que todo elemento
+    evaluado en dicha flecha es (juiciosamente) equivalente a si mismo.
+
+    \begin{lemma}\hfill\newline
+        \begin{center}
+            \AxiomC{$\Gamma \vdash A\ \type$}
+            \UnaryInfC{$\Gamma, x : A \vdash \Id_A(x) \equiv x$}
+            \DisplayProof
+        \end{center}
+    \end{lemma}
+    \begin{proof}\hfill\newline
+        \begin{center}
+            \AxiomC{$\Gamma \vdash A\ \type$}
+            \UnaryInfC{$\Gamma \vdash \Id_A : A \rightarrow A$}
+            \UnaryInfC{$\Gamma \vdash \Id_A \equiv \lambda\ y.\ y : A \rightarrow A$}
+            \RightLabel{$\rightarrow$-ev}
+            \UnaryInfC{$\Gamma, x : A \vdash \Id_A(x) \equiv (\lambda\ y\ .\ y)(x) : A$}
+            \RightLabel{$\beta$}
+            \UnaryInfC{$\Gamma, x : A \vdash \Id_A(x) \equiv x : A$}
+            \DisplayProof    
+        \end{center}
+    \end{proof}
     \textbf{Tomando múltiples argumentos}\newline\newline
     Ciertamente pareciera que nuestro tratamiento sobre el tipo flecha tiene la
     limitante sobre el número de argumentos que puede tomar una función. En las
@@ -1115,33 +1141,35 @@ de proponer y dar una base teórica para una formalización del temario de álge
     \begin{center}
         \AxiomC{$\Gamma \vdash A\ \type$}
         \AxiomC{$\Gamma \vdash B\ \type$}
+        \RightLabel{$\rightarrow$}
         \BinaryInfC{$\Gamma \vdash A \rightarrow B\ \type$}
+        \RightLabel{VAR}
         \UnaryInfC{$\Gamma, f : A \rightarrow B \vdash f : A \rightarrow B$}
+        \RightLabel{ev}
         \UnaryInfC{$\Gamma, f : A \rightarrow B, x : A \vdash f(x) : B$}
         \DisplayProof
         \hskip 1.5em
         \AxiomC{$\Gamma \vdash B\ \type$}
         \AxiomC{$\Gamma \vdash C\ \type$}
+        \RightLabel{$\rightarrow$}
         \BinaryInfC{$\Gamma \vdash B \rightarrow C\ \type$}
+        \RightLabel{VAR}
         \UnaryInfC{$\Gamma, g : B \rightarrow C \vdash g : B \rightarrow C$}
-        %\todo{Ver por que es necesario este paso...}
-        % Esta relacionado con la regla de sustitucion parece ser.
+        \RightLabel{ev}
         \UnaryInfC{$\Gamma, g : B \rightarrow C, y : B \vdash g(y) : C$}
         \DisplayProof
     \end{center}
     En virtud de lo anterior, omitimos en el árbol de deducción estos pasos.
-    % Este paso es necesario para poner en contexto a f y a x para
-    % ensamblar la composición. Las dependencias se agregan por
-    % la regla de debilitamiento.
-    Luego, como podemos evaluar funciones genéricas en elementos, y justamente
-    contamos con un elemento, obtenemos un elemento de $C$.
+    Luego, como podemos evaluar funciones genéricas en elementos y contamos con 
+    uno, podemos obtener un elemento de $C$.
     {\small
     \begin{center}
         \AxiomC{$\Gamma \vdash A\ \type$}
         \AxiomC{$\Gamma \vdash B\ \type$}
-        \BinaryInfC{$\Gamma \vdash A \rightarrow B\ \type$}
-        \UnaryInfC{$\Gamma, f : A \rightarrow B \vdash f : A \rightarrow B$}
+        \BinaryInfC{$\Gamma \vdash B^A\ \type$}
+        \UnaryInfC{$\Gamma, f : B^A \vdash f : B^A$}
         \UnaryInfC{$\Gamma, f : B^A, x : A \vdash f(x) : B$}
+        %\LeftLabel{W}
         \UnaryInfC{$\Gamma, f : B^A, x : A, g : B^A \vdash f(x) : B$}
         \DisplayProof
         \hskip 1.5em
@@ -1155,24 +1183,28 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \DisplayProof
     \end{center}
     }
-    Por sustitución de $f(x)$ sobre $y$ obtenemos $g(f(x)) : C$.
-    \begin{remark}
-        Observe que lo anterior fue necesario para aplicar la regla de
-        sustitución. En efecto, en este caso
-        \begin{align*}
-            &\hat{\Gamma} := \{\Gamma, f : B^A, x : A, g : C^B \}\\
-            &\mathfrak{J} := g(y) : C\\
-            &\Delta = \varnothing
-        \end{align*}
-        de modo que
-        \begin{center}
-            \AxiomC{$\hat{\Gamma} \vdash f(x):B$}
-            \AxiomC{$\hat{\Gamma}, y : B \vdash g(y) : C$}
-            \BinaryInfC{$\hat{\Gamma}, \Delta[f(x)/y] \vdash \mathfrak{J}[f(x)/y]$}
-            \UnaryInfC{$\hat{\Gamma} \vdash g(f(x)) : C$}
-            \DisplayProof
-        \end{center}
-    \end{remark}
+    Por sustitución de $f(x)$ sobre $y$ obtenemos $g(f(x)) : C$. Luego,
+    aplicando nuestro lema \ref{lemma:eval-fun} podemos deducir
+    $$
+        \Gamma, g : C^B, f : B^A, x : A \vdash g(f(x)) : C
+    $$
+    %\begin{remark}
+    %    Observe que lo anterior fue necesario para aplicar la regla de
+    %    sustitución. En efecto, en este caso
+    %    \begin{align*}
+    %        &\hat{\Gamma} := \{\Gamma, f : B^A, x : A, g : C^B \}\\
+    %        &\mathfrak{J} := g(y) : C\\
+    %        &\Delta = \varnothing
+    %    \end{align*}
+    %    de modo que
+    %    \begin{center}
+    %        \AxiomC{$\hat{\Gamma} \vdash f(x):B$}
+    %        \AxiomC{$\hat{\Gamma}, y : B \vdash g(y) : C$}
+    %        \BinaryInfC{$\hat{\Gamma}, \Delta[f(x)/y] \vdash \mathfrak{J}[f(x)/y]$}
+    %        \UnaryInfC{$\hat{\Gamma} \vdash g(f(x)) : C$}
+    %        \DisplayProof
+    %    \end{center}
+    %\end{remark}
 
     \begin{center}
         \AxiomC{$\Gamma \vdash A\ \type$}
@@ -1189,7 +1221,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \DisplayProof
     \end{center}
 
-    Luego, abstrayendo sobre $x$ obtenemos una función que nos recuerda a la
+    Abstrayendo sobre $x$ obtenemos una función que nos recuerda a la
     composición de funciones.
 
     \begin{center}
@@ -1204,6 +1236,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \UnaryInfC{$\Gamma, g : C^B, f : B^A, y : B \vdash g(y) : C$}
         \UnaryInfC{$\Gamma, g : C^B, f : B^A, y : B, x : A \vdash g(y) : C$}
         \BinaryInfC{$\Gamma, g : C^B, f : B^A, x : A \vdash g(f(x)) : C$}
+        \RightLabel{$\lambda$}
         \UnaryInfC{$\Gamma, g : C^B, f : B^A \vdash \lambda x\ .\ g(f(x)) : C^A$}
         \DisplayProof
     \end{center}
@@ -1223,8 +1256,11 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \UnaryInfC{$\Gamma, g : C^B, f : B^A, y : B, x : A \vdash g(y) : C$}
         \BinaryInfC{$\Gamma, g : C^B, f : B^A, x : A \vdash g(f(x)) : C$}
         \UnaryInfC{$\Gamma, g : C^B, f : B^A \vdash \lambda x\ .\ g(f(x)) : C^A$}
+        \RightLabel{$\lambda$}
         \UnaryInfC{$\Gamma, g : C^B \vdash \lambda f\ .\ \lambda x\ .\ g(f(x)) : B^A \rightarrow C^A$}
+        \RightLabel{$\lambda$}
         \UnaryInfC{$\Gamma \vdash \lambda g\ .\ (\lambda f\ .\ \lambda x\ .\ g(f(x))) : C^B \rightarrow (B^A \rightarrow C^A)$}
+        \RightLabel{$\lambda$}
         \UnaryInfC{$\Gamma \vdash \_\circ\_ := \lambda g\ .\ (\lambda f\ .\ \lambda x\ .\ g(f(x))) : C^B \rightarrow (B^A \rightarrow C^A)$}
         \DisplayProof
     \end{center}
@@ -1253,17 +1289,57 @@ de proponer y dar una base teórica para una formalización del temario de álge
                 \UnaryInfC{$\Gamma, y : B \vdash g(y) : C$}
                 \RightLabel{W}
                 \UnaryInfC{$\Gamma, y : B, x : A \vdash g(y) : C$}
+            %\LeftLabel{lemma \ref{lemma:eval-fun}}
             \BinaryInfC{$\Gamma, x : A \vdash g(f(x)) : C$}
                     \AxiomC{$\Gamma \vdash h : D^C$}
+                    \RightLabel{ev}
                     \UnaryInfC{$\Gamma, z : C \vdash h(z) : D$}
                     \RightLabel{W}
                     \UnaryInfC{$\Gamma, z : C, x : A \vdash h(z) : D$}
             \RightLabel{$g(f(x))/z$}
             \BinaryInfC{$\Gamma, x : A \vdash h(g(f(x))) : D$}
-            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x)))  \equiv h (g (f(x))): D$}
-            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h ((g \circ f)(x))  \equiv (h \circ g) (f(x)): D$}
-            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ (h \circ (g \circ f)) (x)\equiv ((h \circ g) \circ f) (x): D$}
-            \UnaryInfC{$\Gamma \vdash h \circ (g \circ f) \equiv (h \circ g) \circ f : D^A$}
+            \DisplayProof
+        \end{center}
+        Observemos que de $\Gamma, x : A \vdash h(g(f(x))) : D$ podemos obtener 
+        las siguientes derivaciones tras aplicaciones sucesivas de la definición
+        de la composición:
+
+        \begin{center}
+            \AxiomC{$\Gamma, x : A \vdash h(g(f(x))) : D$}
+            \RightLabel{$\equiv$-refl}
+            \UnaryInfC{$\Gamma, x : A \vdash h(g(f(x))) \equiv h(g(f(x))): D$}
+            \RightLabel{$\rightarrow$-eq}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv \lambda x\ .\ h(g(f(x))): D^A$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv h((g \circ f)(x)) : D^A$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv h \circ (g \circ f)(x) : D^A$}
+            \DisplayProof
+            \hskip 1.5em
+            \AxiomC{$\Gamma, x : A \vdash h(g(f(x))) : D$}
+            \RightLabel{$\equiv$-refl}
+            \UnaryInfC{$\Gamma, x : A \vdash h(g(f(x))) \equiv h(g(f(x))): D$}
+            \RightLabel{$\rightarrow$-eq}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv \lambda x\ .\ h(g(f(x))): D^A$}
+            \UnaryInfC{$\Gamma \vdash (h\circ g)(f(x)) \equiv \lambda x\ .\ h(g(f(x))) : D^A$}
+            \UnaryInfC{$\Gamma \vdash ((h\circ g)\circ f)(x) \equiv \lambda x\ .\ h(g(f(x))) : D^A$}
+            \DisplayProof
+        \end{center}
+
+        De modo que, por la transitividad de $\equiv$ podemos conlcuir la 
+        equivalencia que deseamos.
+
+        \begin{center}
+            \AxiomC{$\Gamma, x : A \vdash h(g(f(x))) : D$}
+            \UnaryInfC{$\Gamma, x : A \vdash h(g(f(x))) \equiv h(g(f(x))): D$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv \lambda x\ .\ h(g(f(x))): D^A$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv h((g \circ f)(x)) : D^A$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv h \circ (g \circ f)(x) : D^A$}
+
+            \AxiomC{$\Gamma, x : A \vdash h(g(f(x))) : D$}
+            \UnaryInfC{$\Gamma, x : A \vdash h(g(f(x))) \equiv h(g(f(x))): D$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv \lambda x\ .\ h(g(f(x))): D^A$}
+            \UnaryInfC{$\Gamma \vdash (h\circ g)(f(x)) \equiv \lambda x\ .\ h(g(f(x))) : D^A$}
+            \UnaryInfC{$\Gamma \vdash ((h\circ g)\circ f)(x) \equiv \lambda x\ .\ h(g(f(x))) : D^A$}
+            \BinaryInfC{$\Gamma \vdash ((h\circ g)\circ f)(x) \equiv h \circ (g \circ f)(x) : D^A$}
             \DisplayProof
         \end{center}
     \end{proof}
@@ -1278,37 +1354,19 @@ de proponer y dar una base teórica para una formalización del temario de álge
         Así,
         \begin{center}
             \AxiomC{$\Gamma \vdash B\ \type$}
-            \UnaryInfC{$\Gamma \vdash \Id_B : B \rightarrow B$}
-                \AxiomC{$\Gamma \vdash A\ \type$}
-            \RightLabel{W}
-            \BinaryInfC{$\Gamma, x : A \vdash \Id_B : B \rightarrow B$}
-            \UnaryInfC{$\Gamma, x : A, b : B \vdash \Id_B(b) : B$}
-                \AxiomC{$\Gamma \vdash f : A \rightarrow B$}
-                \RightLabel{$\rightarrow$-ev}
-                \UnaryInfC{$\Gamma, x : A \vdash f(x) : B$}
-            \BinaryInfC{$\Gamma, x : A \vdash \Id_B (f(x)) : B$}
-            \UnaryInfC{$\Gamma \vdash \lambda x\ \Id_B (f(x)) : A \rightarrow B$}
-            \UnaryInfC{$\Gamma \vdash \lambda x\ \Id_B (f(x)) \equiv \lambda x\ \Id_B (f(x)) : A \rightarrow B$}
-            \UnaryInfC{$\Gamma \vdash \lambda x\ (\Id_B \circ f)(x) \equiv \lambda x\ (\lambda y\ .\ y) (f(x)) : A \rightarrow B$}
-            \RightLabel{$\beta$}
-            \UnaryInfC{$\Gamma \vdash \lambda x\ (\Id_B \circ f)(x) \equiv \lambda x\ f(x) : A \rightarrow B$}
-            \RightLabel{$\eta$}
-            \UnaryInfC{$\Gamma \vdash \Id_B \circ f \equiv f : A \rightarrow B$}
+            
             \DisplayProof
         \end{center}
 
+        Para la otra equivalencia podemos apelar a nuesto teorema de 
+        extensionalidad para tipos flecha.
+
         \begin{center}
             \AxiomC{$\Gamma \vdash A\ \type$}
-            \UnaryInfC{$\Gamma \vdash \Id_A : A \rightarrow A$}
-            \RightLabel{ev}
-            \UnaryInfC{$\Gamma, x : A \vdash \Id_A(x) : A$}
-            \RightLabel{$\equiv$-refl}
-            \UnaryInfC{$\Gamma, x : A \vdash \Id_A(x) \equiv \Id_A(x)$}
-            %TODO Terminar de justificar
-            \UnaryInfC{$\Gamma, x : A \vdash \Id_A(x) \equiv x$}
+            
             \DisplayProof
         \end{center}
-        \todo{falta el otro jsjs}
+
     \end{proof}
 
     Con ello, los tipos flecha satisfacen:
