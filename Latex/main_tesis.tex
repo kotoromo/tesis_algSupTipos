@@ -84,7 +84,7 @@
 \newcommand{\RestrictTo}[1]{\restriction_{#1}}
 \newcommand{\norm}[1]{\left\lVert{#1}\right\rVert}
 \newcommand{\type}{\mathrm{type}}
-
+\newcommand{\const}{\mathrm{const}}
 
 \title{Álgebra Superior: Una perspectiva típica}
 \author{Nicky García Fierros}
@@ -1201,9 +1201,9 @@ de proponer y dar una base teórica para una formalización del temario de álge
     De manera semejante, si $C(x,y)$ es una familia de tipos indizada por dos
     elementos $x : A$ y $y : B$, entonces podemos formar el tipo
     \begin{center}
-        \AxiomC{$\Gamma y : B \vdash \prod_{(y : B)}C(x,y)\ \type$}
+        \AxiomC{$\Gamma, y : B \vdash \prod_{(y : B)}C(x,y)\ \type$}
         \RightLabel{$\Pi$}
-        \UnaryInfC{$\Gamma x : A \vdash \prod_{(y : B)}C(x,y)\ \type$}
+        \UnaryInfC{$\Gamma, x : A \vdash \prod_{(y : B)}C(x,y)\ \type$}
         \RightLabel{$\Pi$}
         \UnaryInfC{$\prod_{(x : A)}\prod_{(y : B)}C(x,y)\ \type$}
         \DisplayProof
@@ -1511,14 +1511,66 @@ de proponer y dar una base teórica para una formalización del temario de álge
     \begin{theorem}
         La colección
         $$
-            \{A \ \vert\ A\ \type\}
+            \mathbf{Type} := \{A \ \vert\ A\ \type\}
         $$
         junto con
         $$
-            \mathrm{Hom}(A, B)_{A, B\ \type} := \{f \ \vert\ f : A \rightarrow B\}
+            \mathbf{Type}(A, B) := \{f \ \vert\ f : A \rightarrow B\}
         $$
-        conforma una categoría con la noción de composición definida por $\_\circ\_$.
+        conforman una categoría con la noción de composición definida por 
+        $\_\circ\_$.
     \end{theorem}
+
+    Para concluir con esta sección se presentan las siguientes construcciones
+    de funciones que serán de útilidad en secciones posteriores y algunas de
+    sus propiedades.
+
+    \textbf{La función constante}\hfill\newline
+    \begin{center}
+        \AxiomC{$\Gamma \vdash A\ \type$}
+        \UnaryInfC{$\Gamma, y : B \vdash \const_y : A \rightarrow B$}
+        \DisplayProof
+    \end{center}
+    {\small \textbf{Construcción}}\hfill\newline
+    {\small \textbf{Propiedades}}\hfill\newline
+    \begin{lemma}\hfill\newline
+        \begin{center}
+            \AxiomC{$\Gamma \vdash f : A \rightarrow B$}
+            \UnaryInfC{$\Gamma, c : C \vdash \const_c \circ f \equiv \const_c : A \rightarrow C$}
+            \DisplayProof
+        \end{center}
+    \end{lemma}
+
+    \begin{lemma}\hfill\newline
+        \begin{center}
+            \AxiomC{$\Gamma \vdash A\ \type$}
+            \AxiomC{$\Gamma \vdash g : B \rightarrow C$}
+            \BinaryInfC{$\Gamma, b : B \vdash g \circ \const_b \equiv \const_{g(b)} : A \rightarrow C$}
+            \DisplayProof
+        \end{center}
+    \end{lemma}
+    \textbf{La función swap}\hfill\newline
+    La existencia de esta función testifica que el orden en el que ingresemos
+    los argumetos a una función no afecta el resultado.
+    \begin{center}
+        \AxiomC{$\Gamma \vdash A\ \type$}
+        \AxiomC{$\Gamma \vdash B\ \type$}
+        \AxiomC{$\Gamma, x : A, y : B \vdash C(x,y)\ \type$}
+        \TrinaryInfC{$\Gamma \vdash \sigma : \left(\prod_{(x:A)} \prod_{(y : B)} C(x, y)\right) \rightarrow \left(\prod_{(y : B)} \prod_{(x:A)} C(x, y)\right)$}
+        \DisplayProof
+    \end{center}
+    {\small \textbf{Construcción}}\hfill\newline
+    {\small \textbf{Propiedades}}\hfill\newline
+    \begin{lemma}\hfill\newline
+        \begin{center}
+            \AxiomC{$\Gamma \vdash A\ \type$}
+            \AxiomC{$\Gamma \vdash B\ \type$}
+            \AxiomC{$\Gamma, x : A, y : B \vdash C(x,y)\ \type$}
+            \TrinaryInfC{$\Gamma \vdash \sigma \circ \sigma \equiv \Id : \left(\prod_{(x:A)} \prod_{(y : B)} C(x, y)\right) \rightarrow \left(\prod_{(x : A)} \prod_{(y:B)} C(x, y)\right)$}
+            \DisplayProof
+        \end{center}
+    \end{lemma}
+
     \subsubsection{Productos dependientes}
     \subsubsection{Coproducto}
     % tengo que evaluar si esto si va.... se puede quedar como comentario.
