@@ -648,7 +648,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         Como ejemplos de derivaciones se presentan a continuación algunas
         reglas derivables útiles desde las reglas discutidas anteriormente:
 
-        \begin{theorem}[sustitución de variables por otras]\hfill\newline
+        \begin{theorem}[sustitución de variables por otras]\label{teo:sust_var_teo}\hfill\newline
             Sean $\Gamma$ y $\Theta$ contextos y $\mathfrak{T}$ una tesis de
             juicio tales que 
             $$
@@ -676,19 +676,38 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \end{proof}
 
         \begin{theorem}[regla de intercambio del orden de variables]
-            Sean $\Gamma$ y $\Theta$ contextos tales que
-            $$
-                \Gamma, x : A, y : B, \Theta \vdash \mathfrak{T}
-            $$
-
-            Entonces se tiene que desde el contexto
-            $$
-                \Gamma, y : B, x : A, \Theta
-            $$
-            se deduce el mismo juicio $\mathfrak{T}$.
+            \hfill\newline
+            \begin{center}
+                \AxiomC{$\Gamma, x : A, y : B, \Theta \vdash \mathfrak{T}$}
+                \UnaryInfC{$\Gamma, y : B, x : A, \Theta \vdash \mathfrak{T}$}
+                \DisplayProof
+            \end{center}
         \end{theorem}
-        \begin{proof}
-            Tengo que escribirla gg
+        \begin{proof}\hfill\newline
+            Notemos que por el teorema \ref{teo:sust_var_teo} tenemos que
+            de $\Gamma, x : A, y : B, \Theta \vdash \mathfrak{T}$ podemos
+            deducir 
+            $$\Gamma[y'/y], x : A, y' : B, \Theta[y'/y] \vdash \mathfrak{T}[y/y']$$
+
+            La idea ahora es agregar $y : B$ de vuelta al árbol de derivación
+            y sustituir adecuadamente para obtener la tesis de juicio deseada.
+            \begin{center}
+                    \AxiomC{$\Gamma, x : A, y : B, \Theta \vdash \mathfrak{T}$}
+                    \UnaryInfC{$\Gamma[y'/y], x : A, y' : B, \Theta[y'/y] \vdash \mathfrak{T}[y/y']$}
+                        \AxiomC{$\Gamma \vdash B\ \type$}
+                    \LeftLabel{W}
+                    \BinaryInfC{$\Gamma[y'/y], y : B, x : A, y' : B, \Theta[y'/y] \vdash \mathfrak{T}[y/y']$}
+
+                \AxiomC{$\Gamma \vdash B\ \type$}
+                \RightLabel{VAR-intro}
+                \UnaryInfC{$\Gamma, y : B \vdash y : B$}
+                    \AxiomC{$\Gamma \vdash A\ \type$}
+                \RightLabel{W}
+                \BinaryInfC{$\Gamma, y : B, x : A \vdash y : B$}
+                \RightLabel{$y/y'$}
+                \BinaryInfC{$\Gamma, y : B, x : A, \Theta \vdash \mathfrak{T}$}
+                \DisplayProof
+            \end{center}
         \end{proof}
 
         \begin{theorem}[relga de conversión de elementos]
