@@ -371,7 +371,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
             o si damos por obvio que $A$ tiene que ser un tipo para que el juicio $\Gamma \vdash x : A$ sea válido podemos solamente convenir escribir
             \begin{prooftree}
                 \AxiomC{$\Gamma \vdash x : A$}
-                \UnaryInfC{$B(x)\ \type$}
+                \UnaryInfC{$\Gamma \vdash B(x)\ \type$}
             \end{prooftree}
         
             Por conveniencia y claridad, a partir de este punto emplearemos las convenciones de escritura que nos permiten obviar cosas a menos de que sea
@@ -499,6 +499,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \begin{center}
             \AxiomC{$\Gamma \vdash A \equiv B \ \type$}
             \AxiomC{$\Gamma, x : A, \Theta \vdash \mathfrak{T}$}
+            \RightLabel{ConvVar}
             \BinaryInfC{$\Gamma, x : B, \Theta \vdash \mathfrak{T}$}
             \DisplayProof
         \end{center}
@@ -640,7 +641,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
 
         \begin{center}
             \AxiomC{$\Gamma \vdash A\ \type$}
-            \RightLabel{VAR-intro}
+            \RightLabel{VAR}
             \UnaryInfC{$\Gamma, x : A \vdash x : A$}
             \DisplayProof
         \end{center}
@@ -668,7 +669,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
                 \RightLabel{W}
                 \BinaryInfC{$\Gamma, x' : A, x : A, \Theta \vdash \mathfrak{T}$}
                     \AxiomC{$\Gamma \vdash A\ \type$}
-                    \RightLabel{VAR-intro}
+                    \RightLabel{VAR}
                     \UnaryInfC{$\Gamma, x' : A \vdash x' : A$}
                 \BinaryInfC{$\Gamma, x' : A, \Theta[x'/x] \vdash \mathfrak{T}[x/x']$}
                 \DisplayProof
@@ -699,41 +700,55 @@ de proponer y dar una base teórica para una formalización del temario de álge
                     \BinaryInfC{$\Gamma[y'/y], y : B, x : A, y' : B, \Theta[y'/y] \vdash \mathfrak{T}[y/y']$}
 
                 \AxiomC{$\Gamma \vdash B\ \type$}
-                \RightLabel{VAR-intro}
+                \RightLabel{VAR}
                 \UnaryInfC{$\Gamma, y : B \vdash y : B$}
                     \AxiomC{$\Gamma \vdash A\ \type$}
                 \RightLabel{W}
                 \BinaryInfC{$\Gamma, y : B, x : A \vdash y : B$}
-                \RightLabel{$y/y'$}
+                \RightLabel{$[y/y']$}
                 \BinaryInfC{$\Gamma, y : B, x : A, \Theta \vdash \mathfrak{T}$}
                 \DisplayProof
             \end{center}
         \end{proof}
 
         \begin{theorem}[relga de conversión de elementos]
-            Sea $\Gamma$ un contexto tal que de este se deduce
-            $$
-                \Gamma \vdash A \equiv A'\ \type    
-            $$
-            $$
-                \Gamma \vdash a : A
-            $$
-            Entonces se puede deducir $\Gamma \vdash a : A'$.
-        \end{theorem}
-        \begin{proof}
-            Tengo que escribirla gg
+            \hfill\newline
             \begin{center}
                 \AxiomC{$\Gamma \vdash A \equiv A'\ \type$}    
                 \AxiomC{$\Gamma \vdash a : A$}
                 \BinaryInfC{$\Gamma \vdash a : A'$}
                 \DisplayProof
             \end{center}
+        \end{theorem}
+        \begin{proof}\hfill\newline
+            \begin{center}
+                \AxiomC{$\Gamma \vdash A \equiv A'\ \type$}
+                \UnaryInfC{$\Gamma \vdash A'\ \type$}
+                \LeftLabel{VAR}
+                \UnaryInfC{$\Gamma, x : A \vdash x : A'$}
+                    \AxiomC{$\Gamma \vdash A \equiv A'\ \type$}
+                \LeftLabel{ConvVar}
+                \BinaryInfC{$\Gamma, x : A \vdash x : A'$}
+
+                    \AxiomC{$\Gamma \vdash A\ \type$}
+                    \AxiomC{$\Gamma \vdash a : A$}
+                    \RightLabel{W}
+                    \BinaryInfC{$\Gamma, x : A \vdash a : A$}
+                \RightLabel{[$a/x$]}
+                \BinaryInfC{$\Gamma \vdash a : A'$}
+                \DisplayProof
+            \end{center}
+            
         \end{proof}
 
         \begin{theorem}[regla de congruencia para la conversión de elementos]
-            Sea $\Gamma$ un contexto del cual se deduce 
-            $\Gamma \vdash A \equiv A'$ y $\Gamma \vdash a \equiv b : A$.
-            Entonces se puede deducir que $\Gamma \vdash a \equiv b : A'$.
+            \hfill\newline
+            \begin{center}
+                \AxiomC{$\Gamma \vdash A \equiv A'\ \type$}
+                \AxiomC{$\Gamma \vdash a \equiv b : A$}
+                \BinaryInfC{$\Gamma \vdash a \equiv b : A'$}
+                \DisplayProof
+            \end{center}
         \end{theorem}
 
     \subsection{Tipos primitivos}
