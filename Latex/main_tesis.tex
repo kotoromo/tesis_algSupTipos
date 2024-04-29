@@ -302,10 +302,10 @@ de proponer y dar una base teórica para una formalización del temario de álge
                 x_1 : A_1, x_2 : A_2(x_1), \dots, x_k : A_k(x_1, x_2, \dots, x_{k-1}) \vdash A_{k+1}(x_1, x_2, \dots, x_{k-1}, x_k)\ \type
             $$
             y recibe el nombre de \textbf{contexto}; y lo que se encuentra a la derecha del símbolo $\vdash$ 
-            (léase "desde \_ se deduce \_") recibe el nombre de \textbf{tésis de juicio}.
+            (léase "desde \_ se deduce \_") recibe el nombre de \textbf{tesis de juicio}.
         \end{definition}
 
-        Los contextos, de forma análoga a su rol en el cálculo de secuentes, denotan los supuestos que se están considerando para obtener la tésis de juicio.
+        Los contextos, de forma análoga a su rol en el cálculo de secuentes, denotan los supuestos que se están considerando para obtener la tesis de juicio.
         En tanto que los elementos potencialmente pueden ser suposiciones que carecen de fundamento previamente derivado se les suelen llamar \textit{variables}.
         Los juicios los pensamos como hechos, a diferencia de las proposiciones; las cuales potencialmente son verdaderas o falsas.
         Alternativamente llamaremos \textbf{elementos} a los términos de un tipo dado, de modo que un juicio $a : A$ se puede leer como $a$ es un elemento de tipo $A$.
@@ -360,7 +360,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
                 \BinaryInfC{$B(x)\ \type$}
             \end{prooftree}
 
-            Por comodidad se suele omitir el contexto vacío y solamente se escribe la tésis de juicio, de modo que escribimos:
+            Por comodidad se suele omitir el contexto vacío y solamente se escribe la tesis de juicio, de modo que escribimos:
 
             \begin{prooftree}
                 \AxiomC{$\Gamma \vdash x : A$}
@@ -492,8 +492,8 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \DisplayProof
         \end{center}
 
-        También es de esperarse que, si se tienen que dos tipos son juiciosamente equivalentes, y puedes deducir una tésis de juicio $\mathfrak{T}$
-        a partir de una variable, entonces al intercambiar el tipo sobre el que tomas la variable por su equivalente la misma tésis de juicio
+        También es de esperarse que, si se tienen que dos tipos son juiciosamente equivalentes, y puedes deducir una tesis de juicio $\mathfrak{T}$
+        a partir de una variable, entonces al intercambiar el tipo sobre el que tomas la variable por su equivalente la misma tesis de juicio
         debería poder deducirse.
 
         \begin{center}
@@ -610,7 +610,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \end{center}
 
         A primer vistazo parece ser que la regla nos quiere decir que si podemos 
-        derivar una tésis de juicio $\mathfrak{T}$ desde un contexto $\Gamma$, 
+        derivar una tesis de juicio $\mathfrak{T}$ desde un contexto $\Gamma$, 
         entonces al introducir una variable no presente en $\mathfrak{T}$ ni en 
         $\Gamma$ (una variable libre) podamos deducir exactamente lo mismo. 
 
@@ -635,7 +635,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
 
         La \textbf{regla de introducción de variables}, o también conocida como
         \textbf{regla del elemento genérico}, es un caso particular de la regla 
-        de debilitamiento, en tanto que si la tésis de juicio es $A\ \type$ y 
+        de debilitamiento, en tanto que si la tesis de juicio es $A\ \type$ y 
         $\Theta$ es vacío, entonces podemos derivar
 
         \begin{center}
@@ -648,8 +648,8 @@ de proponer y dar una base teórica para una formalización del temario de álge
         Como ejemplos de derivaciones se presentan a continuación algunas
         reglas derivables útiles desde las reglas discutidas anteriormente:
 
-        \begin{theorem}[sustitución de variables por otras]
-            Sean $\Gamma$ y $\Theta$ contextos y $\mathfrak{T}$ una tésis de
+        \begin{theorem}[sustitución de variables por otras]\hfill\newline
+            Sean $\Gamma$ y $\Theta$ contextos y $\mathfrak{T}$ una tesis de
             juicio tales que 
             $$
                 \Gamma, x : A, \Theta \vdash \mathfrak{T}
@@ -661,8 +661,18 @@ de proponer y dar una base teórica para una formalización del temario de álge
                 \Gamma, x' : A, \Theta[x'/x] \vdash \mathfrak{T}[x/x']
             $$
         \end{theorem}
-        \begin{proof}
-            Tengo que escribirla gg
+        \begin{proof}\hfill\newline
+            \begin{center}
+                \AxiomC{$\Gamma \vdash A\ \type$}
+                \AxiomC{$\Gamma, x : A, \Theta \vdash \mathfrak{T}$}
+                \RightLabel{W}
+                \BinaryInfC{$\Gamma, x' : A, x : A, \Theta \vdash \mathfrak{T}$}
+                    \AxiomC{$\Gamma \vdash A\ \type$}
+                    \RightLabel{VAR-intro}
+                    \UnaryInfC{$\Gamma, x' : A \vdash x' : A$}
+                \BinaryInfC{$\Gamma, x' : A, \Theta[x'/x] \vdash \mathfrak{T}[x/x']$}
+                \DisplayProof
+            \end{center}
         \end{proof}
 
         \begin{theorem}[regla de intercambio del orden de variables]
@@ -835,7 +845,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         introducción nos diría que las funciones son exactamente las
         abstracciones lambdas sobre un tipo en función de un término:
         \begin{center}
-            \AxiomC{$\Gamma x : A \vdash b(x) : B$}
+            \AxiomC{$\Gamma, x : A \vdash b(x) : B$}
             \UnaryInfC{$\Gamma \vdash \lambda x\ .\ b(x) : \prod_{(x : A)} B$}
             \DisplayProof
         \end{center}
@@ -918,9 +928,9 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \DisplayProof
             \hskip 1.5em
             \AxiomC{$\Gamma \vdash B\ \type$}
-            \AxiomC{$\Gamma, a : A \vdash f(a) : B$}
+            \AxiomC{$\Gamma, y : A \vdash f(a) : B$}
             \RightLabel{$\beta$}
-            \BinaryInfC{$\Gamma, a : A \vdash (\lambda\ x\ .\ f(x))(a) \equiv f(a) : B$}
+            \BinaryInfC{$\Gamma, y : A \vdash (\lambda\ x\ .\ f(x))(y) \equiv f(y) : B$}
             \DisplayProof
         \end{center}
     \todo{Poner la implementación en agda de esto}
@@ -949,7 +959,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
     \begin{lemma}\label{lemma:eval-fun}\hfill
         \begin{center}
             \AxiomC{$\Gamma \vdash f : \prod_{(x : A)} B(x)$}
-            \AxiomC{$\Gamma \vdash a : A$}
+                \AxiomC{$\Gamma \vdash a : A$}
             \BinaryInfC{$\Gamma \vdash f(a) : B(a)$}
             \DisplayProof
         \end{center}
@@ -959,9 +969,11 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \AxiomC{$\Gamma \vdash f : \prod_{(x : A)} B(x)$}
             \RightLabel{ev}
             \UnaryInfC{$\Gamma, x : A \vdash f(x) : B(x)$}
-            \AxiomC{$\Gamma \vdash a : A$}
+                \AxiomC{$\Gamma \vdash a : A$}
+                \RightLabel{W}
+                \UnaryInfC{$\Gamma, x : A \vdash a : A$}
             \RightLabel{$a/x$}
-            \BinaryInfC{$\Gamma \vdash f(a) : B(a)$}
+            \BinaryInfC{$\Gamma, x : A \vdash f(a) : B(a)$}
             \DisplayProof
         \end{center}
     \end{proof}
