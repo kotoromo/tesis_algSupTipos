@@ -725,15 +725,11 @@ de proponer y dar una base teórica para una formalización del temario de álge
                 \AxiomC{$\Gamma \vdash A \equiv A'\ \type$}
                 \UnaryInfC{$\Gamma \vdash A'\ \type$}
                 \LeftLabel{VAR}
-                \UnaryInfC{$\Gamma, x : A \vdash x : A'$}
+                \UnaryInfC{$\Gamma, x' : A \vdash x : A'$}
                     \AxiomC{$\Gamma \vdash A \equiv A'\ \type$}
                 \LeftLabel{ConvVar}
                 \BinaryInfC{$\Gamma, x : A \vdash x : A'$}
-
-                    \AxiomC{$\Gamma \vdash A\ \type$}
-                    \AxiomC{$\Gamma \vdash a : A$}
-                    \RightLabel{W}
-                    \BinaryInfC{$\Gamma, x : A \vdash a : A$}
+                    \AxiomC{$\Gamma, x : A \vdash a : A$}
                 \RightLabel{[$a/x$]}
                 \BinaryInfC{$\Gamma \vdash a : A'$}
                 \DisplayProof
@@ -750,6 +746,43 @@ de proponer y dar una base teórica para una formalización del temario de álge
                 \DisplayProof
             \end{center}
         \end{theorem}
+
+        \begin{proof}
+            \hfill\newline\todo{Aqui no pude simplemente haber aplicado el teorema anterior??? Son la misma prueba!}
+            \begin{center}
+                \AxiomC{$\Gamma \vdash A \equiv A'\ \type$}
+                \UnaryInfC{$\Gamma \vdash A'\ \type$}
+                \RightLabel{VAR}
+                \UnaryInfC{$\Gamma, x : A' \vdash x : A'$}
+                    \AxiomC{$\Gamma \vdash A \equiv A'$}
+                \RightLabel{ConvVar}
+                \BinaryInfC{$\Gamma, x : A \vdash x : A'$}
+                    \AxiomC{$\Gamma \vdash a \equiv b : A$}
+                \RightLabel{$[a \equiv b / x]$}
+                \BinaryInfC{$\Gamma \vdash a \equiv b : A'$}
+                \DisplayProof
+            \end{center}
+            Lo otro que se me ocurre es probar que por separado $a : A'$ y $b : A'$
+            y entonces como $a \equiv b : A$ y por separado son también de tipo $A'$
+            entonces $a \equiv b : A'$. Sin embargo, desconozco qué regla podría usar
+            para unir a estas dos letras en una equivalencia :(
+            \begin{center}
+                \AxiomC{$\Gamma \vdash a \equiv b : A$}
+                \UnaryInfC{$\Gamma \vdash a : A$}
+                    \AxiomC{$\Gamma \vdash A \equiv A'\ \type$}
+                \RightLabel{teo 5.2}
+                \BinaryInfC{$\Gamma \vdash a : A'$}
+
+                    \AxiomC{$\Gamma \vdash a \equiv b : A$}
+                    \UnaryInfC{$\Gamma \vdash b : A$}
+                        \AxiomC{$\Gamma \vdash A \equiv A'\ \type$}
+                    \RightLabel{teo 5.2}
+                    \BinaryInfC{$\Gamma \vdash b : A'$}
+                \RightLabel{????}
+                \BinaryInfC{$\Gamma \vdash a \equiv b : A'$}
+                \DisplayProof
+            \end{center}
+        \end{proof}
 
     \subsection{Tipos primitivos}
         Ya que contamos con un minimo fundamento sobre el cual poder construir
