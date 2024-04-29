@@ -1457,15 +1457,38 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \DisplayProof    
         \end{center}
         }
-        Para la otra equivalencia podemos apelar a nuesto teorema de 
-        extensionalidad para tipos flecha.
-
+        
+        {\small
         \begin{center}
             \AxiomC{$\Gamma \vdash A\ \type$}
-            
+            \UnaryInfC{$\Gamma \vdash \Id_A: A^A$}
+            \RightLabel{ev}
+            \UnaryInfC{$\Gamma, x : A \vdash \Id_A(x) : A$}
+            \RightLabel{lema 5.7}
+            \UnaryInfC{$\Gamma, x : A \vdash \Id_A(x) \equiv x : A$}
+            \RightLabel{W}
+            \UnaryInfC{$\Gamma, y : A, x : A \vdash \Id_A(x) \equiv x : A$}
+
+                \AxiomC{$\Gamma \vdash f : A B^A$}
+                \RightLabel{ev}
+                \UnaryInfC{$\Gamma, y : A \vdash f(y) : B$}
+                    \AxiomC{$\Gamma \vdash A\ \type$}
+                \RightLabel{W}
+                \BinaryInfC{$\Gamma, y : A, x :A \vdash f(y) : B$}
+            \RightLabel{$[\Id_A(x)/y]$-cong}
+            \BinaryInfC{$\Gamma, x : A \vdash f(\Id_A(x)) \equiv f(x) : B$}
+            \RightLabel{$\lambda$-equiv}
+            \UnaryInfC{$\Gamma, x : A \vdash \lambda x . f(\Id_A(x)) \equiv \lambda x . f(x) : B^A$}
+            \RightLabel{$\circ$-def}
+            \UnaryInfC{$\Gamma, x : A \vdash f\circ\Id_A \equiv \lambda x . f(x) : B^A$}
+                    \AxiomC{$\Gamma \vdash f : B^A$}
+                    \RightLabel{$\eta$}
+                    \UnaryInfC{$\Gamma \vdash \lambda x . f(x) \equiv f : B^A$}
+            \RightLabel{$\equiv$-trans}
+            \BinaryInfC{$\Gamma, x : A \vdash f \circ \Id_A \equiv f : B^A$}
             \DisplayProof
         \end{center}
-
+        }
     \end{proof}
 
     Con ello, los tipos flecha satisfacen:
