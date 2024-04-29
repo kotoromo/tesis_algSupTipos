@@ -1389,16 +1389,17 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \UnaryInfC{$\Gamma, x : A \vdash h(g(f(x))) \equiv h(g(f(x))): D$}
             \RightLabel{$\rightarrow$-eq}
             \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv \lambda x\ .\ h(g(f(x))): D^A$}
-            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv h((g \circ f)(x)) : D^A$}
-            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv h \circ (g \circ f)(x) : D^A$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv \lambda x\ .\ h((g \circ f)(x)) : D^A$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv \lambda x\ .\ h \circ (g \circ f)(x) : D^A$}
             \DisplayProof
-            \hskip 1.5em
+        \end{center}
+        \begin{center}
             \AxiomC{$\Gamma, x : A \vdash h(g(f(x))) : D$}
             \RightLabel{$\equiv$-refl}
             \UnaryInfC{$\Gamma, x : A \vdash h(g(f(x))) \equiv h(g(f(x))): D$}
             \RightLabel{$\rightarrow$-eq}
             \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv \lambda x\ .\ h(g(f(x))): D^A$}
-            \UnaryInfC{$\Gamma \vdash (h\circ g)(f(x)) \equiv \lambda x\ .\ h(g(f(x))) : D^A$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ (h\circ g)(f(x)) \equiv \lambda x\ .\ h(g(f(x))) : D^A$}
             \UnaryInfC{$\Gamma \vdash ((h\circ g)\circ f)(x) \equiv \lambda x\ .\ h(g(f(x))) : D^A$}
             \DisplayProof
         \end{center}
@@ -1410,14 +1411,14 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \AxiomC{$\Gamma, x : A \vdash h(g(f(x))) : D$}
             \UnaryInfC{$\Gamma, x : A \vdash h(g(f(x))) \equiv h(g(f(x))): D$}
             \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv \lambda x\ .\ h(g(f(x))): D^A$}
-            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv h((g \circ f)(x)) : D^A$}
-            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv h \circ (g \circ f)(x) : D^A$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv \lambda x\ .\ h((g \circ f)(x)) : D^A$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv \lambda x\ .\ h \circ (g \circ f)(x) : D^A$}
 
             \AxiomC{$\Gamma, x : A \vdash h(g(f(x))) : D$}
             \UnaryInfC{$\Gamma, x : A \vdash h(g(f(x))) \equiv h(g(f(x))): D$}
             \UnaryInfC{$\Gamma \vdash \lambda x\ .\ h(g(f(x))) \equiv \lambda x\ .\ h(g(f(x))): D^A$}
-            \UnaryInfC{$\Gamma \vdash (h\circ g)(f(x)) \equiv \lambda x\ .\ h(g(f(x))) : D^A$}
-            \UnaryInfC{$\Gamma \vdash ((h\circ g)\circ f)(x) \equiv \lambda x\ .\ h(g(f(x))) : D^A$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ (h\circ g)(f(x)) \equiv \lambda x\ .\ h(g(f(x))) : D^A$}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ ((h\circ g)\circ f)(x) \equiv \lambda x\ .\ h(g(f(x))) : D^A$}
             \BinaryInfC{$\Gamma \vdash ((h\circ g)\circ f)(x) \equiv h \circ (g \circ f)(x) : D^A$}
             \DisplayProof
         \end{center}
@@ -1431,12 +1432,31 @@ de proponer y dar una base teórica para una formalización del temario de álge
     \begin{proof}
         Notemos que el hecho $f \in \Gamma$ implica que $A,B\ \type \in \Gamma$.
         Así,
+        {\small
         \begin{center}
-            \AxiomC{$\Gamma \vdash B\ \type$}
-            
-            \DisplayProof
+            \AxiomC{$\Gamma \vdash f : B^A$}
+            \RightLabel{ev}
+            \UnaryInfC{$\Gamma, x : A \vdash f(x) : B$}
+                \AxiomC{$\Gamma \vdash B\ \type$}
+                \RightLabel{lema 5.7}
+                \UnaryInfC{$\Gamma, y : B \vdash \Id_B(y) \equiv y : B$}
+                    \AxiomC{$\Gamma \vdash A\ \type$}
+                \RightLabel{W}
+                \BinaryInfC{$\Gamma, x : A, y : B \vdash \Id_B(y) \equiv y : B$}
+            \RightLabel{$[f(x)/y]$}
+            \BinaryInfC{$\Gamma, x : A \vdash \Id_B(f(x)) \equiv f(x) : B$}
+            \RightLabel{$\lambda$-eq}
+            \UnaryInfC{$\Gamma \vdash \lambda x\ .\ \Id_B(f(x)) \equiv \lambda x\ .\ f(x) : B^A$}
+            \RightLabel{$\circ$-def}
+            \UnaryInfC{$\Gamma \vdash \Id_B \circ f \equiv f : B^A$}
+                \AxiomC{$\Gamma \vdash f : B^A$}
+                \RightLabel{$\eta$}
+                \UnaryInfC{$\Gamma \vdash \lambda x\ .\ f(x) \equiv f : B^A$}
+            \RightLabel{$\equiv$-trans}
+            \BinaryInfC{$\Gamma \vdash \Id_B \circ f \equiv f : B^A$}
+            \DisplayProof    
         \end{center}
-
+        }
         Para la otra equivalencia podemos apelar a nuesto teorema de 
         extensionalidad para tipos flecha.
 
