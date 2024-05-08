@@ -1620,7 +1620,15 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \end{center}
     \end{lemma}
     \begin{proof}
-        
+        \todo{Prueba preliminar. Necesito analizar mas}
+        \begin{center}
+            \AxiomC{$\const_c(f(x)) \equiv c : C$}
+            \UnaryInfC{$\lambda x . \const_c (f(x)) \equiv \lambda x . c : A \rightarrow C$}
+            \UnaryInfC{$\lambda x . (\const_c \circ f)(x) \equiv \lambda x . c : A \rightarrow C$}
+            \UnaryInfC{$\lambda x . (\const_c \circ f)(x) \equiv \const_c : A \rightarrow C$}
+            \UnaryInfC{$\const_c \circ f \equiv \const_c : A \rightarrow C$}
+            \DisplayProof
+        \end{center}
     \end{proof}
 
     \begin{lemma}\hfill\newline
