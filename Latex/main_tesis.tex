@@ -1532,6 +1532,67 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \DisplayProof
     \end{center}
     {\small \textbf{Construcción}}\hfill\newline
+
+    Una técnica común al momento de querer construir algún objeto es observar
+    las dependencias que debería tener cierto objeto y claro, tener clara la
+    idea del objeto que se quiere construir.
+    En el caso de la función constante la idea es muy simple, por lo que resulta
+    en un excelente ejemplo de la aplicación de esta técnica. 
+    Partimos de un valor existente arbitrario, y queremos que nuestra función 
+    constante sea tal que para cualquier otro valor que pueda tomar nuestra
+    función, al valuar dicho valor en la función obtengamos el valor del que
+    partimos.
+    
+    \begin{center}
+        \AxiomC{$?$}
+        \UnaryInfC{$\Gamma, y : B \vdash \lambda x\ .\ y : A \rightarrow B$}
+        \DisplayProof
+    \end{center}
+
+    Por nuestras reglas de formación de tipos, sabemos que para llegar al 
+    término $\lambda x\ .\ y : A \rightarrow B$ debió haber ocurrido antes
+    la aplicación de la regla $\lambda$
+
+    \begin{center}
+        \AxiomC{$?$}
+        \UnaryInfC{$\Gamma, y : B, x : A \vdash y : B$}
+        \UnaryInfC{$\Gamma, y : B \vdash \lambda x\ .\ y : A \rightarrow B$}
+        \DisplayProof
+    \end{center}
+
+    Y la presencia de $x : A$ en la tesis de juicio $\Gamma, y : B, x : A \vdash y : B$ 
+    nos recuerda a la aplicación de la regla de debilitamiento sobre la tesis
+    de juicio $\Gamma, y : B \vdash y : B$. Como tenemos por hipótesis 
+    $\Gamma \vdash A\ \type$ podemos aplicar dicha regla sin mayor obstáculo
+
+    \begin{center}
+        \AxiomC{$?$}
+        \UnaryInfC{$\Gamma, y : B \vdash y : B$}
+        \AxiomC{$\Gamma \vdash A\ \type$}
+        \RightLabel{W}
+        \BinaryInfC{$\Gamma, y : B, x : A \vdash y : B$}
+        \RightLabel{$\lambda$}
+        \UnaryInfC{$\Gamma, y : B \vdash \lambda x\ .\ y : A \rightarrow B$}
+        \DisplayProof
+    \end{center}
+
+    Finalmente, al partir de la existencia de algún elemento en $B$, podemos
+    simplemente suponer que partimos de la existencia de $B$ en el contexto
+    y con ello mediante la regla de elemento genérico obtener el juicio deseado.
+    
+    \begin{center}
+        \AxiomC{$\Gamma \vdash B\ \type$}
+        \UnaryInfC{$\Gamma, y : B \vdash y : B$}
+        \AxiomC{$\Gamma \vdash A\ \type$}
+        \RightLabel{W}
+        \BinaryInfC{$\Gamma, y : B, x : A \vdash y : B$}
+        \RightLabel{$\lambda$}
+        \UnaryInfC{$\Gamma, y : B \vdash \lambda x\ .\ y : A \rightarrow B$}
+        \UnaryInfC{$\Gamma, y : B \vdash \const_y \equiv \lambda x\ .\ y : A \rightarrow B$}
+        \DisplayProof
+    \end{center}
+
+    Esto concluye la construcción deseada.\hfill\newline
     {\small \textbf{Propiedades}}\hfill\newline
     \begin{lemma}\hfill\newline
         \begin{center}
