@@ -1592,7 +1592,25 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \DisplayProof
     \end{center}
 
-    Esto concluye la construcción deseada.\hfill\newline
+    Podemos corraborar que nuestra construcción se comporta como esperamos al
+    observar el resultado de evaluar $\const_y : A \rightarrow B$ en algún 
+    elemento de $A$. Notemos que por definición si 
+    $\Gamma, y : B \vdash \const_y : A \rightarrow B$ entonces
+    $\Gamma, x : A \vdash \const_y(x) \equiv y : B$.
+
+    En efecto,
+
+    \begin{center}
+        \AxiomC{$\Gamma, y : B \vdash \const_y : A \rightarrow B$}
+        \RightLabel{ev}
+        \UnaryInfC{$\Gamma, y : B, x : A \vdash \const_y(x) : B$}
+        \UnaryInfC{$\Gamma, y : B, x : A \vdash \const_y(x) \equiv (\lambda z\ .\ y) (x) : B$}
+        \RightLabel{$\beta$}
+        \UnaryInfC{$\Gamma, y : B, x : A \vdash \const_y(x) \equiv y : B$}
+        \DisplayProof
+    \end{center}
+    
+    
     {\small \textbf{Propiedades}}\hfill\newline
     \begin{lemma}\hfill\newline
         \begin{center}
@@ -1601,6 +1619,9 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \DisplayProof
         \end{center}
     \end{lemma}
+    \begin{proof}
+        
+    \end{proof}
 
     \begin{lemma}\hfill\newline
         \begin{center}
