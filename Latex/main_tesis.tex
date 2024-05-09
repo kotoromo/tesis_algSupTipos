@@ -1507,14 +1507,14 @@ de proponer y dar una base teórica para una formalización del temario de álge
         se tiene que $f\circ (g\circ h) \equiv (f \circ g) \circ h$
     \end{itemize}
     
-    entonces tenemos
+    y así entonces tenemos
 
     \begin{theorem}
         La colección
         $$
             \mathbf{Type} := \{A \ \vert\ A\ \type\}
         $$
-        junto con
+        junto con la familia de colecciones con $A, B \in \mathbf{Type}$ 
         $$
             \mathbf{Type}(A, B) := \{f \ \vert\ f : A \rightarrow B\}
         $$
@@ -1620,8 +1620,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \DisplayProof
         \end{center}
     \end{lemma}
-    \begin{proof}
-        \todo{Prueba preliminar. Necesito analizar mas}
+    \begin{proof}\hfill\newline
         \begin{center}
             \AxiomC{$\Gamma \vdash B\ \type$}
             \UnaryInfC{$\Gamma, c : C \vdash \const_c : B \rightarrow C$}
@@ -1656,27 +1655,57 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \DisplayProof
         \end{center}
     \end{lemma}
-    \textbf{La función swap}\hfill\newline
-    La existencia de esta función testifica que el orden en el que ingresemos
-    los argumetos a una función no afecta el resultado.
-    \begin{center}
-        \AxiomC{$\Gamma \vdash A\ \type$}
-        \AxiomC{$\Gamma \vdash B\ \type$}
-        \AxiomC{$\Gamma, x : A, y : B \vdash C(x,y)\ \type$}
-        \TrinaryInfC{$\Gamma \vdash \sigma : \left(\prod_{(x:A)} \prod_{(y : B)} C(x, y)\right) \rightarrow \left(\prod_{(y : B)} \prod_{(x:A)} C(x, y)\right)$}
-        \DisplayProof
-    \end{center}
-    {\small \textbf{Construcción}}\hfill\newline
-    {\small \textbf{Propiedades}}\hfill\newline
-    \begin{lemma}\hfill\newline
+
+    \begin{proof}\hfill\newline
         \begin{center}
-            \AxiomC{$\Gamma \vdash A\ \type$}
-            \AxiomC{$\Gamma \vdash B\ \type$}
-            \AxiomC{$\Gamma, x : A, y : B \vdash C(x,y)\ \type$}
-            \TrinaryInfC{$\Gamma \vdash \sigma \circ \sigma \equiv \Id : \left(\prod_{(x:A)} \prod_{(y : B)} C(x, y)\right) \rightarrow \left(\prod_{(x : A)} \prod_{(y:B)} C(x, y)\right)$}
+            \AxiomC{$\Gamma \vdash g : B \rightarrow C$}
+            \RightLabel{ev}
+            \UnaryInfC{$\Gamma, z : B \vdash g(z) : C$}
+                \AxiomC{$\Gamma \vdash A\ \type$}
+            \RightLabel{W}
+            \BinaryInfC{$\Gamma, z : B, x : A \vdash g(z) : C$}
+
+                \AxiomC{$\Gamma \vdash A\ \type$}
+                \UnaryInfC{$\Gamma, b : B \vdash \const_b : A \rightarrow B$}
+                \RightLabel{ev}
+                \UnaryInfC{$\Gamma, b : B, x : A \vdash \const_b(x) : B$}
+                \RightLabel{Obs \ref{obs:const_igualdad}}
+                \UnaryInfC{$\Gamma, b : B, x : A \vdash \const_b(x) \equiv b : B$}
+            \BinaryInfC{$\Gamma, b : B, x : A \vdash g(\const_b(x)) \equiv g(b) : C$}
+            \RightLabel{$\lambda$}
+            \UnaryInfC{$\Gamma, b : B \vdash \lambda x\ .\ g(\const_b(x)) \equiv \lambda x\ .\ g(b) : A \rightarrow C$}
+            \RightLabel{def}
+            \UnaryInfC{$\Gamma, b : B \vdash \lambda x\ .\ (g\circ\const_b)(x) \equiv \lambda x\ .\ g(b) : A \rightarrow C$}
+            \RightLabel{def}
+            \UnaryInfC{$\Gamma, b : B \vdash \lambda x\ .\ (g\circ\const_b)(x) \equiv \const_g(b) : A \rightarrow C$}
+            \RightLabel{$\eta$}
+            \UnaryInfC{$\Gamma, b : B \vdash g\circ\const_b \equiv \const_g(b) : A \rightarrow C$}
             \DisplayProof
         \end{center}
-    \end{lemma}
+    \end{proof}
+
+    %%%%%%% LO SIGUIENTE QUEDA POR VER SI REALMENTE SE NECESITA... LO PRUEBO HASTA ENTONCES %%%%%%%%
+    %\textbf{La función swap}\hfill\newline
+    %La existencia de esta función testifica que el orden en el que ingresemos
+    %los argumetos a una función no afecta el resultado.
+    %\begin{center}
+    %    \AxiomC{$\Gamma \vdash A\ \type$}
+    %    \AxiomC{$\Gamma \vdash B\ \type$}
+    %    \AxiomC{$\Gamma, x : A, y : B \vdash C(x,y)\ \type$}
+    %    \TrinaryInfC{$\Gamma \vdash \sigma : \left(\prod_{(x:A)} \prod_{(y : B)} C(x, y)\right) \rightarrow \left(\prod_{(y : B)} \prod_{(x:A)} C(x, y)\right)$}
+    %    \DisplayProof
+    %\end{center}
+    %{\small \textbf{Construcción}}\hfill\newline
+    %{\small \textbf{Propiedades}}\hfill\newline
+    %\begin{lemma}\hfill\newline
+    %    \begin{center}
+    %        \AxiomC{$\Gamma \vdash A\ \type$}
+    %        \AxiomC{$\Gamma \vdash B\ \type$}
+    %        \AxiomC{$\Gamma, x : A, y : B \vdash C(x,y)\ \type$}
+    %        \TrinaryInfC{$\Gamma \vdash \sigma \circ \sigma \equiv \Id : \left(\prod_{(x:A)} \prod_{(y : B)} C(x, y)\right) \rightarrow \left(\prod_{(x : A)} \prod_{(y:B)} C(x, y)\right)$}
+    %        \DisplayProof
+    %    \end{center}
+    %\end{lemma}
 
     \subsubsection{Productos dependientes}
     \subsubsection{Coproducto}
