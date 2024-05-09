@@ -1086,6 +1086,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
     \end{proof}
 
     \begin{corollary}[Extensionalidad bajo la igualdad de juicio]
+        \label{coro:extensionalidad-juicio-flecha}
         \hfill
         \begin{center}
             \AxiomC{$\Gamma \vdash f : B^A$}
@@ -1592,24 +1593,24 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \DisplayProof
     \end{center}
 
-    Podemos corraborar que nuestra construcción se comporta como esperamos al
-    observar el resultado de evaluar $\const_y : A \rightarrow B$ en algún 
-    elemento de $A$. Notemos que por definición si 
-    $\Gamma, y : B \vdash \const_y : A \rightarrow B$ entonces
-    $\Gamma, x : A \vdash \const_y(x) \equiv y : B$.
+    \begin{remark}\label{obs:const_igualdad}\hfill\newline
+        Podemos corraborar que nuestra construcción se comporta como esperamos al
+        observar el resultado de evaluar $\const_y : A \rightarrow B$ en algún 
+        elemento de $A$. Notemos que por definición si 
+        $\Gamma, y : B \vdash \const_y : A \rightarrow B$ entonces
+        $\Gamma, x : A \vdash \const_y(x) \equiv y : B$.
 
-    En efecto,
-
-    \begin{center}
-        \AxiomC{$\Gamma, y : B \vdash \const_y : A \rightarrow B$}
-        \RightLabel{ev}
-        \UnaryInfC{$\Gamma, y : B, x : A \vdash \const_y(x) : B$}
-        \UnaryInfC{$\Gamma, y : B, x : A \vdash \const_y(x) \equiv (\lambda z\ .\ y) (x) : B$}
-        \RightLabel{$\beta$}
-        \UnaryInfC{$\Gamma, y : B, x : A \vdash \const_y(x) \equiv y : B$}
-        \DisplayProof
-    \end{center}
-    
+        En efecto,
+        \begin{center}
+            \AxiomC{$\Gamma, y : B \vdash \const_y : A \rightarrow B$}
+            \RightLabel{ev}
+            \UnaryInfC{$\Gamma, y : B, x : A \vdash \const_y(x) : B$}
+            \UnaryInfC{$\Gamma, y : B, x : A \vdash \const_y(x) \equiv (\lambda z\ .\ y) (x) : B$}
+            \RightLabel{$\beta$}
+            \UnaryInfC{$\Gamma, y : B, x : A \vdash \const_y(x) \equiv y : B$}
+            \DisplayProof
+        \end{center}        
+    \end{remark}
     
     {\small \textbf{Propiedades}}\hfill\newline
     \begin{lemma}\hfill\newline
@@ -1622,11 +1623,27 @@ de proponer y dar una base teórica para una formalización del temario de álge
     \begin{proof}
         \todo{Prueba preliminar. Necesito analizar mas}
         \begin{center}
-            \AxiomC{$\const_c(f(x)) \equiv c : C$}
-            \UnaryInfC{$\lambda x . \const_c (f(x)) \equiv \lambda x . c : A \rightarrow C$}
-            \UnaryInfC{$\lambda x . (\const_c \circ f)(x) \equiv \lambda x . c : A \rightarrow C$}
-            \UnaryInfC{$\lambda x . (\const_c \circ f)(x) \equiv \const_c : A \rightarrow C$}
-            \UnaryInfC{$\const_c \circ f \equiv \const_c : A \rightarrow C$}
+            \AxiomC{$\Gamma \vdash B\ \type$}
+            \UnaryInfC{$\Gamma, c : C \vdash \const_c : B \rightarrow C$}
+            \RightLabel{ev}
+            \UnaryInfC{$\Gamma, c : C, z : B \vdash \const_c (z) : C$}
+                \AxiomC{$\Gamma \vdash A\ \type$}
+            \RightLabel{W}
+            \BinaryInfC{$\Gamma, c : C, z : B, x : A \vdash \const_c(z) : C$}
+                    \AxiomC{$\Gamma \vdash f : A \rightarrow B$}
+                    \RightLabel{ev}
+                    \UnaryInfC{$\Gamma, x : A \vdash f(x) : B$}
+            \BinaryInfC{$\Gamma, c : C, x : A \vdash \const_c(f(x)) : C$}
+            \RightLabel{obs \ref{obs:const_igualdad}}
+            \UnaryInfC{$\Gamma, c : C, x : A \vdash \const_c(f(x)) \equiv c : C$}
+            \RightLabel{$\lambda$-eq}
+            \UnaryInfC{$\Gamma, c : C\vdash \lambda x\ .\ \const_c(f(x)) \equiv \lambda x\ .\ c : A \rightarrow C$}
+            \RightLabel{def}
+            \UnaryInfC{$\Gamma, c : C\vdash \lambda x\ .\ \const_c(f(x)) \equiv \const_c : A \rightarrow C$}
+            \RightLabel{def}
+            \UnaryInfC{$\Gamma, c : C\vdash \lambda x\ .\ (\const_c\circ f)(x) \equiv \const_c : A \rightarrow C$}
+            \RightLabel{$\eta$}
+            \UnaryInfC{$\Gamma, c : C\vdash \const_c\circ f \equiv \const_c : A \rightarrow C$}
             \DisplayProof
         \end{center}
     \end{proof}
