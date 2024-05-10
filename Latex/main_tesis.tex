@@ -278,10 +278,16 @@ de proponer y dar una base teórica para una formalización del temario de álge
         con reglas de inferencia que se pueden combinar para formar derivaciones. Las derivaciones nos importan porque son el principal
         mecanismo para producir \textit{términos} de un tipo determinado.
         
-        Como es de esperarse del título que carga la teoría de tipos, un \textbf{tipo} es un objeto primitivo de la teoría de tipos de la misma fórma que un conjunto
-        es un objeto primitivo de la teoría de conjuntos. Como podrá usted, lector o lectora, darse una idea desde el párrafo anterior, los tipos pueden tener (o no)
-        términos. Como se mencionó antes, un término es el resultado de la aplicación de reglas de inferencia y, como el autor no desea arruinar el placentero proceso
-        de entender a un nuevo objeto matemático, conforme avancemos en este trabajo floreceran distintas formas útiles de pensar a los tipos y sus términos.
+        Como es de esperarse del título que carga la teoría de tipos, un 
+        \textbf{tipo} es un objeto primitivo de la teoría de tipos de la misma 
+        forma que un conjunto es un objeto primitivo de la teoría de conjuntos. 
+        Como podrá usted, lector o lectora, darse una idea desde el párrafo 
+        anterior, los tipos pueden tener (o no) términos. Como se mencionó 
+        antes, un término es el resultado de la aplicación de reglas de 
+        inferencia y, como el autor no desea arruinar el placentero proceso de 
+        entender a un nuevo objeto matemático, conforme avancemos en este 
+        trabajo floreceran distintas formas útiles de pensar a los tipos y sus 
+        términos.
 
         Entenderemos por una \textbf{derivación} a una sucesión de aplicaciones de \textbf{reglas de inferencia}.
 
@@ -305,10 +311,28 @@ de proponer y dar una base teórica para una formalización del temario de álge
             (léase "desde \_ se deduce \_") recibe el nombre de \textbf{tesis de juicio}.
         \end{definition}
 
-        Los contextos, de forma análoga a su rol en el cálculo de secuentes, denotan los supuestos que se están considerando para obtener la tesis de juicio.
-        En tanto que los elementos potencialmente pueden ser suposiciones que carecen de fundamento previamente derivado se les suelen llamar \textit{variables}.
-        Los juicios los pensamos como hechos, a diferencia de las proposiciones; las cuales potencialmente son verdaderas o falsas.
-        Alternativamente llamaremos \textbf{elementos} a los términos de un tipo dado, de modo que un juicio $a : A$ se puede leer como $a$ es un elemento de tipo $A$.
+        Los contextos, de forma análoga a su rol en el cálculo de secuentes, 
+        denotan los supuestos que se están considerando para obtener la tesis 
+        de juicio. En tanto que los elementos potencialmente pueden ser 
+        suposiciones que carecen de fundamento previamente derivado se les 
+        suelen llamar \textit{variables}. Los juicios los pensamos como hechos, 
+        a diferencia de las proposiciones; las cuales potencialmente son 
+        verdaderas o falsas. Alternativamente llamaremos \textbf{elementos} a 
+        los términos de un tipo dado, de modo que un juicio $a : A$ se puede 
+        leer como $a$ es un elemento de tipo $A$.
+
+        El orden en los contextos nos importa porque nos interesa mantener la
+        noci\'{o}n de dependencia de una expresión con respecto a otra, de modo
+        que contextos como
+
+        $$
+            \Gamma := \{f : A \supset B, A\ \type, B\ \type\}
+        $$
+
+        resultan particularmente peligrosos, pues dar\'{i}an a entender que
+        $f : A \supset B$ es una prueba de $A \supset B$ sin contar antes del
+        conocimiento de que $A$ y $B$ son tipos y entonces se presentar\'{i}a
+        una situación semejante a la de suponer lo que se desea demostrar.
         \begin{remark}
             Observe que nuestra definición de contexto permite la existencia de un contexto vacío pues por un argumento de vacuidad se verifica la
             satisfacibilidad de la propiedad de un contexto.
@@ -453,8 +477,17 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \DisplayProof
         \end{center}
 
-        En tanto que es de interés que la noción de \textit{ser juiciosamente iguales} sea una buena noción de equivalencia, es
-        de esperarse que se postulen reglas que testifican que esta noción satisface los axiomas de una relación de equivalencia.
+        En tanto que es de interés que la noción de 
+        \textit{ser juiciosamente iguales} sea una buena noción de equivalencia, 
+        es de esperarse que se postulen reglas que testifican que esta noción 
+        satisface los axiomas de una relación de equivalencia. 
+        \footnote{Esta noción de equivalencia fue concebida en términos de
+        una equivalencia en cuanto a reducción, es decir, si tras aplicar reglas
+        de inferencia a dos expresiones sintacticamente distintas se concluye \
+        que ambas expresiones comparten una misma forma (normal) tras 
+        simplificar dichas expresiones lo m\'{a}s posible, entonces ambas 
+        expresiones son juiciosamente equivalentes 
+        \cite{10.1093/oso/9780198501275.003.0010}\cite{MARTINLOF197573}.}
 
         \begin{center}
             \AxiomC{$\Gamma \vdash A\ \type$}
