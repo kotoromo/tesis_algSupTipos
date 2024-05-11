@@ -883,11 +883,15 @@ de proponer y dar una base teórica para una formalización del temario de álge
         $$
             \mathrm{Ctx}, i : \Gamma \vdash f(i) : X(i)
         $$
-        de modo que $f : X$ es una función dependiente.
+        de modo que $f : X$ es una función dependiente. Este tipo tiene 
+        distintos nombres en la literatura: \textbf{tipo $\Pi$}, 
+        \textbf{el tipo de productos dependientes} y 
+        \textbf{el tipo de funciones dependientes}.
         \begin{definition}[tipo de funciones dependientes]
             La \textbf{regla de formación} del tipo de funciones dependientes 
             establece que la existencia de una familia de tipos es suficiente
-            para obtener un tipo de funciones dependientes:
+            para obtener un tipo de funciones dependientes:\hfill
+            \hfill\newline\textbf{Regla de formación}\hfill\newline
             \begin{center}
                 \AxiomC{$\Gamma, x : A \vdash B(x)\ \type$}
                 \RightLabel{$\Pi$}
@@ -907,8 +911,8 @@ de proponer y dar una base teórica para una formalización del temario de álge
 
             La \textbf{regla de introducción} establece que los elementos del
             tipo de funciones dependientes son exactamente las funciones que
-            asignan a un término "índice" de la familia a una función
-
+            asignan a un término "índice" de la familia a una función.
+            \hfill\newline\textbf{Regla de introducción}\hfill\newline
             \begin{center}
                 \AxiomC{$\Gamma, x : A \vdash b(x):B(x)$}
                 \RightLabel{$\lambda$}
@@ -928,6 +932,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
             como es de esperarse, nos permite eliminar de un árbol de deducción
             un término del tipo de funciones dependientes siempre y cuando
             podamos evaluarlo para obtener un término del tipo resultante:
+            \hfill\newline\textbf{Regla de eliminación}\hfill\newline
             \begin{center}
                 \AxiomC{$\Gamma \vdash f : \prod_{(x : A)} B(x)$}
                 \RightLabel{ev}
@@ -939,6 +944,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
             postula que la evaluación de un término de $\prod_{(x : A)} B(x)$ es
             simplemente evaluar el término dado en $A$ en $b(x) : B(x)$,
             semejante a la reducción $\beta$ del cálculo lambda:
+            \hfill\newline\textbf{Regla de c\'{o}mputo}\hfill\newline
             \begin{center}
                 \AxiomC{$\Gamma, x : A\vdash b(x) : B(x)$}
                 \RightLabel{$\beta$}
@@ -946,8 +952,9 @@ de proponer y dar una base teórica para una formalización del temario de álge
                 \DisplayProof
             \end{center}
 
-            Por otro lado, \textbf{la regla $\eta$} nos asegura que los elementos de un
-            tipo de funciones dependientes son exactamente funciones.
+            Por otro lado, \textbf{la regla $\eta$} o también conocida como
+            \textbf{regla/postulado de unicidad} nos asegura que los elementos 
+            de un tipo de funciones dependientes son exactamente funciones.
             \begin{center}
                 \AxiomC{$\Gamma \vdash b : \prod_{(x : A)} B(x)$}
                 \RightLabel{$\eta$}
@@ -1134,8 +1141,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \end{center}
     \end{theorem}
     \begin{proof}\hfill\newline
-        \todo{Arreglar esto de tal forma que se vea bien}
-        {\small
+        {\scriptsize
         \begin{center}
             \AxiomC{$\Gamma, x : A \vdash f(x) \equiv g(x) : B(x)$} 
             \LeftLabel{$\lambda$-eq}
@@ -1776,7 +1782,54 @@ de proponer y dar una base teórica para una formalización del temario de álge
     %    \end{center}
     %\end{lemma}
 
-    \subsubsection{Productos dependientes}
+    \subsubsection{Pares dependientes}
+    Los pares dependientes fueron concebidos originalmente por Per 
+    Martin-L\"{o}f como un an\'{a}logo a la uni\'{o}n disjunta de una familia de 
+    conjuntos \cite{PerMartin-Lof98}. Por lo tanto, en la teoría de tipos 
+    dependientes el principio de considerar "pares" de elementos de una familia 
+    de conjuntos conservando un elemento que apunta de qu\'{e} conjunto viene se 
+    preserva. La representaci\'{o}n usual de la uni\'{o}n disjunta de conjuntos 
+    es
+    $$
+        \coprod\limits_{i\in I} A_i = \bigcup\limits_{i\in I} \{(i, x) : x \in A_i\}
+    $$
+    Notemos que si $w \in \coprod A_i$, entonces es porque \textbf{existe}
+    un \'{i}ndice $i \in I$ para el cual existe un $x_w$ tal que $x_w \in A_i$.
+    Fundamentalmente $w$ cuenta entonces con la siguiente información:
+    \begin{itemize}
+        \item un \'{i}ndice que evidenc\'{i}a de la presencia de un elemento de 
+        $A_i$ en la suma disjunta y,
+        \item un elemento concreto que pertenece a $A_i$ y queda encapsulado por 
+        $w = \picopar{i, x_w}$.
+    \end{itemize}
+    As\'{i} pues, es claro que tanto $x_w$ como $A_i$ dependen de $i$ para 
+    exhibir su presencia dentro de la uni\'{o}n disjunta.
+    Si sustituimos a la familia de conjuntos $\{A_i\}_{i\in I}$ por su 
+    hom\'{o}logo en la teoría de tipos, 
+    $$
+        i : I \vdash x(i) : A(i)
+    $$
+    lo anterior se reflejar\'{i}a en que tal estructura, de existir, sus 
+    elementos can\'{o}nicos deberían tener la información an\'{a}loga:
+    \begin{itemize}
+        \item un \'{i}ndice $i : I$ que evidenc\'{i}a de la presencia de un 
+        t\'{e}rmino de $A(i)$ en la estructura y,
+        \item un elemento concreto $x(i)$ que pertenece a $A(i)$ y queda 
+        encapsulado por $\picopar{i : I, x(i) : A(i)}$.
+    \end{itemize}
+    La existencia de esta estructura se postula, y se denominan
+    \textbf{pares dependientes}, \textbf{tipo $\Sigma$}, 
+    \textbf{co-producto dependiente} y \textbf{tipo suma dependiente} y 
+    usualmente se denota por la letra griega may\'{u}scula $\Sigma$.
+
+    \begin{definition}[El tipo de los pares dependientes]
+        \hfill\newline\textbf{Regla de formación}\hfill\newline
+        \hfill\newline\textbf{Regla de introducción}\hfill\newline
+        \hfill\newline\textbf{Regla de eliminación}\hfill\newline
+        \hfill\newline\textbf{Regla de inducción}\hfill\newline
+        \todo{Pensar en c\'{o}mo voy a introducir los tipos inductivos ...}
+        \hfill\newline\textbf{Regla de c\'{o}mputo}\hfill\newline
+    \end{definition}
     \subsubsection{Coproducto}
     % tengo que evaluar si esto si va.... se puede quedar como comentario.
     \subsubsection{Tipos inductivos}
