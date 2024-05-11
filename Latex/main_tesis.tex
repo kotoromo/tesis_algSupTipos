@@ -292,7 +292,6 @@ de proponer y dar una base teórica para una formalización del temario de álge
         Entenderemos por una \textbf{derivación} a una sucesión de aplicaciones de \textbf{reglas de inferencia}.
 
         Comenzamos por definir precisamente qué es un juicio en este lenguaje.
-        \todo{Argumentar sobre la necesidad del orden en los contextos y lo que significan los juicios para nosotros/ distincion entre proposiciones/enunciados}
         \begin{definition}[Juicios, contextos]
             Un \textbf{juicio} es alguna expresión de la forma:
             \begin{enumerate}
@@ -332,7 +331,44 @@ de proponer y dar una base teórica para una formalización del temario de álge
         resultan particularmente peligrosos, pues dar\'{i}an a entender que
         $f : A \supset B$ es una prueba de $A \supset B$ sin contar antes del
         conocimiento de que $A$ y $B$ son tipos y entonces se presentar\'{i}a
-        una situación semejante a la de suponer lo que se desea demostrar.
+        una situación semejante a la de suponer lo que se desea demostrar. El
+        motivo por el cual la noción de dependencia es importante es porque en
+        la teor\'{i}a de tipos de Per Martin-L\"{o}f se hace una distinci\'{o}n
+        importante entre \textbf{juicios} y \textbf{proposiciones}\footnote{En 
+        \cite{PerMartin-Lof98} se pueden leer las ideas originales que 
+        concibieron a esta teoría.}. En los cursos de l\'{o}gica (y \'{a}lgebra 
+        superior) se enseña que una proposición es una oraci\'{o}n para la cual 
+        es posible asignar un valor de verdad (\textit{verdadero} o 
+        \textit{falso} sea lo que signifique eso). Para los matem\'{a}ticos y
+        l\'{o}gicos intuicionistas esta noción es incompleta en virtud de las
+        dificultades que presenta el justificar las reglas para la formación de
+        proposiciones mediante la cuantificaci\'{o}n sobre dominios infinitos,
+        por lo que se ofrece una noci\'{o}n alternativa para proposico\'{o}n:
+        \begin{center}
+            \textit{una proposici\'{o}n se define al exhibir una 
+            demostraci\'{o}n para lo que se propone}
+        \end{center}
+        y
+        \begin{center}
+            \textit{una proposición es verdadera  si tiene una demostraci\'{o}n.}
+        \end{center}
+        \cite{PerMartin-Lof98}
+
+        De este modo, cuando escribimos algún juicio, como por ejemplo
+        $$
+            \vdash a : A
+        $$
+        es porque \textbf{a : A est\'{a} demostrado}, y no estamos 
+        hipotetizando. Por otro lado, lo que escribimos como combinaci\'{o}n de 
+        s\'{i}mbolos l\'{o}gicos (por supuesto siguiendo las reglas de formación 
+        de su gram\'{a}tica) y est\'{a} por verse su veracidad denominamos 
+        proposiciones. Así, cuando en un contexto escribimos
+        $$
+            A\ \type, x : A, B(x)\ \type, y : B(x)\ \type, \dots
+        $$
+        estamos declarando que nuestras suposiciones son coherentes con el resto
+        de nuestras reglas de formación en tanto que son resultado de 
+        juicios anteriores.
         \begin{remark}
             Observe que nuestra definición de contexto permite la existencia de un contexto vacío pues por un argumento de vacuidad se verifica la
             satisfacibilidad de la propiedad de un contexto.
