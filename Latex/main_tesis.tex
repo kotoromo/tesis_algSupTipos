@@ -57,6 +57,8 @@
 \DeclareMathOperator{\inr }{inr }
 \DeclareMathOperator{\inl}{inl}
 \DeclareMathOperator{\ind}{ind}
+\DeclareMathOperator{\pair}{pair}
+\DeclareMathOperator{\pr}{pr}
 
 \graphicspath{ {./img/} }
 
@@ -94,69 +96,6 @@
 
 \section{Introducción}
 \subsection{¿Teoría de tipos? ¿Y la teoría de conjuntos?}
-\section{Parte I: Un poco de lógica}
-\section{Introducción}
-\subsection{Lógica como herramienta de razonamiento}
-
-Seguramente el o la lectora ya habrá escuchado sobre cómo las matemáticas son "correctas" o inclusive se ha usado
-un adjetivo más fuerte como "verdaderas" y quizás también el o la lectora habrá escuchado que todo problema en matemáticas tiene 
-solución. Estas últimas afirmaciones son opiniones muy controversiales en tanto que existen resultados que ponen en duda su 
-veracidad. 
-
-En teoría de conjuntos existen resultados y problemas que rompen lo que llamaríamos sentido común: uno de ellos 
-es el famoso teorema de Banach-Tarski que, dicho en términos coloquiales, te permite duplicar una esfera a partir de otra; \todo{Incluir un dibujo de la paradoja de Banach-Tarski}
-otro problema, que es un directo contraejemplo a las afirmaciones hechas al principio del párrafo, es la hipótesis del continuo.
-
-La hipótesis del continuo afirma que no existe un conjunto cuya cardinalidad está estrictamente entre los números enteros y 
-los números reales (para fines del ejemplo basta pensar en cardinalidad como otra palabra para referirse a tamaño o cantidad 
-de elementos). Está demostrado que esta última afirmación es independiente de los axiomas estándar de la teoría de conjuntos, y 
-resulta que por motivos históricos muy razonables toda la matemática está fundamentada sobre esta axiomática estándar, 
-por lo que en resumen, ¡existe un problema en matemáticas que no es resoluble!. 
-
-Más que asustar al lector o a la lectora sobre su camino en matemáticas, el autor espera que estos ejemplos sirvan de motivación para 
-seguir estudiando matemáticas y también como motivación para que el o la lectora se anime a explorar a las teorías donde surgen 
-tan interesantes resultados.
-
-Una vez dicho lo anterior, es claro también que debe de existir cierto grado de verdad en las matemáticas. Después de todo,
-existen las computadoras, las cuales son máquinas que hacen operaciones matemáticas con el propósito de resolver problemas
-muy reales (o ver videos de gatos en internet); existen los cohetes espaciales los cuales pueden viajar al espacio gracias
-a los procesos matemáticos detrás de su diseño e implementación, y muchas otras cosas cuyo funcionamiento depende fuertemente
-de las matemáticas.
-
-La forma en que razonamos en matemáticas está muy cercana a la forma en que se razonan en otras disciplinas como la medicina,
-el derecho, la ingeniería, la física, la economía, la sociología, la filosofía y demás; pues hay una presuposición de una 
-aceptación de los principios básicos de la lógica, es decir, hay un cierto estándar de lo que es \textit{racional}. 
-En las disciplinas mencionadas anteriormente se espera que aquellos quienes la practican puedan diferenciar entre un argumento 
-racional con base en principios básicos o evidencia, y especulación y afirmaciones que de ninguna forma se siguen de la evidencia 
-o los principios básicos.
-
-Toda forma de investigación y razonamiento adecuado depende de la lógica tanto para descubrir cosas nuevas como para percatarse
-de que se ha cometido un error y es necesario corregir algo. 
-
-Por ejemplo, supóngase que se tiene un amigo en quien se confía mucho y suponemos que de contarle algún secreto éste no se 
-lo revelaría a nadie. En virtud de lo anterior, decidimos confiarle un secreto muy vergonzoso: el día de ayer mojamos la cama 
-soñando que estábamos jugando en la orilla del mar. Sin embargo, a lo largo del día descubrimos que ¡dicho amigo ha contado el 
-secreto a varios de nuestros conocidos y conocidas!. Obviamente estamos que morimos de vergüenza y, aprendiendo nuestra lección 
-notamos que hemos cometido un error en nuestra creencia: es falso que podemos confiar secretos en nuestro (ex)amigo. 
-
-El autor cree
-que con el ejemplo anterior se hace evidente que la lógica no solo tiene aplicaciones centrales en las ciencias, sociales o no,
-sino que también en la vida diaria.
-
-Surge de forma muy natural el cuestionarse ¿cómo es que exactamente una afirmación se sigue correctamente de otra?, o su 
-contrapuesta: ¿exactamente cuándo ocurre que una proposición no se sigue de otra?; otra muy natural es ¿cuáles y por qué son 
-las leyes de la lógica?. Estas preguntas son las que uno se hace cuando estudia lógica.
-
-Curiosamente, al estudiar lógica uno hace uso de la misma lógica para estudiarla, pues se requiere tener una forma de razonar
-que nos permita llegar a cosas que consideramos verdaderas. Regresando a matemáticas, la lógica ha tenido un papel tan
-importante que se estudia a la lógica mediante técnicas propias de la matemática haciendo de la misma lógica una rama más de las
-matemáticas coloquialmente denominada como \textit{lógica matemática}, la cual es una sub-rama de otra área de las matemáticas
-denominada \textit{fundamentos de las matemáticas}, de la cual forman parte la teoría de conjuntos y la teoría homotópica de tipos. 
-
-En las matemáticas estándar, aquella que se suele enseñar en las facultades, se hace uso de un "sabor" muy particular de la 
-lógica, denominada lógica de primer orden y de la cual hablaremos a lo largo de esta sección, desarrollándola poco a poco, 
-pero no necesariamente de forma minuciosa como se haría en un curso de lógica matemática. El motivo detrás de desarrollarla paso por 
-paso es que el entendimiento de la lógica es primordial para estudiar matemáticas y para hacer matemáticas.
 
 \section{Algunos conceptos categóricos}
 \subsection{Introducción}
@@ -256,8 +195,19 @@ referencias a textos donde se puede profundizar en el tema.
     Un topos en particular es una categoría cartesiana cerrada.
 \end{remark}
 
-\section{Formalización de matemáticas en Agda}
+\begin{definition}[Limite]
+    
+\end{definition}
 
+\begin{definition}[Transformación natural]
+    
+\end{definition}
+
+\begin{definition}[Adjunción]
+    
+\end{definition}
+
+\section{Teoría de tipos dependientes y la formalización de matemáticas en Agda}
 \subsection{Introducción}
 \todo{Meterle más paja a esto}
 La teoría homotópica de tipos es un área de estudio de las matemáticas relativamente nueva. 
@@ -342,7 +292,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \textit{falso} sea lo que signifique eso). Para los matem\'{a}ticos y
         l\'{o}gicos intuicionistas esta noción es incompleta en virtud de las
         dificultades que presenta el justificar las reglas para la formación de
-        proposiciones mediante la cuantificaci\'{o}n sobre dominios infinitos,
+        proposiciones mediante la cuantificaci\'{o}n sobre dominios infinitos \footnote{Necesito citar esto gg},\todo{Encontrar entre las refs donde se afirma esto (ademas del libro de Martin Lof)}
         por lo que se ofrece una noci\'{o}n alternativa para proposico\'{o}n:
         \begin{center}
             \textit{una proposici\'{o}n se define al exhibir una 
@@ -1782,6 +1732,15 @@ de proponer y dar una base teórica para una formalización del temario de álge
     %    \end{center}
     %\end{lemma}
 
+    \subsubsection{Tipos positivos, tipos inductivos y coincidencia de patrones}
+    La regla de eliminación para tipos positivos recibe el nombre de inducción
+    y se denota por ind. \cite{UnivalentFoundationsProgram30}
+
+    \hfill\newline\textbf{Tipo unitario}\hfill\newline
+    \hfill\newline\textbf{Tipo vacío}\hfill\newline
+    \hfill\newline\textbf{Tipo producto}\hfill\newline
+    \hfill\newline\textbf{Tipo co-producto}\hfill\newline
+
     \subsubsection{Pares dependientes}
     Los pares dependientes fueron concebidos originalmente por Per 
     Martin-L\"{o}f como un an\'{a}logo a la uni\'{o}n disjunta de una familia de 
@@ -1794,46 +1753,181 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \coprod\limits_{i\in I} A_i = \bigcup\limits_{i\in I} \{(i, x) : x \in A_i\}
     $$
     Notemos que si $w \in \coprod A_i$, entonces es porque \textbf{existe}
-    un \'{i}ndice $i \in I$ para el cual existe un $x_w$ tal que $x_w \in A_i$.
+    un \'{i}ndice $i \in I$ para el cual existe un $x$ tal que $x \in A_i$.
     Fundamentalmente $w$ cuenta entonces con la siguiente información:
     \begin{itemize}
         \item un \'{i}ndice que evidenc\'{i}a de la presencia de un elemento de 
         $A_i$ en la suma disjunta y,
         \item un elemento concreto que pertenece a $A_i$ y queda encapsulado por 
-        $w = \picopar{i, x_w}$.
+        $w = \picopar{i, x}$.
     \end{itemize}
-    As\'{i} pues, es claro que tanto $x_w$ como $A_i$ dependen de $i$ para 
+    As\'{i} pues, es claro que tanto $x$ como $A_i$ dependen de $i$ para 
     exhibir su presencia dentro de la uni\'{o}n disjunta.
     Si sustituimos a la familia de conjuntos $\{A_i\}_{i\in I}$ por su 
     hom\'{o}logo en la teoría de tipos, 
     $$
-        i : I \vdash x(i) : A(i)
+        i : I \vdash x : A(i)
     $$
     lo anterior se reflejar\'{i}a en que tal estructura, de existir, sus 
     elementos can\'{o}nicos deberían tener la información an\'{a}loga:
     \begin{itemize}
         \item un \'{i}ndice $i : I$ que evidenc\'{i}a de la presencia de un 
         t\'{e}rmino de $A(i)$ en la estructura y,
-        \item un elemento concreto $x(i)$ que pertenece a $A(i)$ y queda 
-        encapsulado por $\picopar{i : I, x(i) : A(i)}$.
+        \item un elemento concreto $x$ que pertenece a $A(i)$ y queda 
+        encapsulado por $\picopar{i : I, x : A(i)}$.
     \end{itemize}
     La existencia de esta estructura se postula, y se denominan
     \textbf{pares dependientes}, \textbf{tipo $\Sigma$}, 
     \textbf{co-producto dependiente} y \textbf{tipo suma dependiente} y 
     usualmente se denota por la letra griega may\'{u}scula $\Sigma$.
+    Existen al menos dos formas de presentar al tipo de los pares dependientes:
+    como fue concebido por Martin-Löf \footnote{La presentación clásica del tipo 
+    $\Sigma$ se puede encontrar en \cite{UnivalentFoundationsProgram30} y en 
+    \cite{PerMartin-Lof98}}, y como un tipo inductivo. En este escrito
+    se empleará la forma inductiva de presentar a los tipos, por lo que la
+    exposición seguirá de forma cercana a la que hace Egbert Rijke en 
+    \cite{EgbertRijke26} y en mayor o menor medida a aquella seguida por el 
+    Programa para los Fundamentos Univalentes \cite{UnivalentFoundationsProgram30}.
+    \todo{cuales son verdaderamente las diferencias entre ambas exposiciones?}
+    
 
     \begin{definition}[El tipo de los pares dependientes]
-        \hfill\newline\textbf{Regla de formación}\hfill\newline
-        \hfill\newline\textbf{Regla de introducción}\hfill\newline
-        \hfill\newline\textbf{Regla de eliminación}\hfill\newline
-        \hfill\newline\textbf{Regla de inducción}\hfill\newline
-        \todo{Pensar en c\'{o}mo voy a introducir los tipos inductivos ...}
-        \hfill\newline\textbf{Regla de c\'{o}mputo}\hfill\newline
+        \todo{Realmente la dependencia sobre el primer elemento en el par 
+        dependiente solo es sobre el tipo del segundo elemento y no tambien puede
+        ser sobre el mismo segundo elemento? i.e. $\picopar{x, y(x)}$ y no 
+        $\picopar{x, y}$ en general?}
+        Dada una familia de tipos $B$ sobre $A$, el tipo de pares dependientes
+        se define como el tipo inductivo $\sum_{(x:A)} B(x)$ 
+        \begin{center}
+            \AxiomC{$\Gamma, x : A \vdash B(x)\ \type$}
+            \RightLabel{$\Sigma$}
+            \UnaryInfC{$\Gamma \vdash \sum_{(x:A)} B(x)$}
+            \DisplayProof
+        \end{center}
+        acompañado de una función de emparejamiento:
+        $$
+            \pair : \prod_{(x:A)}\left(B(x) \rightarrow \sum_{(y:A)}B(y)\right)
+        $$
+        o equivalentemente
+        \begin{center}
+            \AxiomC{$\Gamma, x : A \vdash b : B(x)$}
+            \UnaryInfC{$\pair(x, b) : \sum_{(y:A)}B(y)$}
+            \DisplayProof
+        \end{center}
+        y el principio de inducción:
+        \begin{center}
+            \AxiomC{$\Gamma, p : \sum_{(x : A)} B(x) \vdash P(p)\ \type$}
+            \UnaryInfC{$
+            \ind_\Sigma : \left(
+                \prod_{(x : A)} \prod_{(y : B(x))} P(\pair(x, y))
+            \right)
+            \rightarrow \left(\prod_{(z : \sum_{(x:A)} B(x))} P(z)\right)
+            $}
+            \DisplayProof
+        \end{center}
+        tal que satisface la regla de cómputo
+        $$
+            \ind_\Sigma (g, \pair(x,y)) \equiv g(x,y)
+        $$
+        \todo{quien es g?}
+        Escribiremos $\picopar{x, y}$ en lugar de $\pair(x, y)$.
     \end{definition}
-    \subsubsection{Coproducto}
-    % tengo que evaluar si esto si va.... se puede quedar como comentario.
-    \subsubsection{Tipos inductivos}
+
+    \begin{remark}
+        \todo{Entender bien esto :s}
+        Alternativamente, una definición de una función dependiente
+        $$
+            f : \prod_{(z : \sum_{(x : A)} B(x))} P(z)
+        $$
+        por inducción utilizando una función
+        $$
+            g : \prod_{(x : A)} \prod_{y : B(y)}P((x, y))
+        $$
+        puede ser presentada por coincidencia de patrones de la siguiente forma:
+        $$
+            f(\pair(x,y)) := g(x,y)
+        $$
+    \end{remark}
+
+    \begin{remark}
+         Si queremos definir una función
+         $$
+            f : \prod_{(z : \sum_{(x : A)} B(x))} P(z)
+         $$
+         por $\Sigma$-inducción, entonces debemos asumir un par $\picopar{x, y}$
+         consistente de $x : A$ y $y : B(x)$ con la meta en mente de construir
+         un elemento del tipo $P(x,y)$. El principio de inducción de los tipos
+         $\Sigma$ es por lo tanto el converso a la operación de currying, dado
+         por la función
+         $$
+            \text{ev-pair} : \left(
+                \prod_{(z : \sum_{(x : A)} B(x))} P(z)
+            \right)
+            \rightarrow
+            \left(
+                \prod_{(x : A)}\prod_{(y : B(x))} P(x, y)
+            \right)
+         $$
+         dada por $f \mapsto \lambda x. \lambda y . f(x, y )$. El principio de
+         inducción $\ind_\Sigma$ es por lo tanto también conocido como la
+         operación de uncurrying.
+    \end{remark}
     
+    \begin{definition}
+        Dados $\Gamma \vdash A\ \type$, $\Gamma x : A \vdash B(x)$
+        Definimos la primera y segunda proyección por el principio de inducción
+        del tipo $\Sigma$ como a continuación:
+        \todo{Elaborar más en esto de "por inducción"}
+        \hfill\newline\textbf{primera proyección}\hfill\newline
+        \begin{align*}
+            \pr_1 : \left(\sum_{(x : A)} B(x)\right) \rightarrow A\\
+            \pr_1\picopar{x,y} \equiv x
+        \end{align*}
+        \hfill\newline\textbf{segunda proyección}\hfill\newline
+        \begin{align*}
+            \pr_2 : \prod_{(p : \sum_{(x : A)} B(x))} B(\pr_1(p))\\
+            \pr_2\picopar{x,y} \equiv y
+        \end{align*}
+    \end{definition}
+
+    Un caso especial del tipo $\Sigma$ ocurre cuando $B$ es una familia 
+    constante sobre $A$, es decir, cuando $B$ solo es un tipo debilitado por $A$.
+    En este caso, el tipo $\sum_{(x : A)} B$ es el tipo de los pares ordenados
+    \textit{comunes y corrientes} donde $x : A$ y $y : B$ de modo que el tipo
+    de $y$ no depende de $x$.
+
+    \begin{definition}
+        Si $A$ y $B$ son tipos en un contexto $\Gamma$, definimos su producto
+        (cartesiano) $A\times B$ como
+        \begin{center}
+            \AxiomC{$\Gamma \vdash A\ \type$}
+            \AxiomC{$\Gamma \vdash B\ \type$}
+            \RightLabel{W}
+            \BinaryInfC{$x : A \vdash B\ \type$}
+            \UnaryInfC{$A \times B := \sum_{(x : A)} B(x)$}
+            \DisplayProof
+        \end{center}    
+    \end{definition}
+    En tanto que el producto se define mediante el tipo $\Sigma$, se tiene 
+    entonces que este tipo también satisface la regla de inducción de los tipos
+    $\Sigma$. Para este caso particular la regla de inducción esatablece que
+    para cualquier familia $P$ sobre $A \times B$ existe una función
+    $$
+        \ind_\times : \left(
+            \prod_{(x : A)} \prod_{(y : B)} P(x, y)
+        \right) \rightarrow
+        \left(\prod_{(z : A \times B)} P(z)\right)
+    $$
+    tal que satisface la regla de cómputo
+    $$
+        \ind_{\times}(g, \picopar{x, y}) \equiv g(x, y)
+    $$
+    Así también las proyecciones se definen de manera análoga para el tipo 
+    producto.
+    \todo{hacer explícita acá la definición}
+    \subsubsection{Breve comentario sobre la correspondencia Curry-Howard-Lambek}
+    \todo{decidir si esto sí va aquí o antes hmm}
+    \todo{acá iría la parte de lógica proposicional en agda uwu (ejercicios de la sección 4)}
     \subsubsection{Tipos de identidad}
 
     \subsubsection{Universos de tipos}
@@ -1908,12 +2002,6 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \end{itemize}
             
         \end{definition}
-
-\subsection{Tipos primitivos}
-
-\subsection{Tipos inductivos}
-
-\subsection{Tipos de identidad}
 
 \subsubsection{Aritmética modular}
 
