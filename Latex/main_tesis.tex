@@ -1732,10 +1732,207 @@ de proponer y dar una base teórica para una formalización del temario de álge
     %    \end{center}
     %\end{lemma}
 
-    \subsubsection{Tipos positivos, tipos inductivos y coincidencia de patrones}
-    La regla de eliminación para tipos positivos recibe el nombre de inducción
-    y se denota por ind. \cite{UnivalentFoundationsProgram30}
+    \subsubsection{Tipos inductivos y coincidencia de patrones}
+    
+    Martin-Löf en \cite{Martin_L_f_1971} presenta un análisis desde el punto de
+    vista de la teoría de la prueba sobre la teoría intuicionista de las
+    definiciones inductivas generalizadas aplicadas de forma iterada un número
+    finito de veces. En este análisis exhibe cómo una reformulación de estas
+    reglas desemboca en una extensión del Haupstatz de Gentzen a la teoría
+    de definiciones inductivas iteradas.\footnote{El Haupstatz de Gentzen 
+    también es conocido como \textbf{el teorema de corte-eliminación} y con
+    implicaciones fuertes, como permitir mostrar la inconsistencia de un 
+    sistema, todo término de prueba se reduce a su forma normal en un número
+    finito de pasos, o ser la justificación rigurosa de la correctud sobre
+    introducir lemas auxiliares en la demostración de un teorema. En breve,
+    la regla de corte-eliminación estipula:
 
+
+    \begin{center}
+        \AxiomC{$\Gamma, A \vdash B$}
+        \AxiomC{$\Delta \vdash A$}
+        \BinaryInfC{$\Delta, \Gamma \vdash B$}
+        \DisplayProof
+    \end{center}
+ 
+    Y el Haupstatz afirma que en el cálculo de secuentes toda prueba
+    sin la regla de corte pero con una regla adicional (llamada mix) se puede 
+    reescribir como una prueba sin la regla adicional \cite{PaoloMancosu56}.
+    } Justamente la teoría de definiciones inductivas iteradas es un predecesor
+    de la teoría de tipos dependientes, tema que nos ocupa en este escrito.
+    La forma en como Per Martin-Löf introduce las reglas de inferencia para los
+    predicados definidos de forma inductiva es como a continuación:
+
+    Antes de continuar, la notación $Qq(x)$ representa a tres objetos 
+    interactuando: Q un símbolo de predicado n-ario, q una sucesión de $n$ 
+    términos y $x$ denota a la totalidad de las variables que ocurren. 
+    Ya con la notación acordada, entenderemos por producción a la forma general 
+    siguiente:
+
+    \begin{center}
+        \AxiomC{$Qq(t)$}
+        \AxiomC{$\dots$}
+        \AxiomC{$Rr(t)$}
+        \TrinaryInfC{$Pp(t)$}
+        \DisplayProof
+    \end{center}
+    Una producción puede ser entendida como una regla de introducción para el
+    predicado que ocurre en su conclusión.
+    A esta figura le corresponden distintas variantes según las formas asociadas 
+    a $\rightarrow$ y $\Pi$ las cuales son, respectivamente:
+    
+    
+    \begin{center}
+        \AxiomC{$[H(t)]$}
+        \noLine
+        \UnaryInfC{$\vdots$}
+        \noLine
+        \UnaryInfC{$Qq(t)$}
+        \UnaryInfC{$Pp(t)$}
+        \DisplayProof
+    \end{center}
+    
+    
+    \begin{center}
+        \AxiomC{$\prod{y} Qq(t, y)$}
+        \UnaryInfC{$Pp(t)$}
+        \DisplayProof
+    \end{center}
+    
+    
+    La regla $\Pi$-producción está sujeta a la condición de que $y$ no aparezca 
+    en $t$ y no es libre en la deducción de $Qq(t, y)$.
+    La regla de $\Pi$-producción nos dice que si tenemos un método que nos
+    permite deducir $Qq(t, y)$ para cualquier $y$ con $t$ una secuencia de
+    términos cerrados, entonces podemos deducir algún predicado $Pp(t)$.
+
+    La gran idea está en la forma general de eliminación para predicados 
+    definidos de forma inductiva y nos permitimos llamarla así por el simíl
+    de las reglas de producción con reglas de introducción:
+
+    \begin{center}
+        \AxiomC{$Pt$}
+        \AxiomC{deducciones}
+        \noLine
+        \UnaryInfC{mínimas}
+        \BinaryInfC{$F(t)$}
+        \DisplayProof
+    \end{center}
+
+    parte de la idea de la regla de eliminación descrita antes involucra lo que
+    Per Martin-Löf describe por el encadenamiento de dos símbolos de predicado.
+    El encadenamiento se define por las siguientes reglas:
+
+    \begin{enumerate}
+        \item Todo símbolo de predicado está encadenado consigo mismo.
+        \item Si $P$ ocurre en la conclusión de una producción sencilla, 
+              entonces $P$ está encadenado con los todos los símbolos de
+              predicado que están encadenados con los términos inmediatos de
+              la producción. Por ejemplo en la siguiente situación $P$ se
+              encuentra encadenado con cada uno de los símbolos de predicado
+              que se encuentran enlazados a $Q \dots R$:
+
+              \begin{center}
+                    \AxiomC{$Qq(t)$}
+                    \AxiomC{$\dots$}
+                    \AxiomC{$Rr(t)$}
+                    \TrinaryInfC{$Pp(t)$}
+                    \DisplayProof
+              \end{center}
+        \item Si $P$ forma parte de una producción $\Pi$ o $\rightarrow$,
+              entonces $P$ está encadenado con todos y cada uno de los símbolos
+              de predicado del "consecuente" de la producción. Por ejemplo en
+              las siguientes situaciones $P$ se encuentra encadenado con $Q$:
+
+              \begin{center}
+                \AxiomC{$H(x)$}
+                \noLine
+                \UnaryInfC{$\vdots$}
+                \noLine
+                \UnaryInfC{$Qq(x)$}
+                \UnaryInfC{$Pp(x)$}
+                \DisplayProof
+              \end{center}
+
+              \begin{center}
+                \AxiomC{$\prod{y} Qq(x, y)$}
+                \UnaryInfC{$Pp(x)$}
+                \DisplayProof
+              \end{center}
+    \end{enumerate}
+
+    Bajo esta abstracción podemos codificar los números naturales o algo tan
+    abstracto como la noción de igualdad.
+    La forma que adoptan los números naturales bajo las nociones de 
+    producción-eliminación son las siguientes, donde $N$ denotará la
+    propiedad de ser un número natural y $E$ la propiedad de igualdad:
+    \hfill\newline
+
+    \textbf{\textit{Producción} de los números naturales}\hfill\newline
+    
+    \begin{center}
+        \AxiomC{$N0$}
+        \DisplayProof
+        \hskip 1.5em
+        \AxiomC{$Nx$}
+        \UnaryInfC{$Nsx$}
+        \DisplayProof
+    \end{center}
+
+    \textbf{\textit{Eliminación} de los números naturales}\hfill\newline
+    En tanto que $0$ es tal que $N0$ y, si $x$ es tal que $Nx$ entonces
+    $sx$ es tal que $Nsx$, temos entonces que cualquier $x$, tal que $Nx$, está 
+    encadenado con $0$. Es por ello que si $F$ es alguna otra propiedad tal que
+    $F0$, y para cualquier $x$ tal que $F(x)$ entonces $F(sx)$, entonces para
+    cualquier otro $t$ tal que $Nt$ se tiene que $F(t)$ pues $t$ en particular
+    actúa como cualquier $x$ en virtud de sus encadenamientos. 
+    
+    \begin{center}
+        \AxiomC{$Nt$}
+        \AxiomC{$F(0)$}
+        \AxiomC{$[F(x)]$}
+        \noLine
+        \UnaryInfC{$\vdots$}
+        \noLine
+        \UnaryInfC{$F(sx)$}
+        \TrinaryInfC{$F(t)$}
+        \DisplayProof
+    \end{center}
+
+    que resulta ser la regla de inducción para los números naturales.
+    \hfill\newline
+
+
+
+    \textbf{\textit{Producción} de la igualdad}\hfill\newline
+    La igualdad satisface la mínima propiedad de ser reflexiva, y esto
+    puede ser descrito por la siguiente producción:
+
+    \begin{center}
+        \AxiomC{$Exx$}
+        \DisplayProof
+    \end{center}
+
+    Siendo este el esquema de la propiedad de ser reflexiva.
+
+
+    \textbf{\textit{Eliminación} de los números naturales}\hfill\newline
+    La regla de eliminación para la producción anterior describe una regla de 
+    congruencia bajo predicados.
+    Consideremos $F(x,y)$ un predicado tal que $F(x, x)$ para cualquier $x$. 
+    En particular notemos que $Exx$ se cumple para cualquier $x$ por
+    el esquema de axioma definido por la regla de producción de $E$.
+    Así, si fuera que $Euv$ para alunos $u$ y $v$ terminos cerrados, 
+    entonces en particular $Euv$ estará ligado a $Euu$ y a $Evv$. Además, al ser 
+    que $F(x, x)$ y $Exx$ para cualquier $x$, entonces $F(u, v)$.
+    
+    \begin{center}
+        \AxiomC{$Euv$}
+        \AxiomC{$F(x, x)$}
+        \BinaryInfC{$F(u, v)$}
+        \DisplayProof
+    \end{center}
+    
     \hfill\newline\textbf{Tipo unitario}\hfill\newline
     \hfill\newline\textbf{Tipo vacío}\hfill\newline
     \hfill\newline\textbf{Tipo producto}\hfill\newline
