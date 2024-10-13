@@ -230,7 +230,10 @@ de proponer y dar una base teórica para una formalización del temario de álge
         
         Como es de esperarse del título que carga la teoría de tipos, un 
         \textbf{tipo} es un objeto primitivo de la teoría de tipos de la misma 
-        forma que un conjunto es un objeto primitivo de la teoría de conjuntos. 
+        forma que un conjunto es un objeto primitivo de la teoría de conjuntos,
+        y se suele definir mediante una serie de pasos a seguir para construir 
+        un elemento del tipo, o en otras palabras, si se tiene un entendimiento
+        sobre qué significa ser un elemento del tipo. 
         Como podrá usted, lector o lectora, darse una idea desde el párrafo 
         anterior, los tipos pueden tener (o no) términos. Como se mencionó 
         antes, un término es el resultado de la aplicación de reglas de 
@@ -353,7 +356,8 @@ de proponer y dar una base teórica para una formalización del temario de álge
     \todo{Poner el codigo en agda de esto}
         Una idea universal bastante útil es la de un "agrupamiento de agrupamientos"; ejemplos clásicos de este patrón de pensamiento son
         las familias de conjuntos; en teoría de conjuntos; y los enunciados; en lógica de primer órden. En la teoría de tipos dependientes
-        de Per Martin-Löf contamos con un marco de trabajo que engloba esta idea, la cual es la de una \textit{familia de tipos}.
+        de Per Martin-Löf contamos con un marco de trabajo que engloba esta idea, 
+        llamada \textit{familia de tipos}.
 
         \begin{definition}[Familia de tipos]\label{def:familia_tipos}
             Si $A$ es un tipo en un contexto $\Gamma$, una \textbf{familia de tipos} $B(x)$ es un tipo en el contexto $\Gamma, x : A$ (o también diremos
@@ -835,7 +839,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         $$
         de modo que $f : X$ es una función dependiente. Este tipo tiene 
         distintos nombres en la literatura: \textbf{tipo $\Pi$}, 
-        \textbf{el tipo de productos dependientes} y 
+        \textbf{el producto cartesiano de una familia de tipos} y 
         \textbf{el tipo de funciones dependientes}.
         \begin{definition}[tipo de funciones dependientes]
             La \textbf{regla de formación} del tipo de funciones dependientes 
@@ -1790,10 +1794,7 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \UnaryInfC{$Qq(t)$}
         \UnaryInfC{$Pp(t)$}
         \DisplayProof
-    \end{center}
-    
-    
-    \begin{center}
+        \hskip 1.5em 
         \AxiomC{$\prod{y} Qq(t, y)$}
         \UnaryInfC{$Pp(t)$}
         \DisplayProof
@@ -1932,6 +1933,12 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \BinaryInfC{$F(u, v)$}
         \DisplayProof
     \end{center}
+
+    La presentación moderna y relativamente madura de las ideas anteriormente
+    descritas por Per Martin-Löf se pueden encontrar en \cite{Dybjer1991} y 
+    también en \cite{EgbertRijke26}.
+
+    
     
     \hfill\newline\textbf{Tipo unitario}\hfill\newline
     \hfill\newline\textbf{Tipo vacío}\hfill\newline
