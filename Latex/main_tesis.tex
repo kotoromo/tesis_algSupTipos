@@ -6,6 +6,7 @@
  left=20mm,
  top=20mm,
  }
+\usepackage{mathdots}
 \usepackage{array}
 \usepackage{graphicx}
 \usepackage[spanish,es-noshorthands, es-lcroman]{babel}
@@ -210,36 +211,54 @@ referencias a textos donde se puede profundizar en el tema.
 \section{Teoría de tipos dependientes y la formalización de matemáticas en Agda}
 \subsection{Introducción}
 \todo{Meterle más paja a esto}
-La teoría homotópica de tipos es un área de estudio de las matemáticas relativamente nueva. 
-Esta área de estudio contempla herramientas de la teoría de los lenguajes de programación, el álgebra, la teoría de categorías, la lógica matemática y la topología.
-El poder expresivo del lenguaje formal empleado por la teoría de tipos homotópica así como su fundamento teórico es tan expresivo y general que permite
-ofrecer una teoría alternativa a la teoría de conjuntos para fundamentar las matemáticas. Dentro de las ventajas que brinda emplear este lenguaje
-está la posibilidad de utilizar computadoras para verificar la correctud de demostraciones matemáticas.
+La teoría homotópica de tipos es un área de estudio de las matemáticas 
+relativamente nueva. Esta área de estudio contempla herramientas de la teoría de 
+los lenguajes de programación, el álgebra, la teoría de categorías, la lógica 
+matemática y la topología. El poder expresivo del lenguaje formal empleado por 
+la teoría de tipos homotópica así como su fundamento teórico es tan expresivo y 
+general que permite ofrecer una teoría alternativa a la teoría de conjuntos para 
+fundamentar las matemáticas. Dentro de las ventajas que brinda emplear este 
+lenguaje está la posibilidad de utilizar computadoras para verificar la 
+correctud de demostraciones matemáticas.
 
-Es importante notar que al ser ésta una teoría constructiva desde su concepción, técnicas propias que dependen de axiomas o teoremas no constructivos como lo son
-la ley del tercer excluido, o el teorema de elección generalizado, no se encuentran disponibles en todos los contextos a diferencia de las "matemáticas clásicas".
 
-En esta segunda parte del trabajo se explorarán de forma breve y concisa temas de la teoría homotópica de tipos con el objetivo
-de proponer y dar una base teórica para una formalización del temario de álgebra superior.
+Es importante notar que al ser esta una teoría constructiva desde su concepción, 
+técnicas propias que dependen de axiomas o teoremas no constructivos como lo son
+la ley del tercer excluido, o el teorema de elección generalizado, no se 
+encuentran disponibles en todos los contextos a diferencia de las "matemáticas 
+clásicas".
+
+En esta segunda parte del trabajo se explorarán de forma breve y concisa temas 
+de la teoría homotópica de tipos con el objetivo de proponer y dar una base 
+teórica para una formalización del temario de álgebra superior.
 
 \subsection{Teoría de tipos dependientes}
     \subsubsection{Juicios, contextos y derivaciones}
-        En la teoría de tipos se emplea un lenguaje formal que está basado en la deducción natural pues es un sistema en el que se cuenta
-        con reglas de inferencia que se pueden combinar para formar derivaciones. Las derivaciones nos importan porque son el principal
-        mecanismo para producir \textit{términos} de un tipo determinado.
+        En la teoría de tipos se emplea un lenguaje formal que está basado en la 
+        deducción natural pues es un sistema en el que se cuenta con reglas de 
+        inferencia que se pueden combinar para formar derivaciones. Las 
+        derivaciones nos importan porque son el principal mecanismo para 
+        producir \textit{términos} de un tipo determinado.
         
         Como es de esperarse del título que carga la teoría de tipos, un 
         \textbf{tipo} es un objeto primitivo de la teoría de tipos de la misma 
         forma que un conjunto es un objeto primitivo de la teoría de conjuntos. 
-        Como podrá usted, lector o lectora, darse una idea desde el párrafo 
-        anterior, los tipos pueden tener (o no) términos. Como se mencionó 
-        antes, un término es el resultado de la aplicación de reglas de 
-        inferencia y, como el autor no desea arruinar el placentero proceso de 
-        entender a un nuevo objeto matemático, conforme avancemos en este 
-        trabajo floreceran distintas formas útiles de pensar a los tipos y sus 
-        términos.
+        
+        Este texto contempla que los objetos matemáticos tienen tipos, y un
+        objeto matemático siempre está dado junto con su tipo, de modo que
+        un objeto matemático no es solamente un objeto, sino un objeto con un
+        determinado tipo. Como veremos en esta sección, un tipo está dado junto
+        con una "receta" que describe cómo construir \textbf{elementos} de
+        este determinado tipo.
+        
+        Como se mencionó antes, un término es el resultado de la aplicación de 
+        reglas de inferencia y, como el autor no desea arruinar el placentero 
+        proceso de entender a un nuevo objeto matemático, conforme avancemos en 
+        este trabajo florecerán distintas formas útiles de pensar a los tipos y 
+        sus términos.
 
-        Entenderemos por una \textbf{derivación} a una sucesión de aplicaciones de \textbf{reglas de inferencia}.
+        Entenderemos por una \textbf{derivación} a una sucesión de aplicaciones 
+        de \textbf{reglas de inferencia}.
 
         Comenzamos por definir precisamente qué es un juicio en este lenguaje.
         \begin{definition}[Juicios, contextos]
@@ -511,9 +530,11 @@ de proponer y dar una base teórica para una formalización del temario de álge
             \DisplayProof
         \end{center}
 
-        También es de esperarse que, si se tienen que dos tipos son juiciosamente equivalentes, y puedes deducir una tesis de juicio $\mathfrak{T}$
-        a partir de una variable, entonces al intercambiar el tipo sobre el que tomas la variable por su equivalente la misma tesis de juicio
-        debería poder deducirse.
+        También es de esperarse que, si se tienen que dos tipos son 
+        juiciosamente equivalentes, y puedes deducir una tesis de juicio 
+        $\mathfrak{T}$ a partir de una variable, entonces al intercambiar el 
+        tipo sobre el que tomas la variable por su equivalente la misma tesis de 
+        juicio debería poder deducirse.
 
         \begin{center}
             \AxiomC{$\Gamma \vdash A \equiv B \ \type$}
@@ -1740,13 +1761,12 @@ de proponer y dar una base teórica para una formalización del temario de álge
     finito de veces. En este análisis exhibe cómo una reformulación de estas
     reglas desemboca en una extensión del Haupstatz de Gentzen a la teoría
     de definiciones inductivas iteradas.\footnote{El Haupstatz de Gentzen 
-    también es conocido como \textbf{el teorema de corte-eliminación} y con
-    implicaciones fuertes, como permitir mostrar la inconsistencia de un 
-    sistema, todo término de prueba se reduce a su forma normal en un número
-    finito de pasos, o ser la justificación rigurosa de la correctud sobre
-    introducir lemas auxiliares en la demostración de un teorema. En breve,
-    la regla de corte-eliminación estipula:
-
+    también es conocido como \textbf{el teorema de corte-eliminación}. Este
+    teorema tiene implicaciones fuertes, como permitir mostrar la inconsistencia 
+    de un sistema, todo término de prueba se reduce a su forma normal en un 
+    número finito de pasos, o ser la justificación rigurosa de la correctud 
+    sobre introducir lemas auxiliares en la demostración de un teorema. 
+    En breve, la regla de corte-eliminación estipula:
 
     \begin{center}
         \AxiomC{$\Gamma, A \vdash B$}
@@ -1763,8 +1783,9 @@ de proponer y dar una base teórica para una formalización del temario de álge
     La forma en como Per Martin-Löf introduce las reglas de inferencia para los
     predicados definidos de forma inductiva es como a continuación:
 
-    Antes de continuar, la notación $Qq(x)$ representa a tres objetos 
-    interactuando: Q un símbolo de predicado n-ario, q una sucesión de $n$ 
+    Antes de continuar, sentemos un poco de notación necesaria para la
+    discusión que nos atiene. La notación $Qq(x)$ representa a tres objetos 
+    interactuando: $Q$ un símbolo de predicado $n$-ario, q una sucesión de $n$ 
     términos y $x$ denota a la totalidad de las variables que ocurren. 
     Ya con la notación acordada, entenderemos por producción a la forma general 
     siguiente:
@@ -1827,10 +1848,10 @@ de proponer y dar una base teórica para una formalización del temario de álge
         \item Todo símbolo de predicado está encadenado consigo mismo.
         \item Si $P$ ocurre en la conclusión de una producción sencilla, 
               entonces $P$ está encadenado con los todos los símbolos de
-              predicado que están encadenados con los términos inmediatos de
-              la producción. Por ejemplo en la siguiente situación $P$ se
+              predicado que están encadenados con uno de los términos inmediatos 
+              de la producción. Por ejemplo, en la siguiente situación $P$ se
               encuentra encadenado con cada uno de los símbolos de predicado
-              que se encuentran enlazados a $Q \dots R$:
+              que se encuentran enlazados alguno de los $Q \dots R$:
 
               \begin{center}
                     \AxiomC{$Qq(t)$}
@@ -1861,8 +1882,57 @@ de proponer y dar una base teórica para una formalización del temario de álge
               \end{center}
     \end{enumerate}
 
+    Finalmente para obtener la regla de eliminación de un tipo definido por una 
+    producción inductiva es como a continuación:
+    
+    
+    Primero, abstraemos sobre cada símbolo de predicado encadenado con la
+    conclusión de la producción. Por ejemplo en la producción siguiente:
+    \begin{center}
+        \AxiomC{$Qq(x)\dots Rr(x)$}
+        \UnaryInfC{$Pp(x)$}
+        \DisplayProof
+    \end{center}
+    
+    $$
+    \begin{matrix}
+        P & Q & \dots & R\\
+          &   &       &  \\
+        \lambda x\ F(x) & \lambda y G(y) & \dots & \lambda z H(z)
+    \end{matrix}
+    $$
+
+    Entonces, en las deducciones menores de la regla de eliminación debe ocurrir
+    que
+
+    $$
+    \begin{matrix}
+        G(q(x)) & \dots & H(r(x))\\
+        \ddots &       & \iddots\\
+                &  F(p(x))
+    \end{matrix}
+    $$
+    satisfaciendo la restricción que una variable en la secuencia $x$ de
+    variables, cuya ocurrencia libre se vuelve ligada en la eliminación,
+    no debe ocurrir libre en una hipótesis que no sea $G(q(x)) \dots H(r(x))$
+    las cuales se cancelan en la inferencia considerada.
+    De forma análoga, para las producciones generalizadas $\rightarrow$ y $\Pi$
+    en las deducciones menores debe ocurrir que 
+    $$
+    \begin{matrix}
+        H(x) \rightarrow G(q(x)) & \prod y G(q(x, y))\\
+        \vdots & \vdots\\
+        F(p(x)) & F(p(x))
+    \end{matrix}
+    $$
+    tal que satisfacen la restricción de que una variable en la secuencia $x$,
+    cuya ocurrencia libre se vuelve lígada en la eliminación, no debe de ocurrir
+    libre en otra hipótesis que no sean $H(x) \rightarrow G(q(x))$ ni 
+    $\prod y G(q(x, y))$, que son canceladas en la eliminación.
+   
+
     Bajo esta abstracción podemos codificar los números naturales o algo tan
-    abstracto como la noción de igualdad.
+    abstracto como la noción de igualdad. 
     La forma que adoptan los números naturales bajo las nociones de 
     producción-eliminación son las siguientes, donde $N$ denotará la
     propiedad de ser un número natural y $E$ la propiedad de igualdad:
@@ -1880,13 +1950,8 @@ de proponer y dar una base teórica para una formalización del temario de álge
     \end{center}
 
     \textbf{\textit{Eliminación} de los números naturales}\hfill\newline
-    En tanto que $0$ es tal que $N0$ y, si $x$ es tal que $Nx$ entonces
-    $sx$ es tal que $Nsx$, temos entonces que cualquier $x$, tal que $Nx$, está 
-    encadenado con $0$. Es por ello que si $F$ es alguna otra propiedad tal que
-    $F0$, y para cualquier $x$ tal que $F(x)$ entonces $F(sx)$, entonces para
-    cualquier otro $t$ tal que $Nt$ se tiene que $F(t)$ pues $t$ en particular
-    actúa como cualquier $x$ en virtud de sus encadenamientos. 
-    
+    Para producir a los números naturales nos valemos de las producciones
+    anteriormente mencionadas. Por la restricción impuesta sobre 
     \begin{center}
         \AxiomC{$Nt$}
         \AxiomC{$F(0)$}
