@@ -147,7 +147,7 @@ referencias a textos donde se puede profundizar en el tema.
     \item Existen operaciones $(\_\times\_)$ y $(\_)^{(\_)}$ tales que:
     \begin{itemize}
         \item Para toda $A \in \mathrm{Obj}(\mathcal{C})$ existe una único 
-              morfimso $A \xrightarrow{!A} \mathbb{1}$.
+              morfismo $A \xrightarrow{!A} \mathbb{1}$.
         \item $\mathcal{C}(C, A \times B) \cong \mathcal{C}(C, A) \times \mathcal{C}(C, B)$.
         \item $\mathcal{C}(A, C^{B}) \cong \mathcal{C}(A \times B, C)$.
     \end{itemize}
@@ -1781,227 +1781,124 @@ teórica para una formalización del temario de álgebra superior.
     reescribir como una prueba sin la regla adicional \cite{PaoloMancosu56}.
     } Justamente la teoría de definiciones inductivas iteradas es un predecesor
     de la teoría de tipos dependientes, tema que nos ocupa en este escrito.
-    La forma en como Per Martin-Löf introduce las reglas de inferencia para los
-    predicados definidos de forma inductiva es como a continuación:
+    
+    La presentación moderna y relativamente madura de las ideas anteriormente
+    descritas por Per Martin-Löf se presenta de forma intuitiva a continuación.
 
-    Antes de continuar, sentemos un poco de notación necesaria para la
-    discusión que nos atiene. La notación $Qq(x)$ representa a tres objetos 
-    interactuando: $Q$ un símbolo de predicado $n$-ario, q una sucesión de $n$ 
-    términos y $x$ denota a la totalidad de las variables que ocurren. 
-    Ya con la notación acordada, entenderemos por producción a la forma general 
-    siguiente:
-
+    Podemos pensar a los tipos inductivos como aquellos que son libremente
+    generados por sus términos canónicos. Supongamos que $\mathfrak{I}$ es un
+    tipo dependiente con los siguientes t\'{e}rminos canónicos:
     \begin{center}
-        \AxiomC{$Qq(t)$}
-        \AxiomC{$\dots$}
-        \AxiomC{$Rr(t)$}
-        \TrinaryInfC{$Pp(t)$}
+        \AxiomC{$$}
+        \UnaryInfC{$x_0 : \mathfrak{I}$}
+        \hskip 1.5em
+        \DisplayProof
+        \AxiomC{$$}
+        \UnaryInfC{$\kappa : \mathfrak{I} \times \mathfrak{I} \rightarrow \mathfrak{I}$}
         \DisplayProof
     \end{center}
-    Una producción puede ser entendida como una regla de introducción para el
-    predicado que ocurre en su conclusión.
-    A esta figura le corresponden distintas variantes según las formas asociadas 
-    a $\rightarrow$ y $\Pi$ las cuales son, respectivamente:
+    Siguiendo la intuici\'{o}n de que los tipos inductivos se pueden pensar
+    como libremente generados por sus t\'{e}rminos canónicos, entonces
+    $x : \mathfrak{I}$ es de la forma $x \equiv x_0 : \mathfrak{I}$, o
+    $x \equiv \kappa(s, t) : \mathfrak{I}$ con algunos otros 
+    $s, t : \mathfrak{I}$.
     
     
+    Supongamos ahora que tenemos el siguente juicio:
+    $$
+        \Gamma, x : \mathfrak{I} \vdash \mathfrak{D}(x)\ \type
+    $$
+    La pregunta es ahora ?`c\'{o}mo producimos un elemento del tipo 
+    $\mathfrak{D}$ el cual depende de $\mathfrak{I}$?
+    Por lo que se ha comentado ya en secciones anteriores, claramente la
+    deducción deber\'{a} tener al menos una forma parecida a la siguiente:
     \begin{center}
-        \AxiomC{$[H(t)]$}
+        \AxiomC{$\Gamma, x : \mathfrak{I} \vdash \mathfrak{D}(x)$}
         \noLine
         \UnaryInfC{$\vdots$}
         \noLine
-        \UnaryInfC{$Qq(t)$}
-        \UnaryInfC{$Pp(t)$}
-        \DisplayProof
-        \hskip 1.5em 
-        \AxiomC{$\prod{y} Qq(t, y)$}
-        \UnaryInfC{$Pp(t)$}
+        \UnaryInfC{$$}
+        \UnaryInfC{$\Gamma, ? \vdash ? : \mathfrak{D}(x)$}
         \DisplayProof
     \end{center}
-    
-    
-    La regla $\Pi$-producción está sujeta a la condición de que $y$ no aparezca 
-    en $t$ y no es libre en la deducción de $Qq(t, y)$.
-    La regla de $\Pi$-producción nos dice que si tenemos un método que nos
-    permite deducir $Qq(t, y)$ para cualquier $y$ con $t$ una secuencia de
-    términos cerrados, entonces podemos deducir algún predicado $Pp(t)$.
-
-    La gran idea está en la forma general de eliminación para predicados 
-    definidos de forma inductiva y nos permitimos llamarla así por el simíl
-    de las reglas de producción con reglas de introducción:
-
+    Retomando la interpretación l\'{o}gica de dichas reglas,
+    nuestro objetivo es producir una demostración de $\mathcal{D}(x)$ para
+    cualesquiera $x : \mathfrak{I}$. Continuando operando bajo esta idea de ser 
+    $\mathfrak{I}$ un tipo libremente generado por sus t\'{e}rminos canónicos,
+    es claro entonces que al conocer explicitamente las formas que toma
+    cualquier $x : \mathfrak{I}$ podemos aprovechar esta estructura para
+    generar los t\'{e}rminos que nos son de inter\'{e}s.
+    Tomando un ejemplo menos abstracto, consideremos la siguiente definición
+    del tipo de listas de un tipo $A$:
     \begin{center}
-        \AxiomC{$Pt$}
-        \AxiomC{deducciones}
-        \noLine
-        \UnaryInfC{mínimas}
-        \BinaryInfC{$F(t)$}
-        \DisplayProof
-    \end{center}
-
-    parte de la idea de la regla de eliminación descrita antes involucra lo que
-    Per Martin-Löf describe por el encadenamiento de dos símbolos de predicado.
-    El encadenamiento se define por las siguientes reglas:
-
-    \begin{enumerate}
-        \item Todo símbolo de predicado está encadenado consigo mismo.
-        \item Si $P$ ocurre en la conclusión de una producción sencilla, 
-              entonces $P$ está encadenado con los todos los símbolos de
-              predicado que están encadenados con uno de los términos inmediatos 
-              de la producción. Por ejemplo, en la siguiente situación $P$ se
-              encuentra encadenado con cada uno de los símbolos de predicado
-              que se encuentran enlazados alguno de los $Q \dots R$:
-
-              \begin{center}
-                    \AxiomC{$Qq(t)$}
-                    \AxiomC{$\dots$}
-                    \AxiomC{$Rr(t)$}
-                    \TrinaryInfC{$Pp(t)$}
-                    \DisplayProof
-              \end{center}
-        \item Si $P$ forma parte de una producción $\Pi$ o $\rightarrow$,
-              entonces $P$ está encadenado con todos y cada uno de los símbolos
-              de predicado del "consecuente" de la producción. Por ejemplo en
-              las siguientes situaciones $P$ se encuentra encadenado con $Q$:
-
-              \begin{center}
-                \AxiomC{$H(x)$}
-                \noLine
-                \UnaryInfC{$\vdots$}
-                \noLine
-                \UnaryInfC{$Qq(x)$}
-                \UnaryInfC{$Pp(x)$}
-                \DisplayProof
-              \end{center}
-
-              \begin{center}
-                \AxiomC{$\prod{y} Qq(x, y)$}
-                \UnaryInfC{$Pp(x)$}
-                \DisplayProof
-              \end{center}
-    \end{enumerate}
-
-    Finalmente para obtener la regla de eliminación de un tipo definido por una 
-    producción inductiva es como a continuación:
-    
-    
-    Primero, abstraemos sobre cada símbolo de predicado encadenado con la
-    conclusión de la producción. Por ejemplo en la producción siguiente:
-    \begin{center}
-        \AxiomC{$Qq(x)\dots Rr(x)$}
-        \UnaryInfC{$Pp(x)$}
-        \DisplayProof
-    \end{center}
-    
-    $$
-    \begin{matrix}
-        P & Q & \dots & R\\
-          &   &       &  \\
-        \lambda x\ F(x) & \lambda y G(y) & \dots & \lambda z H(z)
-    \end{matrix}
-    $$
-
-    Entonces, en las deducciones menores de la regla de eliminación debe ocurrir
-    que
-
-    $$
-    \begin{matrix}
-        G(q(x)) & \dots & H(r(x))\\
-        \ddots &       & \iddots\\
-                &  F(p(x))
-    \end{matrix}
-    $$
-    satisfaciendo la restricción que una variable en la secuencia $x$ de
-    variables, cuya ocurrencia libre se vuelve ligada en la eliminación,
-    no debe ocurrir libre en una hipótesis que no sea $G(q(x)) \dots H(r(x))$
-    las cuales se cancelan en la inferencia considerada.
-    De forma análoga, para las producciones generalizadas $\rightarrow$ y $\Pi$
-    en las deducciones menores debe ocurrir que 
-    $$
-    \begin{matrix}
-        H(x) \rightarrow G(q(x)) & \prod y G(q(x, y))\\
-        \vdots & \vdots\\
-        F(p(x)) & F(p(x))
-    \end{matrix}
-    $$
-    tal que satisfacen la restricción de que una variable en la secuencia $x$,
-    cuya ocurrencia libre se vuelve lígada en la eliminación, no debe de ocurrir
-    libre en otra hipótesis que no sean $H(x) \rightarrow G(q(x))$ ni 
-    $\prod y G(q(x, y))$, que son canceladas en la eliminación.
-   
-
-    Bajo esta abstracción podemos codificar los números naturales o algo tan
-    abstracto como la noción de igualdad. 
-    La forma que adoptan los números naturales bajo las nociones de 
-    producción-eliminación son las siguientes, donde $N$ denotará la
-    propiedad de ser un número natural y $E$ la propiedad de igualdad:
-    \hfill\newline
-
-    \textbf{\textit{Producción} de los números naturales}\hfill\newline
-    
-    \begin{center}
-        \AxiomC{$N0$}
+        \AxiomC{$\Gamma \vdash A\ \type$}
+        \UnaryInfC{$\Gamma \vdash \mathrm{List}_A\ \type$}
         \DisplayProof
         \hskip 1.5em
-        \AxiomC{$Nx$}
-        \UnaryInfC{$Nsx$}
+        \AxiomC{$\Gamma \vdash A\ \type$}
+        \UnaryInfC{$\Gamma \vdash \varnothing : \mathrm{List}_A$}
+        \DisplayProof
+        \hskip 1.5em
+        \AxiomC{$\Gamma \vdash x : A$}
+        \AxiomC{$\Gamma \vdash xs : \mathrm{List}_A$}
+        \BinaryInfC{$\Gamma \vdash x.xs : \mathrm{List}_A$}
         \DisplayProof
     \end{center}
 
-    \textbf{\textit{Eliminación} de los números naturales}\hfill\newline
-    Para producir a los números naturales nos valemos de las producciones
-    anteriormente mencionadas. Por la restricción impuesta sobre 
+    Si tenemos un tipo dependiente de $\mathrm{List}_X$ para cualquier 
+    $x\ \type$, entonces nuestra regla de eliminación debería ser cap\'{a}z de 
+    lidiar con cualesquiera forma que tome un elemento de $\mathrm{List}_X$ pues 
+    dicho tipo est\'{a} indexado sobre todos estos elementos, de modo que las
+    instancias del esquema de regla de eliminación presentada anteriormente
+    deben ser consideradas:
     \begin{center}
-        \AxiomC{$Nt$}
-        \AxiomC{$F(0)$}
-        \AxiomC{$[F(x)]$}
+        \AxiomC{$\Gamma, \varnothing : \mathrm{List}_X \vdash \mathfrak{D}(\varnothing)\ \type$}
         \noLine
         \UnaryInfC{$\vdots$}
         \noLine
-        \UnaryInfC{$F(sx)$}
-        \TrinaryInfC{$F(t)$}
+        \UnaryInfC{$$}
+        \UnaryInfC{$\Gamma,\varnothing : \mathrm{List}_X \vdash \rho(\varnothing) : \mathfrak{D}(\varnothing)$}
+        \DisplayProof
+        \hskip 1.5em
+        \AxiomC{$\Gamma, xs : \mathrm{List}_X \vdash \mathfrak{D}(xs)\ \type$}
+        \noLine
+        \UnaryInfC{$\Gamma \vdash x : X$}
+        \noLine
+        \UnaryInfC{$\vdots$}
+        \noLine
+        \UnaryInfC{$$}
+        \UnaryInfC{$\Gamma, x.xs : \mathrm{List}_X \vdash \zeta(x.xs) : \mathfrak{D}(x.xs)$}
         \DisplayProof
     \end{center}
+    con $\rho$ y $\zeta$ t\'{e}rminos capaces de transformar elementos de
+    $\mathrm{List}_X$ en t\'{e}rminos de $\mathfrak{D}$. 
+    De esta forma, si los constructores de $\mathfrak{D}\ \type$ son
+    satisfechos por los elementos canónicos de $\mathrm{List}_X$ entonces
+    podemos asegurar que para cualquier forma $xs : \mathrm{List}_X$ existir\'{a}
+    un t\'{e}rmino $c(\rho, \zeta, x) : \mathfrak{D}(xs)$.
 
-    que resulta ser la regla de inducción para los números naturales.
-    \hfill\newline
-
-
-
-    \textbf{\textit{Producción} de la igualdad}\hfill\newline
-    La igualdad satisface la mínima propiedad de ser reflexiva, y esto
-    puede ser descrito por la siguiente producción:
+    Finalmente, una regla de c\'{o}mputo deber\'{a} regresar la demostración
+    de un caso particular de la forma que tome el tipo inductivo dada la
+    demostración del caso general.
+    En nuestro ejemplo anterior esto se ver\'{i}a como la siguiente regla:
 
     \begin{center}
-        \AxiomC{$Exx$}
+        \AxiomC{$\Gamma, xs : \mathrm{List}_X \vdash \mathfrak{D}(xs)\ \type$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varnothing : \mathrm{List}_X \vdash \rho(\varnothing) : \mathfrak{D}(\varnothing)$}
+        \noLine
+        \UnaryInfC{$\Gamma, x.xs : \mathrm{List}_X \vdash \zeta(x.xs) : \mathfrak{D}(x.xs)$}
+        \UnaryInfC{$\Gamma, xs: \mathrm{List}_X \vdash c(\rho, \zeta, \varnothing) \equiv \rho(\varnothing) : \mathfrak{D}(\varnothing)$}
+        \DisplayProof
+        \hskip 1.5em
+        \AxiomC{$\Gamma, xs : \mathrm{List}_X \vdash \mathfrak{D}(xs)\ \type$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varnothing : \mathrm{List}_X \vdash \rho(\varnothing) : \mathfrak{D}(\varnothing)$}
+        \noLine
+        \UnaryInfC{$\Gamma, x.xs : \mathrm{List}_X \vdash \zeta(x.xs) : \mathfrak{D}(x.xs)$}
+        \UnaryInfC{$\Gamma, xs: \mathrm{List}_X \vdash c(\rho, \zeta, \varnothing) \equiv \zeta(x.xs) : \mathfrak{D}(x.xs)$}
         \DisplayProof
     \end{center}
-
-    Siendo este el esquema de la propiedad de ser reflexiva.
-
-
-    \textbf{\textit{Eliminación} de los números naturales}\hfill\newline
-    La regla de eliminación para la producción anterior describe una regla de 
-    congruencia bajo predicados.
-    Consideremos $F(x,y)$ un predicado tal que $F(x, x)$ para cualquier $x$. 
-    En particular notemos que $Exx$ se cumple para cualquier $x$ por
-    el esquema de axioma definido por la regla de producción de $E$.
-    Así, si fuera que $Euv$ para alunos $u$ y $v$ terminos cerrados, 
-    entonces en particular $Euv$ estará ligado a $Euu$ y a $Evv$. Además, al ser 
-    que $F(x, x)$ y $Exx$ para cualquier $x$, entonces $F(u, v)$.
-    
-    \begin{center}
-        \AxiomC{$Euv$}
-        \AxiomC{$F(x, x)$}
-        \BinaryInfC{$F(u, v)$}
-        \DisplayProof
-    \end{center}
-
-    La presentación moderna y relativamente madura de las ideas anteriormente
-    descritas por Per Martin-Löf se pueden encontrar en \cite{Dybjer1991} y 
-    también en \cite{EgbertRijke26}.
-
-    
-    
     \hfill\newline\textbf{Tipo unitario}\hfill\newline
     \hfill\newline\textbf{Tipo vacío}\hfill\newline
     \hfill\newline\textbf{Tipo producto}\hfill\newline
